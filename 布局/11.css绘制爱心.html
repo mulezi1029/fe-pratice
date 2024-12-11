@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .heart {
+            position: relative;
+            width: 100px;
+            height: 90px;
+        }
+
+        .heart:before,
+        .heart:after {
+            width: 50px;
+            height: 80px;
+            position: absolute;
+            content: "";
+            left: 50px;
+            top: 0;
+            background-color: red;
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+            /*旋转基点 左下*/
+        }
+
+        .heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+            /*旋转基点 右下*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="heart"></div>
+</body>
+
+</html>

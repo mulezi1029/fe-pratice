@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拐角丝带实现原理</title>
+    <style>
+        .container {
+            margin: 20px auto;
+            position: relative;
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            border: .0625rem solid #ccc;
+        }
+
+        .hot {
+            position: absolute;
+            top: 0;
+            width: 200px;
+            height: 20px;
+            background: red;
+            text-align: center;
+            color: #fff;
+            transform: rotate(-45deg) translateX(-35%);
+        }
+
+        /* .content {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            text-align: center;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="desc">
+        拐角丝带实现原理:通过一个元素定位在父元素的左上角，然后利用rotate成倾斜装，父元素设置溢出隐藏。
+    </div>
+    <p>注意多个 transform 变化函数的顺序会有不同的影响。</p>
+    <div class="container">
+        <div class="hot">hot</div>
+        <div class="content">...</div>
+    </div>
+</body>
+
+</html>

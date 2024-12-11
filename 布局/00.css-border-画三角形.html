@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Triangle Examples</title>
+    <style>
+        .box {
+            width: 0;
+            height: 0;
+            border-width: 50px;
+            border-style: solid;
+            border-color: orangered skyblue gold yellowgreen;
+        }
+
+        .triangle {
+            margin-bottom: 20px;
+        }
+
+        /* 这里放入上述的CSS代码，比如.triangle-up等相关类的定义 */
+        .triangle-up {
+            width: 0;
+            height: 0;
+            border-width: 50px;
+            border-style: solid;
+            border-color: transparent transparent black transparent;
+        }
+
+        .triangle-down {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-top: 50px solid black;
+        }
+
+        .triangle-left {
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent;
+            border-bottom: 50px solid transparent;
+            border-right: 50px solid black;
+        }
+
+        .triangle-right {
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent;
+            border-bottom: 50px solid transparent;
+            border-left: 50px solid black;
+        }
+
+        .triangle-top-left {
+            width: 0;
+            height: 0;
+            border-top: 50px solid black;
+            border-right: 50px solid transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box"></div>
+    <div class="triangle triangle-up"></div>
+    <div class="triangle triangle-down"></div>
+    <div class="triangle triangle-left"></div>
+    <div class="triangle triangle-right"></div>
+    <div class="triangle triangle-top-left"></div>
+</body>
+
+</html>

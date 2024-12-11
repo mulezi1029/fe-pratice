@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .card {
+            width: 200px;
+            height: 300px;
+            margin: 100px auto;
+            padding: 10px;
+            /*文字与卡片有间距*/
+            position: relative;
+            /*相对定位*/
+        }
+
+        .card-item {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+            /*让文字显示在最上*/
+            background-color: rgb(255, 255, 255);
+            border: 1px solid #333;
+            border-radius: 10px;
+            /*var函数调用自定义属--i的值， calc可用于属性值的算术运算*/
+            transform: rotate(calc(var(--i) * 5deg));
+            /*卡片旋转角度*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="card-item" style="--i: 5"></div>
+        <div class="card-item" style="--i: 4"></div>
+        <div class="card-item" style="--i: 3"></div>
+        <div class="card-item" style="--i: 2"></div>
+        <div class="card-item" style="--i: 1"></div>
+        <div class="card-item" style="--i: 0"></div>
+        <!--最上一张卡片内容-->
+        <div class="card-content">..........</div>
+    </div>
+</body>
+
+</html>
