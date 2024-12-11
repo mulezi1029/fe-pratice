@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯css实现不同方向箭头</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            /* box-sizing: border-box; */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #fff;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .arrow {
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+            border: 1px solid #222
+        }
+
+        .arrow::before {
+            content: '';
+            /* width 与 height 自己微调 */
+            /* 旋转后实际的宽高根据原宽高计算而得，如旋转 45deg 后，新的宽高 为 28 * sqrt(2) */
+            width: 28px;
+            height: 28px;
+        }
+
+        .up::before {
+            border-left: 1px solid #666;
+            border-top: 1px solid #666;
+            transform: translateY(25%) rotate(45deg);
+        }
+
+        .down::before {
+            border-right: 1px solid #666;
+            border-bottom: 1px solid #666;
+            transform: translateY(-25%) rotate(45deg);
+        }
+
+        .left::before {
+            border-left: 1px solid #666;
+            border-top: 1px solid #666;
+            transform: translateX(25%) rotate(-45deg);
+        }
+
+        .right::before {
+            border-top: 1px solid #666;
+            border-right: 1px solid #666;
+            transform: translateX(-25%) rotate(45deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="arrow up"></div>
+        <div class="arrow down"></div>
+        <div class="arrow left"></div>
+        <div class="arrow right"></div>
+    </div>
+</body>
+
+</html>
