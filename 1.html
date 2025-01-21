@@ -1,72 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			.box {
+				padding: 20px;
+				text-align: center;
+				background-color: lightblue;
+			}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .box {
-            color: aliceblue;
-            padding: 20px;
-            text-align: center;
-            background-color: red;
-        }
+			span {
+				display: inline-block;
+				text-align: left;
+			}
+		</style>
+	</head>
 
-        span {
-            display: inline-block;
-            text-align: left;
-        }
-
-        .fa {
-            width: 300px;
-            background-color: red;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .fa .son {
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid green;
-        }
-
-        .container {
-            margin-top: 20px;
-            height: 400px;
-            background-color: red;
-            overflow: hidden;
-        }
-
-        .item {
-
-            height: 100px;
-            background-color: green;
-            margin: 20px;
-        }
-    </style>
-</head>
-
-<body>
-    <p>效果：文字内容少就是居中显示，文字内容多就是靠左显示。</p>
-    <div class="box">
-        <span>Lorem Lorem ipsum dolor sit amet consectetur, adipisicing elit. Placeat consectetur, quisquam explicabo,
-            beatae velit hic error deserunt quia, suscipit deleniti non laborum. Id assumenda tempora vitae voluptas
-            alias est quae.
-        </span>
-    </div>
-    <p>流体布局的宽度分离：</p>
-    <div class="fa">
-        <div class="son">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt.
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-    </div>
-</body>
-
+	<body>
+		<p>效果：文字内容少就是居中显示，文字内容多就是靠左显示。</p>
+		<div class="box">
+			<span
+				>Lorem Lorem ipsum, dolor sit amet Lorem ipsum, dolor sit amet
+				consectetur adipisicing elit. Corrupti consectetur, laboriosam aliquid
+				laborum minima repellendus ex vitae ea illo corporis, iste repudiandae
+				nostrum saepe voluptatem atque velit dolorem officia ad .
+			</span>
+		</div>
+	</body>
 </html>
