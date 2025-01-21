@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Line Chart Example</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="lineChart" width="400" height="300"></canvas>
+    <script>
+        var canvas = document.getElementById('lineChart');
+        var ctx = canvas.getContext('2d');
+        // 绘制坐标轴
+        ctx.beginPath();
+        ctx.moveTo(50, 250);
+        ctx.lineTo(350, 250);
+        ctx.moveTo(50, 250);
+        ctx.lineTo(50, 50);
+        ctx.stroke();
+        // 绘制折线
+        ctx.beginPath();
+        ctx.moveTo(50, 250);
+        ctx.lineTo(100, 200);
+        ctx.lineTo(150, 150);
+        ctx.lineTo(200, 100);
+        ctx.lineTo(250, 50);
+        ctx.lineTo(300, 100);
+        ctx.lineTo(350, 150);
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+    </script>
+</body>
+
+</html>

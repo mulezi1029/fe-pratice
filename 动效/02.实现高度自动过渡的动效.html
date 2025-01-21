@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            padding: 20px;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        .eg .btn {
+            margin-top: 20px;
+            height: 40px;
+            width: 120px;
+            background-color: rgb(111, 111, 208);
+            color: white;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .detail {
+            margin-top: 5px;
+            /* height: 0; */
+            /* max-height: 0; */
+            /* transform: scaleY(0); */
+
+            height: 0;
+            transform-origin: top center;
+            width: 200px;
+            overflow: hidden;
+            background-color: rgb(111, 111, 208);
+            border-radius: 10px;
+            color: white;
+            transition: all 1s;
+        }
+
+        .eg .btn:hover+.detail {
+            /* height: auto; */
+            /* max-height: 2000px; */
+            /* transform: scaleY(1); */
+        }
+
+        .detail .content {
+            padding: 16px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <p>实现效果：初始文本区域不显示，鼠标 hover 后，显示文本区域，但是要求显示的过程中高度变化有过渡动画效果</p>
+    <p>实现方案： transition 属性只能针对数值变化加过渡动画，原理是基于变化前后的数值进行插值计算中间状态</p>
+    <ul>
+        <li>1.初始 height 0，hover 时 height 为 auto（pass：transition 时不会起作用，因为 auto 不是数值）</li>
+        <li>2.基于 height auto 的问题，使用 max-height 属性，初始 max-height 为0，hover 时 max-height 设置一个足够大的值，对
+            max-height做 transition 过渡效果
+            <div>这种做法会有一个缺点：实际过渡是对 max-height 属性进行过渡，使得 hover
+                开始后，设置的过渡时间只有一部分是用于显示出内容的，表现就是<span style="color: red;">hover时内容显示的比较快</span>
+                。而离开时，整个时间中有一部分是用于收起不可见的高度，<span style="color: red;">表现有一定的延迟才开始收起内容</span>。可以故意设置一个比较大的transition
+                time，看到明显效果。
+            </div>
+        </li>
+        PS:对于一般的时间场景，此方法能够符合一定效果。
+        <li>3.通过 scale 实现，初始 scale 为0，hover scale 为 1。
+            缺点：此方法实现的效果，过渡过程中有看得到文字被压缩的感觉。
+        </li>
+        <li>4.通过 grid 布局实现，grid-template-rows 从 0fr 到 1fr，可以实现过渡效果。</li>
+        <li>5.通过 js 实现：初始 height 为0，监听 btn 移入事件。本质是FLIP 动画方案，通过 js 获取具体的元素高度后，js 设置元素高度为0（动画初始状态），js
+            设置元素高度为实际高度（元素最终状态），两个状态之间，配合 transition 即可实现高度自动过渡。</li>
+    </ul>
+    <div class="eg">
+        <div>
+            <div class="btn">hover 显示</div>
+            <div class="detail">
+                <div class="content">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut doloribus accusantium, dolores minus
+                    accusamus
+                    suscipit laboriosam temporibus quas dolor doloremque officia totam aperiam quasi officiis culpa
+                    ipsum
+                    voluptatibus veritatis alias.
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const btn = document.querySelector('.btn')
+        const de = document.querySelector('.detail')
+        btn.addEventListener('mouseenter', () => {
+            // 拿到实际的高度
+            de.style.height = 'auto'
+            const { height } = de.getBoundingClientRect()
+            // F：先设置为 0
+            de.style.height = 0
+            // 使浏览器重新渲染：通过读取元素尺寸，强制触发重排
+            de.getBoundingClientRect()
+            // L：然后设置为实际高度
+            de.style.height = height + 'px'
+
+            // 2.将设置 实际高度的代码放入 requestAnimationFrame 回调
+            // requestAnimationFrame(() => {
+            //     // 然后设置为实际高度
+            //     de.style.height = height + 'px'
+            // })
+            console.log(de.style.height)
+        })
+        btn.addEventListener('mouseleave', () => {
+            de.style.height = 0
+        })
+    </script>
+</body>
+
+</html>

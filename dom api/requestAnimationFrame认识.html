@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>requsetAnimationFrame</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin-top: 50px;
+        }
+
+        .box {
+            width: 50%;
+            margin: 0 auto;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .desc {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h1>requsetAnimationFrame</h1>
+        <ul class="desc">
+            <li>requsetAnimationFrame 是浏览器用来优化动画的方法，浏览器会在下一次重绘之前调用这个方法，这样就不会导致掉帧现象。</li>
+            <li>这个方法接受一个回调函数作为参数，这个回调函数会在浏览器重绘之前调用。</li>
+            <li>这个方法返回一个整数，代表请求的编号，可以用这个编号来取消这个请求。</li>
+            <li>这个方法的回调函数会传入一个时间戳，表示当前时间，单位是毫秒。</li>
+            <li>使用了 requsetAnimationFrame 的页面切换到后台时，会暂停执行，只有重新切回来后才会重新开始执行，提高性能。</li>
+            <button>停止</button>
+        </ul>
+    </div>
+
+    <script>
+        let rqId
+        function init(val) {
+            console.log('init,开始', '上一帧渲染结束时间', val + 'ms');
+            rqId = requestAnimationFrame(init)
+            console.log(rqId)
+        }
+
+        requestAnimationFrame(init);  // 调用一次，如果需要循环调用，需要在函数内部递归调用
+
+        // 同时调用多个requestAnimationFrame，会收到相同的时间戳
+        requestAnimationFrame(function (val) {
+            console.log('requestAnimationFrame,开始', '上一帧渲染结束时间', val + 'ms');
+        });
+
+        // 终止 requestAnimationFrame 的调用
+        const stop = function () {
+            cancelAnimationFrame(rqId)
+        }
+        const btn = document.querySelector('button');
+        btn.addEventListener('click', function () {
+            cancelAnimationFrame(rqId)
+        })
+    </script>
+</body>
+
+</html>

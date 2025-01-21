@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: aliceblue;
+            text-align: center;
+            line-height: 200px;
+            color: black;
+        }
+
+        .wrap {
+            width: 600px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .prev,
+        .next {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+
+        .next {
+            right: 0;
+        }
+
+        .content {
+            width: 100%;
+            display: flex;
+        }
+
+        .item {
+            flex-shrink: 0;
+            text-align: center;
+            width: 600px;
+            height: 200px;
+            line-height: 200px;
+        }
+
+        .item-1 {
+            background-color: lightblue;
+        }
+
+        .item-2 {
+            background-color: lightcoral;
+        }
+
+        .item-3 {
+            background-color: lightgreen;
+        }
+
+        .item-4 {
+            background-color: lightpink;
+        }
+
+        .item-5 {
+            background-color: lightsalmon;
+        }
+
+        .item-6 {
+            background-color: lightseagreen;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="content">
+            <div class="item item-1">Lorem.</div>
+            <div class="item item-2">Laudantium.</div>
+            <div class="item item-3">Expedita.</div>
+            <div class="item item-4">Pariatur?</div>
+            <div class="item item-5">Officia.</div>
+            <div class="item item-6">Magnam.</div>
+        </div>
+        <div class="prev">
+            &lt;
+        </div>
+        <div class="next">
+            &gt;
+        </div>
+        <div class="indicates"></div>
+    </div>
+
+    <script>
+        const doms = {
+            wrap: document.querySelector('.wrap'),
+            content: document.querySelector('.content'),
+            prev: document.querySelector('.prev'),
+            next: document.querySelector('.next'),
+            indicates: document.querySelector('.indicates')
+        }
+        let count = doms.content.querySelectorAll('.item').length;
+        const init = () => {
+            // 克隆最后一个轮播元素放在第一张前
+            // 克隆第一个元素放在最后一张后
+            const first = doms.content.firstElementChild.cloneNode(true);
+            const last = doms.content.lastElementChild.cloneNode(true);
+            doms.content.appendChild(first);
+            doms.content.insertBefore(last, doms.content.firstElementChild);
+            last.style.marginLeft = '-100%';
+        }
+        init();
+        let currentIndex = 0;  // 当前显示的是第几张
+
+        const moveTo = (index) => {
+            doms.content.style.transition = 'transform 1s';
+            doms.content.style.transform = `translateX(-${index}00%)`;
+            currentIndex = index;
+        }
+
+        doms.prev.addEventListener('click', () => {
+            if (currentIndex === 0) {
+                console.log('已经是第一张了，需要无缝');
+                // 取消过渡效果
+                doms.content.style.transition = 'none';
+                // 瞬间移动到倒数克隆的那一张（与第一张是一样的）
+                doms.content.style.transform = `translateX(-${count}00%)`;
+
+                // 必须要触发一次浏览器的重绘，否则过渡效果还是会有，就不是从第一张瞬间移到最后一张了
+                requestAnimationFrame(() => {
+                    moveTo(count - 1);
+                })
+            } else {
+                // 正常切换
+                moveTo(currentIndex - 1);
+            }
+        });
+        doms.next.addEventListener('click', () => {
+            if (currentIndex === count - 1) {
+                console.log('已经是最后一张了，需要无缝');
+                // 取消过渡效果
+                doms.content.style.transition = 'none';
+                // 瞬间移动到克隆的第一张，与最后一张是一样的
+                doms.content.style.transform = `translateX(100%)`;
+
+                requestAnimationFrame(() => {
+                    moveTo(0);
+                })
+            } else {
+                // 正常切换
+                moveTo(currentIndex + 1);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

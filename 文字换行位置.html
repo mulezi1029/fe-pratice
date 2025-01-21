@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Wrapping Example</title>
+    <style>
+        .container {
+            width: 200px;
+            /* 设定容器的固定宽度 */
+            border: 1px solid black;
+            /* 为容器添加边框以便查看效果，可根据需要删除 */
+            word-break: keep-all;
+            /* 防止单词内部截断 */
+            overflow-wrap: break-word;
+            /* 允许长单词换行到下一行 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        This is a long-word-with-hyphen that should not break within itself when the line runs out of space.
+        Another-long-word-with-hyphen should also stay intact.
+    </div>
+</body>
+
+</html>

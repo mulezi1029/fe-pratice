@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: aliceblue;
+            color: black;
+        }
+
+        .multiline-text {
+            text-align: left;
+            display: block;
+            padding-left: 20px;
+            height: 200px;
+        }
+
+        .multiline-text::before {
+            content: "\2022";
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            left: -15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="multiline-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam delectus voluptatem totam
+        iure maxime neque obcaecati mollitia nemo aliquid architecto eaque consequatur quos deleniti, aut aspernatur,
+        nihil error facilis vero.</div>
+</body>
+
+</html>

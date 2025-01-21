@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .form-section:focus-within {
+            border: 2px solid #007bff;
+        }
+
+        input {
+            outline: none;
+        }
+
+        .article-card:has(p) {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="form-section">
+        <label for="email">Email:</label>
+        <input type="email" id="email">
+        <label for="password">Password:</label>
+        <input type="password" id="password">
+    </section>
+
+    <div class="article-card">
+        <h2>Article Title</h2>
+        <p>这是一篇关于科技的文章。</p>
+    </div>
+    <div class="article-card">
+        <h2>Another Article</h2>
+        <p>这篇文章是关于艺术的。</p>
+    </div>
+</body>
+
+</html>
