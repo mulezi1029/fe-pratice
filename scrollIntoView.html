@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Icon 横向列表</title>
+		<style>
+			/* 列表容器样式 */
+			.icon-list {
+				width: 600px;
+				overflow-x: auto;
+				white-space: nowrap;
+				-webkit-overflow-scrolling: touch;
+			}
+
+			/* icon 样式 */
+			.icon {
+				display: inline-block;
+				width: 50px;
+				height: 50px;
+				background-color: #ccc;
+				margin-right: 20px;
+				cursor: pointer;
+			}
+
+			/* 去除最后一个 icon 的右边距 */
+			.icon:last-child {
+				margin-right: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- icon 列表容器 -->
+		<div class="icon-list" id="iconList">
+			<!-- 动态添加 icon -->
+		</div>
+
+		<script>
+			const iconList = document.getElementById('iconList')
+			const iconCount = 20
+
+			// 动态创建 icon 元素
+			for (let i = 0; i < iconCount; i++) {
+				const icon = document.createElement('div')
+				icon.classList.add('icon')
+				icon.textContent = i + 1
+				iconList.appendChild(icon)
+
+				// 为每个 icon 添加点击事件
+				icon.addEventListener('click', () => {
+					icon.scrollIntoView({
+						behavior: 'smooth',
+						// 让元素在容器中居中显示
+						block: 'nearest',
+						inline: 'center',
+					})
+				})
+			}
+		</script>
+	</body>
+</html>
