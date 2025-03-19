@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>自适应导航栏</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			.desc{
+				margin-bottom: 20px;
+			}
+			.navbar {
+				background: #f5f5f5;
+				padding: 10px;
+			}
+			.nav-container{
+				display: flex;
+				gap: 20px;
+				overflow: hidden;
+			}
+			.nav-item{
+				padding: 8px 16px;
+				white-space: nowrap;
+				background: #fff;
+				border-radius: 4px;
+				cursor: pointer;
+				transition: all 0.3s;
+				text-decoration: none;
+				color: #333;
+			}
+			.nav-item:hover{
+				background-color: #e0e0e0;
+			}
+			.more-container{
+				position: relative;
+				display: none;
+			}
+			.more-btn{
+				background-color: transparent;
+				width: 30px;
+				height: 30px;
+				border: none;
+				border-radius: 50%;
+				font-size: 12px;
+				color: skyblue;
+				cursor: pointer;
+			}
+			.dropdown-menu{
+				position: absolute;
+				top: 100%;
+				left: -50%;
+				width: 120px;
+				height: 150px;
+				background-color: #fff;
+				border-radius: 2px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<p class="desc">
+			自适应导航栏，当导航项过多时，自动隐藏多余项并显示更多按钮，点击更多按钮显示下拉菜单。
+		</p>
+		<nav class="navbar">
+			<div class="nav-container">
+				<a href="#" class="nav-item">首页</a>
+				<a href="#" class="nav-item">新闻</a>
+				<a href="#" class="nav-item">产品中心</a>
+				<a href="#" class="nav-item">解决方案</a>
+				<a href="#" class="nav-item">客户案例</a>
+				<a href="#" class="nav-item">关于我们</a>
+				<a href="#" class="nav-item">联系我们</a>
+
+				<div class="more-container">
+					<button class="more-btn">更多▽</button>
+					<div class="dropdown-menu"></div>
+				</div>
+			</div>
+		</nav>
+
+		<script>
+			const navContainer = document.querySelector('.nav-container');
+			const navItems = document.querySelectorAll('.nav-item');
+			const moreContainer = document.querySelector('.more-container');
+			const moreBtn = document.querySelector('.more-btn');
+			const dropdownMenu = document.querySelector('.dropdown-menu');
+
+			const originalItems = Array.from(navItems).map(item => item.cloneNode(true)); // 保存原始导航项副本
+
+			const showNavList = []
+			const hideNavList = []
+
+			// 思路：将所有nav-item 与 more-btn 全部加到dom中，计算出所有子元素的总宽度，然后遍历找到超出的元素，将超出的元素后面元素都放到下拉菜单中
+			function showNav(){
+				navContainer.innerHTML = ''; // 清空容器，此时 navItems 只保留了 dom 对象，但是实际不在 dom 树结构中
+				// 将所有导航项和更多按钮加到容器dom结构中
+				originalItems.forEach((item) =>
+					navContainer.appendChild(item.cloneNode(true))
+				)
+				navContainer.appendChild(moreContainer)
+
+				const items = navContainer.querySelectorAll('.nav-container > .nav-item'); // 获取所有导航的 dom 元素
+				
+				moreContainer.style.display = 'block'; 			// 显示更多按钮，计算更多按钮宽度
+				const moreBtnWidth = moreBtn.offsetWidth; 	// 获取更多按钮宽度
+				moreContainer.style.display = 'none'; 			// 获取后就隐藏更多按钮
+				console.log(moreBtnWidth);
+				const containerWidth = navContainer.offsetWidth; // 获取容器宽度:可以允许的最大宽度
+				console.log(containerWidth); 
+				// 计算所有导航项与更多按钮加起来的总宽度
+				let totalWidth = 0;
+				let requireWidth = 0;
+				let gap = 20
+				// 遍历所有导航项
+				for(let i=0;i<items.length;i++){
+					const item = items[i];
+					const itemWidth = item.offsetWidth + gap; // 获取每个导航项的宽度 + gap
+					// 判断当前总宽度是否大于容器宽度，只要总宽度小于容器宽度，就显示导航项
+					if(totalWidth+itemWidth+gap < containerWidth){
+						showNavList.push(item);  // 将当前导航项加到显示列表中
+						totalWidth += itemWidth; // 累加总宽度
+					}else{
+						// 当前累加计算的宽度大于了容器宽度：显示更多按钮
+						moreContainer.style.display = 'block';
+						requireWidth = totalWidth + moreBtnWidth;
+						while(requireWidth > containerWidth){
+							// 当前导航项宽度大于容器宽度，将当前导航项放到下拉菜单中
+							const hideItem = showNavList.pop();
+							hideNavList.push(hideItem);
+							requireWidth -= hideItem.offsetWidth + 20;
+						}
+						navContainer.appendChild(moreContainer);
+					}
+				}
+
+				// 将隐藏的导航项放到下拉菜单中
+				hideNavList.forEach((item) => {
+					dropdownMenu.appendChild(item);
+				})
+
+
+
+			}
+
+			showNav();
+
+				// 监听navContainer大小变化
+			 // 使用ResizeObserver监听容器尺寸变化
+			const resizeObserver = new ResizeObserver((entries) => {
+				showNav();
+			})
+
+			resizeObserver.observe(navContainer)
+
+		</script>
+	</body>
+</html>

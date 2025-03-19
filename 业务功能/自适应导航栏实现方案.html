@@ -11,6 +11,10 @@
 				box-sizing: border-box;
 			}
 
+			.desc {
+				margin-bottom: 20px;
+			}
+
 			.navbar {
 				background: #f5f5f5;
 				padding: 10px;
@@ -44,12 +48,13 @@
 			}
 
 			.more-btn {
-				padding: 8px 16px;
+				padding: 8px 10px;
 				white-space: nowrap;
 				background: #fff;
 				border: none;
 				border-radius: 4px;
 				cursor: pointer;
+				font-size: 16px;
 			}
 
 			.dropdown-menu {
@@ -74,8 +79,9 @@
 			}
 		</style>
 	</head>
+
 	<body>
-		<p>
+		<p class="desc">
 			自适应导航栏，当导航项过多时，自动隐藏多余项并显示更多按钮，点击更多按钮显示下拉菜单。
 		</p>
 		<nav class="navbar">
@@ -105,30 +111,32 @@
 			// 保存原始导航项副本
 			const originalItems = allItems.map((item) => item.cloneNode(true))
 
-      const debounce = (fn, delay) => {
-        let timer
-        return function () {
-          clearTimeout(timer)
-          timer = setTimeout(() => {
-            fn.apply(this, arguments)
-          }, delay)
-        }
-      }
-      const update = debounce(updateNavigation, 200)
+			const debounce = (fn, delay) => {
+				let timer
+				return function () {
+					clearTimeout(timer)
+					timer = setTimeout(() => {
+						fn.apply(this, arguments)
+					}, delay)
+				}
+			}
+			const update = debounce(updateNavigation, 200)
 			function updateNavigation() {
-				// 重置所有元素
+				// 1.清空导航容器内容
 				navContainer.innerHTML = ''
+				// 2.将所有导航项和更多按钮加到容器dom结构中
 				originalItems.forEach((item) =>
 					navContainer.appendChild(item.cloneNode(true))
 				)
 				navContainer.appendChild(moreContainer)
-
-				const items = Array.from(navContainer.querySelectorAll('.nav-container > .nav-item'))
-
-				// 临时显示更多按钮以获取准确宽度
+				// 3.获取dom树中的所有导航项
+				const items = Array.from(
+					navContainer.querySelectorAll('.nav-container > .nav-item')
+				)
+				// 4.显示更多按钮以获取准确宽度
 				moreContainer.style.display = 'block'
 				const moreWidth = moreBtn.offsetWidth
-				moreContainer.style.display = 'none' // 立即重置显示状态
+				// 5.清空下拉菜单的内容
 				dropdownMenu.innerHTML = ''
 
 				const containerWidth = navContainer.offsetWidth
@@ -136,37 +144,41 @@
 				const gap = 20
 
 				const visibleItems = []
+				const hideItems = []
 				let requiredSpace = 0
 
+				// 遍历所有导航项
 				for (let i = 0; i < items.length; i++) {
 					const itemWidth = items[i].offsetWidth + gap
-					if (totalWidth + itemWidth + moreWidth <= containerWidth) {
+					// 当前总宽度 + 当前项宽度  <= 容器宽度，说明当前项可以显示
+					if (totalWidth + itemWidth  <= containerWidth) {
 						totalWidth += itemWidth
 						visibleItems.push(items[i])
-					} else {
-						moreContainer.style.display = 'block'
-						requiredSpace = totalWidth + moreWidth + gap
-
+					} else {	
+						// 当前总宽度 + 当前项宽度  > 容器宽度，说明当前项不能显示,当前项及其之后的所有项都需要放到下拉菜单中。
+						// 然后需要显示更多按钮，此时需要判断当前总宽度加上按钮宽度加上gap后，是否放的下，（当前项的前一项加上更多按钮后不一定放的下）
+						requiredSpace = totalWidth + moreWidth 
+						let k = i
 						while (requiredSpace > containerWidth && visibleItems.length > 0) {
+							// 从可见项中移除最后一个元素
 							const removed = visibleItems.pop()
-							totalWidth -= removed.offsetWidth + gap
-							requiredSpace = totalWidth + moreWidth + gap
+							totalWidth -= removed.offsetWidth 
+							requiredSpace = totalWidth + moreWidth 
+							k = i - 1
 						}
 						// 清空并重新填充下拉菜单
 						dropdownMenu.innerHTML = ''
-						for (let j = i; j < items.length; j++) {
+						for (let j = k; j < items.length; j++) {
 							const clone = items[j].cloneNode(true)
-              // clone.classList.remove('nav-item')
-              clone.classList.add('dropdown-item')
-              clone.classList.add('nav-item-cloned')
-              clone.style.display = 'block'
-							clone.style.background = 'transparent'
+							// clone.classList.remove('nav-item')
+							clone.classList.add('dropdown-item')
+							clone.classList.add('nav-item-cloned')
+							clone.style.display = 'block'
 							clone.style.width = '100%'
-							clone.style.borderRadius = '0'
 							dropdownMenu.appendChild(clone)
 						}
-            console.log(dropdownMenu.childElementCount)
-						break
+						console.log(dropdownMenu.childElementCount)
+						break  // 跳出for循环
 					}
 				}
 
@@ -179,8 +191,8 @@
 				moreContainer.style.display =
 					visibleItems.length === items.length ? 'none' : 'block'
 			}
-			
-      // 使用ResizeObserver监听容器尺寸变化
+
+			// 使用ResizeObserver监听容器尺寸变化
 			const resizeObserver = new ResizeObserver((entries) => {
 				update()
 			})
