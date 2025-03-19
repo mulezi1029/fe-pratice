@@ -1,0 +1,75 @@
+<html>
+	<head>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background-color: #f0f0f0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+		<script type="application/javascript">
+			// function draw() {
+			// 	var canvas = document.getElementById('canvas')
+			// 	if (canvas.getContext) {
+			// 		var ctx = canvas.getContext('2d')
+
+			// 		// 填充三角形
+			// 		ctx.beginPath()
+			// 		ctx.moveTo(25, 25)
+			// 		ctx.lineTo(105, 25)
+			// 		ctx.lineTo(25, 105)
+			// 		ctx.fill()
+
+			// 		// 描边三角形
+			// 		ctx.beginPath()
+			// 		ctx.moveTo(125, 125)
+			// 		ctx.lineTo(125, 45)
+			// 		ctx.lineTo(45, 125)
+			// 		ctx.closePath()
+			// 		ctx.stroke()
+			// 	}
+			// }
+			function draw() {
+				var ctx = document.getElementById('canvas').getContext('2d')
+				var img = new Image()
+				img.onload = function () {
+					for (let i = 0; i < 3; i++) {
+						for (let j = 0; j < 3; j++) {
+							ctx.drawImage(img, i * 50, j * 50, 50, 50)
+						}
+					}
+					ctx.beginPath()
+					ctx.moveTo(30, 96)
+					ctx.lineTo(70, 66)
+					ctx.lineTo(103, 76)
+					ctx.lineTo(170, 15)
+					ctx.stroke()
+				}
+				img.src = './back_top.png'
+			}
+			function draw() {
+				var ctx = document.getElementById('canvas').getContext('2d')
+                ctx.fillStyle = 'red'; // 设置文本颜色为红色
+                ctx.strokeStyle = 'blue'; // 设置文本描边颜色为蓝色
+				ctx.font = '32px serif'
+				ctx.strokeText('Hello world', 0, 40)
+                ctx.fillText('Hello world', 0, 40)
+                var metrics = ctx.measureText('Hello world');
+                alert(metrics.width); // 在给定的字体大小下，文本实际应该占据的宽度
+			}
+		</script>
+	</head>
+	<body onload="draw();">
+		<canvas
+			id="canvas"
+			width="150"
+			height="150"
+			style="border: 1px solid"
+		></canvas>
+	</body>
+</html>

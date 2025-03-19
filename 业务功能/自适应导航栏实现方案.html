@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>自适应导航栏</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			.navbar {
+				background: #f5f5f5;
+				padding: 10px;
+			}
+
+			.nav-container {
+				display: flex;
+				position: relative;
+				gap: 20px;
+				/* overflow: hidden; */
+			}
+
+			.nav-item {
+				padding: 8px 16px;
+				white-space: nowrap;
+				background: #fff;
+				border-radius: 4px;
+				cursor: pointer;
+				transition: all 0.3s;
+				text-decoration: none;
+				color: #333;
+			}
+
+			.nav-item:hover {
+				background: #e0e0e0;
+			}
+
+			.more-container {
+				position: relative;
+				display: none;
+			}
+
+			.more-btn {
+				padding: 8px 16px;
+				white-space: nowrap;
+				background: #fff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+
+			.dropdown-menu {
+				display: none;
+				position: absolute;
+				top: 100%;
+				right: 0;
+				background: white;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+				border-radius: 4px;
+				padding: 8px 0;
+				min-width: 120px;
+				z-index: 100;
+			}
+
+			.dropdown-menu.show {
+				display: block;
+			}
+
+			.more-container:hover .dropdown-menu {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<p>
+			自适应导航栏，当导航项过多时，自动隐藏多余项并显示更多按钮，点击更多按钮显示下拉菜单。
+		</p>
+		<nav class="navbar">
+			<div class="nav-container">
+				<a href="#" class="nav-item">首页</a>
+				<a href="#" class="nav-item">新闻</a>
+				<a href="#" class="nav-item">产品中心</a>
+				<a href="#" class="nav-item">解决方案</a>
+				<a href="#" class="nav-item">客户案例</a>
+				<a href="#" class="nav-item">关于我们</a>
+				<a href="#" class="nav-item">联系我们</a>
+
+				<div class="more-container">
+					<button class="more-btn">更多 ▽</button>
+					<div class="dropdown-menu"></div>
+				</div>
+			</div>
+		</nav>
+
+		<script>
+			const navContainer = document.querySelector('.nav-container')
+			const moreContainer = document.querySelector('.more-container')
+			const dropdownMenu = document.querySelector('.dropdown-menu')
+			const allItems = Array.from(document.querySelectorAll('.nav-item'))
+			const moreBtn = document.querySelector('.more-btn')
+
+			// 保存原始导航项副本
+			const originalItems = allItems.map((item) => item.cloneNode(true))
+
+      const debounce = (fn, delay) => {
+        let timer
+        return function () {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            fn.apply(this, arguments)
+          }, delay)
+        }
+      }
+      const update = debounce(updateNavigation, 200)
+			function updateNavigation() {
+				// 重置所有元素
+				navContainer.innerHTML = ''
+				originalItems.forEach((item) =>
+					navContainer.appendChild(item.cloneNode(true))
+				)
+				navContainer.appendChild(moreContainer)
+
+				const items = Array.from(navContainer.querySelectorAll('.nav-container > .nav-item'))
+
+				// 临时显示更多按钮以获取准确宽度
+				moreContainer.style.display = 'block'
+				const moreWidth = moreBtn.offsetWidth
+				moreContainer.style.display = 'none' // 立即重置显示状态
+				dropdownMenu.innerHTML = ''
+
+				const containerWidth = navContainer.offsetWidth
+				let totalWidth = 0
+				const gap = 20
+
+				const visibleItems = []
+				let requiredSpace = 0
+
+				for (let i = 0; i < items.length; i++) {
+					const itemWidth = items[i].offsetWidth + gap
+					if (totalWidth + itemWidth + moreWidth <= containerWidth) {
+						totalWidth += itemWidth
+						visibleItems.push(items[i])
+					} else {
+						moreContainer.style.display = 'block'
+						requiredSpace = totalWidth + moreWidth + gap
+
+						while (requiredSpace > containerWidth && visibleItems.length > 0) {
+							const removed = visibleItems.pop()
+							totalWidth -= removed.offsetWidth + gap
+							requiredSpace = totalWidth + moreWidth + gap
+						}
+						// 清空并重新填充下拉菜单
+						dropdownMenu.innerHTML = ''
+						for (let j = i; j < items.length; j++) {
+							const clone = items[j].cloneNode(true)
+              // clone.classList.remove('nav-item')
+              clone.classList.add('dropdown-item')
+              clone.classList.add('nav-item-cloned')
+              clone.style.display = 'block'
+							clone.style.background = 'transparent'
+							clone.style.width = '100%'
+							clone.style.borderRadius = '0'
+							dropdownMenu.appendChild(clone)
+						}
+            console.log(dropdownMenu.childElementCount)
+						break
+					}
+				}
+
+				// 最终DOM更新
+				navContainer.innerHTML = ''
+				visibleItems.forEach((item) => navContainer.appendChild(item))
+				navContainer.appendChild(moreContainer)
+
+				// 如果全部可见则隐藏更多按钮
+				moreContainer.style.display =
+					visibleItems.length === items.length ? 'none' : 'block'
+			}
+			
+      // 使用ResizeObserver监听容器尺寸变化
+			const resizeObserver = new ResizeObserver((entries) => {
+				update()
+			})
+
+			resizeObserver.observe(navContainer)
+
+			// 初始化
+			updateNavigation()
+
+			// 移动端点击显示更多菜单
+			moreBtn.addEventListener('click', () => {
+				dropdownMenu.classList.toggle('show')
+			})
+
+			// 点击外部关闭菜单
+			document.addEventListener('click', (e) => {
+				if (!moreContainer.contains(e.target)) {
+					dropdownMenu.classList.remove('show')
+				}
+			})
+		</script>
+	</body>
+</html>
