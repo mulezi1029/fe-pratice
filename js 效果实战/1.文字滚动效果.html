@@ -104,6 +104,33 @@
         timerId = setInterval(beginScroll, 2000)
       })
 
+			window.addEventListener('visibilitychange', () => {
+				if (document.visibilityState === 'hidden') {
+					console.log(1111111)
+					clearInterval(timerId)
+					list.scrollTop = 0
+				} else {
+					console.log(2222222)
+					timerId = setInterval(beginScroll, 2000)
+					list.scrollTop = 0
+				}
+			})
+
+
+			// window.addEventListener('pagehide', () => {
+			// 	console.log(3333333)
+			// 	clearInterval(timerId)
+			// })
+
+			// window.addEventListener('pageshow', () => {
+			// 	timerId = setInterval(beginScroll, 2000)
+			// })
+
+			// window.addEventListener('beforeunload', () => {
+			// 	console.log(4444444)
+			// 	clearInterval(timerId)
+			// })
+
 		</script>
 	</body>
 </html>
