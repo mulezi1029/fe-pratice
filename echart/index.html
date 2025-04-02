@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECharts 折线图示例</title>
+    <title>ECharts 一个图例显示多个数据系列，并且 tooltip 能够区分</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
         #chart-container {
@@ -11,9 +11,16 @@
             height: 400px;
             margin: 20px auto;
         }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+    <div class="title">ECharts 一个图例显示多个数据系列，并且 tooltip 能够区分</div>
     <div id="chart-container"></div>
     <script>
         // 初始化 ECharts 实例
