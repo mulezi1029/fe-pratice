@@ -1,5 +1,5 @@
 // 创建一个简单的响应式系统
-const reactive = (() => {
+const {reactive, effect} = (() => {
     // 存储依赖关系
     const deps = new Map();
     // 当前正在执行的副作用函数
