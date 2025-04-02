@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECharts 折线图示例</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        #chart-container {
+            width: 800px;
+            height: 400px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart-container"></div>
+    <script>
+        // 初始化 ECharts 实例
+        const chartDom = document.getElementById('chart-container');
+        const myChart = echarts.init(chartDom);
+
+        // 准备数据
+        const dates = ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'];
+        const data1 = [150, 230, 224, 218, 135, 147];
+        const data2 = [120, 200, 180, 250, 160, 180];
+
+        // 配置项
+        const option = {
+            title: {
+                text: '月度数据统计'
+            },
+            tooltip: {
+                trigger: 'axis',
+                
+            },
+            legend: {
+                data: ['数据系列组'],
+                selected: {
+                    '数据系列组': true
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: dates
+            },
+            yAxis: {
+                type: 'value'
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                },
+                {
+                    start: 0,
+                    end: 100
+                }
+            ],
+            series: [
+                {
+                    name: '数据系列组',
+                    type: 'line',
+                    data: data1,
+                    smooth: true,
+                    lineStyle: {
+                        color: '#5470c6'
+                    },
+                    label: {
+                        show: true,
+                        formatter: 'A'
+                    }
+                },
+                {
+                    name: '数据系列组',
+                    type: 'line',
+                    data: data2,
+                    smooth: true,
+                    lineStyle: {
+                        color: '#91cc75'
+                    },
+                    label: {
+                        show: true,
+                        formatter: 'B'
+                    }
+                }
+            ]
+        };
+
+        // 使用配置项显示图表
+        myChart.setOption(option);
+
+        // 响应式调整
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    </script>
+</body>
+</html> 

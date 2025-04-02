@@ -1,14 +1,17 @@
 {
   "configurations": [
+    
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "调试当前文件",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/${fileBasename}",
-            "runtimeExecutable": "/usr/local/bin/node" // 根据实际路径修改
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }
