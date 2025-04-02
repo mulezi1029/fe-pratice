@@ -17,10 +17,47 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
+        .descs {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .export-buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .export-buttons button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .export-buttons button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <div class="title">ECharts 一个图例显示多个数据系列，并且 tooltip 能够区分</div>
+    <div class="descs">
+        <p>
+            1. 图例分组实现：通过设置相同的name属性实现图例分组
+        </p>
+        <p>
+            2. 数据区分：通过seriesIndex区分不同数据系列
+        </p>
+        <p>
+            3. 样式设置：为不同系列设置不同的样式
+        </p>
+    </div>
+    <div class="export-buttons">
+        <button onclick="exportChart('图例分组')">导出图例分组</button>
+        <button onclick="exportChart('数据区分')">导出数据区分</button>
+        <button onclick="exportChart('样式设置')">导出样式设置</button>
+    </div>
     <div id="chart-container"></div>
     <script>
         // 初始化 ECharts 实例
@@ -37,72 +74,87 @@
             title: {
                 text: '月度数据统计'
             },
+            // 配置提示框
             tooltip: {
-                trigger: 'axis',
+                trigger: 'axis',  // 触发方式为坐标轴
                 formatter: function(params) {
-                    let result = params[0].axisValue + '<br/>';
+                    let result = params[0].axisValue + '<br/>';  // 显示当前横坐标值
                     params.forEach(param => {
-                        const marker = param.marker;
-                        const value = param.value;
-                        const seriesIndex = param.seriesIndex;
+                        const marker = param.marker;  // 获取图例标记（颜色方块）
+                        const value = param.value;    // 获取数据值
+                        const seriesIndex = param.seriesIndex;  // 获取系列索引，用于区分不同数据系列
+                        // 根据索引设置不同的标签名称
                         const label = seriesIndex === 0 ? '数据系列A' : '数据系列B';
                         result += `${marker} ${label}: ${value}<br/>`;
                     });
                     return result;
                 }
             },
+            // 配置图例
             legend: {
-                data: ['数据系列组'],
+                data: ['数据系列组'],  // 只显示一个图例项
                 selected: {
-                    '数据系列组': true
+                    '数据系列组': true  // 默认选中状态
+                },
+                bottom: 0,  // 距离底部 0 像素
+                padding: [10, 0, 0, 0],  // 设置图例与图表之间的间距
+                itemGap: 20,  // 设置图例项之间的间距
+                textStyle: {
+                    fontSize: 14,  // 设置图例文字大小
+                    color: '#333'  // 设置图例文字颜色
                 }
             },
+            // 配置工具栏
             toolbox: {
                 feature: {
-                    dataZoom: {
+                    dataZoom: {  // 数据区域缩放
                         yAxisIndex: 'none',
                         type: 'inside'
                     },
-                    restore: {},
-                    saveAsImage: {}
+                    restore: {},  // 还原
+                    saveAsImage: {}  // 保存图片
                 }
             },
+            // 配置X轴
             xAxis: {
                 type: 'category',
                 data: dates
             },
+            // 配置Y轴
             yAxis: {
                 type: 'value'
             },
+            // 配置数据区域缩放
             dataZoom: [
                 {
                     type: 'inside',
                     start: 0,
                 }
             ],
+            // 配置数据系列
             series: [
                 {
-                    name: '数据系列组',
+                    name: '数据系列组',  // 第一个数据系列使用相同的名称，实现图例分组
                     type: 'line',
                     data: data1,
-                    smooth: true,
+                    smooth: true,  // 平滑曲线
                     lineStyle: {
-                        color: '#5470c6'
+                        color: '#5470c6'  // 设置第一个系列的颜色
                     },
                     label: {
-                        show: true,
+                        show: true,  // 显示数据标签
                     }
                 },
                 {
-                    name: '数据系列组',
+                    name: '数据系列组',  // 第二个数据系列使用相同的名称，实现图例分组
                     type: 'line',
                     data: data2,
-                    smooth: true,
+                    smooth: true,  // 平滑曲线
                     lineStyle: {
-                        color: '#91cc75'
+                        color: '#91cc75'  // 设置第二个系列的颜色
                     },
                     label: {
-                        show: true,
+                        show: true,  // 显示数据标签
                     }
                 }
             ]
@@ -111,10 +163,48 @@
         // 使用配置项显示图表
         myChart.setOption(option);
 
-        // 响应式调整
+        // 响应式调整：当窗口大小改变时，重新调整图表大小
         window.addEventListener('resize', function() {
             myChart.resize();
         });
+
+        // 导出图表为图片
+        function exportChart(type) {
+            // 根据类型设置不同的标题
+            let title = '';
+            switch(type) {
+                case '图例分组':
+                    title = '图例分组实现：通过设置相同的name属性实现图例分组';
+                    break;
+                case '数据区分':
+                    title = '数据区分：通过seriesIndex区分不同数据系列';
+                    break;
+                case '样式设置':
+                    title = '样式设置：为不同系列设置不同的样式';
+                    break;
+            }
+            
+            // 更新图表标题
+            myChart.setOption({
+                title: {
+                    text: title
+                }
+            });
+
+            // 导出图片
+            const img = new Image();
+            img.src = myChart.getDataURL({
+                type: 'png',
+                pixelRatio: 2,
+                backgroundColor: '#fff'
+            });
+            
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.download = `${type}.png`;
+            link.href = img.src;
+            link.click();
+        }
     </script>
 </body>
 </html> 
