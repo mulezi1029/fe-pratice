@@ -32,7 +32,17 @@
             },
             tooltip: {
                 trigger: 'axis',
-                
+                formatter: function(params) {
+                    let result = params[0].axisValue + '<br/>';
+                    params.forEach(param => {
+                        const marker = param.marker;
+                        const value = param.value;
+                        const seriesIndex = param.seriesIndex;
+                        const label = seriesIndex === 0 ? '数据系列A' : '数据系列B';
+                        result += `${marker} ${label}: ${value}<br/>`;
+                    });
+                    return result;
+                }
             },
             legend: {
                 data: ['数据系列组'],
@@ -43,7 +53,8 @@
             toolbox: {
                 feature: {
                     dataZoom: {
-                        yAxisIndex: 'none'
+                        yAxisIndex: 'none',
+                        type: 'inside'
                     },
                     restore: {},
                     saveAsImage: {}
@@ -60,11 +71,6 @@
                 {
                     type: 'inside',
                     start: 0,
-                    end: 100
-                },
-                {
-                    start: 0,
-                    end: 100
                 }
             ],
             series: [
@@ -78,7 +84,6 @@
                     },
                     label: {
                         show: true,
-                        formatter: 'A'
                     }
                 },
                 {
@@ -91,7 +96,6 @@
                     },
                     label: {
                         show: true,
-                        formatter: 'B'
                     }
                 }
             ]
