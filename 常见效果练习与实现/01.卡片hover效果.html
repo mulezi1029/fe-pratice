@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #222;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            position: relative;
+            width: 300px;
+            aspect-ratio: 3/4;
+            margin: 0 auto;
+            background: #fff;
+            transition: all 3s;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .face {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .face.back-face {
+            padding: 20px;
+            text-align: center;
+            background: #fff;
+            color: #c3073f;
+        }
+
+        .face.back-face h2 {
+            margin-top: 60px;
+        }
+
+        .face.back-face a {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #c3073f;
+            border: 2px solid #c3073f;
+            transition: all 0.5s;
+        }
+
+        .face.back-face a:hover {
+            color: #fff;
+            background: #c3073f;
+        }
+
+        .face.front-face {
+            background: #c3073f;
+            transition: all 0.5s;
+        }
+
+        /* 核心实现 */
+        .card:hover .face.front-face {
+            /* 核心是利用过渡：宽度、高度、边框变化加过渡，造成视觉效果就是hover后，变成数字 */
+            /* 1. hover 时宽高与边框变为符合的样式（宽默认向左缩小，高默认向上缩小），此时视觉效果就像是向左上去收缩了，没有从下往上收的感觉 */
+            /* 2. 为了实现从上往下收的感觉，需要同时改变其位置，在对应宽度向左以及高度向上缩的繁方向移动位置，使得抵消 */
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            /* 方案一：使用 top + left */
+            /* top: 20px;
+            left: 38%; */
+            /* 方案二：使用 margin-top/left */
+            /* margin-top: 20px;
+            margin-left: 38%; */
+            /* 方案三：使用 transform */
+            transform: translate(100px, 20px);
+            border: 2px solid #c3073f;
+            background: transparent;
+        }
+
+        .card .face.front-face h2 {
+            font-size: 10rem;
+            color: #fff;
+        }
+
+        .card:hover .face.front-face h2 {
+            font-size: 2rem;
+            color: #c3073f;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 该案例实现效果为：用户鼠标 hover card 时，封面上的数字标题就像动态变化的缩小到内容面上的标题数字上去，移出时，就从数字慢慢变大盖住内容-->
+    <!-- 1.布局：card 内有两个子元素，都使用绝对定位，大小都为 card 的大小。其中封面展示数字的子元素结构上在下面，就会默认盖住内容那一面，将背景设置不透明就会把内容的那面盖住。 -->
+    <!-- 2.实现效果：鼠标 hover 在卡片时，通过 transform 与 transition 配合实现动画效果。-->
+    <!-- 核心是宽度与高度、以及位置的过渡 -->
+    <!-- hover 时，封面的宽度与高度变为期望的大小，设置圆角边框，同时注意要把背景设为透明，显现出内容那一面 -->
+    <!-- 位置调整到所需要的地方 -->
+    <div class="container">
+        <div class="card">
+            <div class="face back-face">
+                <div class="content">
+                    <h2>Service One</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur,adipisicing elit.Ullam
+                        quis et laboriosam voluptatibus veniam debitis iusto,iste aliquam
+                        sed blanditiis consequatur eos nostrum at enim eius delectus,
+                        minus neque.Iusto.
+                    </p>
+                    <a href="#">Read More</a>
+                </div>
+            </div>
+            <div class="face front-face">
+                <h2>01</h2>
+            </div>
+        </div>
+        <div class="card">
+            <div class="face back-face">
+                <div class="content">
+                    <h2>Service Two</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur,adipisicing elit.Ullam
+                        quis et laboriosam voluptatibus veniam debitis iusto,iste aliquam
+                        sed blanditiis consequatur eos nostrum at enim eius delectus,
+                        minus neque.Iusto.
+                    </p>
+                    <a href="#">Read More</a>
+                </div>
+            </div>
+            <div class="face front-face">
+                <h2>02</h2>
+            </div>
+        </div>
+        <div class="card">
+            <div class="face back-face">
+                <div class="content">
+                    <h2>Service Three</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur,adipisicing elit.Ullam
+                        quis et laboriosam voluptatibus veniam debitis iusto,iste aliquam
+                        sed blanditiis consequatur eos nostrum at enim eius delectus,
+                        minus neque.Iusto.
+                    </p>
+                    <a href="#">Read More</a>
+                </div>
+            </div>
+            <div class="face front-face">
+                <h2>03</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

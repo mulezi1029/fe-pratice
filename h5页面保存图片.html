@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<body>
+  <div id="poster">111</div>
+  <button onclick="generateImage()">保存到相册</button>
+  
+	<!-- html2canvas:将dom结构转为canvas图片 -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+	async function generateImage() {
+		try {
+			const canvas = await html2canvas(document.querySelector("#poster"));
+			const imgData = canvas.toDataURL('image/jpeg', 1); 
+			// 显示图片供用户长按保存
+			const img = new Image();
+			img.src = imgData;
+			img.onload = () => {
+				document.body.appendChild(img);
+				alert('请长按图片保存到相册');
+			};
+		} catch (error) {
+				console.error('生成图片失败:', error);
+		}
+	}
+  </script>
+</body>
+</html>

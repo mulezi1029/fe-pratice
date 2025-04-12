@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --color: pink;
+            --corner-size: 30px;
+        }
+
+        .ao {
+            position: relative;
+            margin: 20px auto;
+            width: 600px;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background-color: pink;
+            /* border: 1px solid #ccc; */
+            /* border-radius: 20px 10px 30px 40px; */
+        }
+
+        .corner {
+            position: absolute;
+            width: var(--corner-size);
+            height: var(--corner-size);
+            background-color: #fff;
+            z-index: 1;
+        }
+
+        .lt {
+            top: 0;
+            left: 0;
+            border-bottom-right-radius: var(--corner-size)
+        }
+
+        .rt {
+            top: 0;
+            right: 0;
+            border-bottom-left-radius: var(--corner-size);
+        }
+
+        .lb {
+            bottom: 0;
+            left: 0;
+            border-top-right-radius: var(--corner-size);
+        }
+
+        .rb {
+            bottom: 0;
+            right: 0;
+            border-top-left-radius: var(--corner-size);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ao">
+        <div class="corner lt"></div>
+        <div class="corner rt"></div>
+        <div class="corner lb"></div>
+        <div class="corner rb"></div>
+    </div>
+</body>
+
+</html>

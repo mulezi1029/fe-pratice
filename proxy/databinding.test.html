@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据绑定系统测试</title>
+  <style>
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .test-case {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+    .test-header {
+      background-color: #f0f0f0;
+      padding: 10px 15px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .test-body {
+      padding: 15px;
+    }
+    .result {
+      margin-top: 10px;
+      font-family: Consolas, monospace;
+    }
+    .result-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .status {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .status-success {
+      background-color: #4caf50;
+    }
+    .status-fail {
+      background-color: #f44336;
+    }
+    pre {
+      background-color: #f7f7f7;
+      padding: 10px;
+      border-radius: 4px;
+      overflow: auto;
+    }
+    .test-description {
+      color: #666;
+      margin-bottom: 10px;
+    }
+    #log {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 4px;
+      height: 200px;
+      overflow: auto;
+      background-color: #f9f9f9;
+      font-family: Consolas, monospace;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>数据绑定系统测试</h1>
+    <div id="tests-container"></div>
+    <h2>输出日志</h2>
+    <div id="log"></div>
+  </div>
+
+  <script src="databinding.js"></script>
+  <script>
+    // 重写console.log以捕获输出
+    const logContainer = document.getElementById('log');
+    const originalConsoleLog = console.log;
+    console.log = function(...args) {
+      originalConsoleLog.apply(console, args);
+      const message = args.map(arg => {
+        if (typeof arg === 'object') {
+          return JSON.stringify(arg);
+        }
+        return arg;
+      }).join(' ');
+      logContainer.innerHTML += `<div>${message}</div>`;
+      logContainer.scrollTop = logContainer.scrollHeight; // 使得日志容器滚动到最底部
+      /**
+       * 当设置 scrollTop = scrollHeight 时，浏览器会自动将 scrollTop 调整为最大有效值
+       * 最大有效值就是 scrollHeight - 容器高度
+       * 所以 scrollTop = scrollHeight 实际上会被调整为 scrollTop = scrollHeight - 容器高度
+       * 这种设置方式是一种简化的写法，虽然从数学上来说不是最精确的（精确写法应该是 scrollTop = scrollHeight - 容器高度），但因为浏览器的自动调整机制，它同样能实现滚动到底部的效果。
+       * */
+    };
+
+    // 测试辅助函数
+    function createMockCallback() {
+      const calls = [];
+      const callback = (newValue, oldValue) => {
+        calls.push({ newValue, oldValue });
+        console.log(`回调调用: 新值=${JSON.stringify(newValue)}, 旧值=${JSON.stringify(oldValue)}`);
+      };
+      callback.getCalls = () => calls;
+      callback.getLastCall = () => calls[calls.length - 1];
+      callback.reset = () => calls.splice(0, calls.length);
+      return callback;
+    }
+
+    function assert(condition, message) {
+      const result = !!condition;
+      console.log(`${result ? '✓' : '✗'} ${message}`);
+      return result;
+    }
+
+    function renderTestCase(id, title, description, runTest) {
+      const container = document.getElementById('tests-container');
+      const testCase = document.createElement('div');
+      testCase.className = 'test-case';
+      testCase.innerHTML = `
+        <div class="test-header">
+          <div>${title}</div>
+          <button id="run-${id}">运行测试</button>
+        </div>
+        <div class="test-body">
+          <div class="test-description">${description}</div>
+          <div id="result-${id}" class="result"></div>
+        </div>
+      `;
+      container.appendChild(testCase);
+
+      document.getElementById(`run-${id}`).addEventListener('click', () => {
+        console.log(`\n----------- 运行测试: ${title} -----------`);
+        debugger;
+        const resultContainer = document.getElementById(`result-${id}`);
+        resultContainer.innerHTML = '';
+        logContainer.innerHTML += `<div style="color:#0066cc">----- 开始测试: ${title} -----</div>`;
+        
+        const results = runTest();
+        
+        results.forEach(result => {
+          const item = document.createElement('div');
+          item.className = 'result-item';
+          item.innerHTML = `
+            <span class="status ${result.pass ? 'status-success' : 'status-fail'}"></span>
+            <span>${result.message}</span>
+          `;
+          resultContainer.appendChild(item);
+        });
+        
+        logContainer.innerHTML += `<div style="color:#0066cc">----- 测试结束: ${title} -----</div>`;
+      });
+    }
+
+    // 测试1：基本属性监听
+    renderTestCase(
+      'basic',
+      '测试1：基本属性监听',
+      '测试属性值变更时是否正确触发监听器回调',
+      () => {
+        const data = createBindingProxy({ message: 'Hello' });
+        const callback = createMockCallback();
+        
+        addListener(data, 'message', callback);
+        data.message = 'Hello World';
+        
+        const call = callback.getLastCall();
+        return [
+          { pass: call !== undefined, message: '回调函数应被调用' },
+          { pass: call && call.newValue === 'Hello World', message: '新值应为 "Hello World"' },
+          { pass: call && call.oldValue === 'Hello', message: '旧值应为 "Hello"' }
+        ];
+      }
+    );
+
+    // // 测试2：嵌套对象属性监听
+    // renderTestCase(
+    //   'nested',
+    //   '测试2：嵌套对象属性监听',
+    //   '测试嵌套对象的属性变更是否能正确触发对应的监听器',
+    //   () => {
+    //     const data = createBindingProxy({
+    //       user: {
+    //         name: 'John',
+    //         profile: {
+    //           age: 30
+    //         }
+    //       }
+    //     });
+        
+    //     const nameCallback = createMockCallback();
+    //     const ageCallback = createMockCallback();
+        
+    //     addListener(data.user, 'name', nameCallback);
+    //     addListener(data.user.profile, 'age', ageCallback);
+        
+    //     data.user.name = 'Jane';
+    //     data.user.profile.age = 31;
+        
+    //     const nameCall = nameCallback.getLastCall();
+    //     const ageCall = ageCallback.getLastCall();
+        
+    //     return [
+    //       { pass: nameCall !== undefined, message: 'name回调应被调用' },
+    //       { pass: nameCall && nameCall.newValue === 'Jane', message: '新name值应为 "Jane"' },
+    //       { pass: nameCall && nameCall.oldValue === 'John', message: '旧name值应为 "John"' },
+    //       { pass: ageCall !== undefined, message: 'age回调应被调用' },
+    //       { pass: ageCall && ageCall.newValue === 31, message: '新age值应为 31' },
+    //       { pass: ageCall && ageCall.oldValue === 30, message: '旧age值应为 30' }
+    //     ];
+    //   }
+    // );
+
+    // // 测试3：多个监听器
+    // renderTestCase(
+    //   'multiple',
+    //   '测试3：多个监听器',
+    //   '测试同一属性绑定多个监听器时是否都能正确触发',
+    //   () => {
+    //     const data = createBindingProxy({ count: 0 });
+    //     const callback1 = createMockCallback();
+    //     const callback2 = createMockCallback();
+        
+    //     addListener(data, 'count', callback1);
+    //     addListener(data, 'count', callback2);
+        
+    //     data.count = 1;
+        
+    //     return [
+    //       { pass: callback1.getCalls().length === 1, message: '回调1应被调用一次' },
+    //       { pass: callback2.getCalls().length === 1, message: '回调2应被调用一次' }
+    //     ];
+    //   }
+    // );
+
+    // // 测试4：添加新属性
+    // renderTestCase(
+    //   'new-prop',
+    //   '测试4：添加新属性',
+    //   '测试向对象添加新属性时监听器是否能正常工作',
+    //   () => {
+    //     const data = createBindingProxy({});
+    //     const callback = createMockCallback();
+        
+    //     addListener(data, 'newProp', callback);
+    //     data.newProp = 'new value';
+        
+    //     const call = callback.getLastCall();
+    //     return [
+    //       { pass: call !== undefined, message: '回调应被调用' },
+    //       { pass: call && call.newValue === 'new value', message: '新值应为 "new value"' },
+    //       { pass: call && call.oldValue === undefined, message: '旧值应为 undefined' }
+    //     ];
+    //   }
+    // );
+
+    // // 测试5：动态添加嵌套对象
+    // renderTestCase(
+    //   'dynamic-nested',
+    //   '测试5：动态添加嵌套对象',
+    //   '测试动态添加嵌套对象后是否能自动代理并正确监听',
+    //   () => {
+    //     const data = createBindingProxy({});
+        
+    //     data.nested = { prop: 'value' };
+        
+    //     const nestedCallback = createMockCallback();
+    //     addListener(data.nested, 'prop', nestedCallback);
+        
+    //     data.nested.prop = 'new value';
+        
+    //     const call = nestedCallback.getLastCall();
+    //     return [
+    //       { pass: data.nested.listeners !== undefined, message: '嵌套对象应被自动代理' },
+    //       { pass: call !== undefined, message: '嵌套属性回调应被调用' },
+    //       { pass: call && call.newValue === 'new value', message: '新值应为 "new value"' }
+    //     ];
+    //   }
+    // );
+
+    // // 测试6：数组监听
+    // renderTestCase(
+    //   'array',
+    //   '测试6：数组监听',
+    //   '测试整个数组替换时的监听是否正常',
+    //   () => {
+    //     const data = createBindingProxy({ list: [1, 2, 3] });
+    //     const callback = createMockCallback();
+        
+    //     addListener(data, 'list', callback);
+    //     data.list = [4, 5, 6];
+        
+    //     const call = callback.getLastCall();
+    //     return [
+    //       { pass: call !== undefined, message: '数组修改回调应被调用' },
+    //       { 
+    //         pass: call && JSON.stringify(call.newValue) === JSON.stringify([4, 5, 6]), 
+    //         message: '新数组应为 [4,5,6]' 
+    //       }
+    //     ];
+    //   }
+    // );
+
+    // // 测试7：监听数组元素
+    // renderTestCase(
+    //   'array-element',
+    //   '测试7：监听数组元素',
+    //   '测试修改数组单个元素时的监听是否正常',
+    //   () => {
+    //     const data = createBindingProxy({ list: [1, 2, 3] });
+    //     const callback = createMockCallback();
+        
+    //     addListener(data.list, '0', callback);
+    //     data.list[0] = 10;
+        
+    //     const call = callback.getLastCall();
+    //     return [
+    //       { pass: call !== undefined, message: '数组元素回调应被调用' },
+    //       { pass: call && call.newValue === 10, message: '新值应为 10' },
+    //       { pass: call && call.oldValue === 1, message: '旧值应为 1' }
+    //     ];
+    //   }
+    // );
+
+    // // 测试8：边缘情况 - 非对象值
+    // renderTestCase(
+    //   'primitive',
+    //   '测试8：边缘情况 - 非对象值',
+    //   '测试原始类型的属性访问是否正常',
+    //   () => {
+    //     const data = createBindingProxy({ 
+    //       num: 42, 
+    //       str: 'text', 
+    //       bool: true, 
+    //       nil: null 
+    //     });
+        
+    //     try {
+    //       console.log(`- 数字: ${data.num}`);
+    //       console.log(`- 字符串: ${data.str}`);
+    //       console.log(`- 布尔值: ${data.bool}`);
+    //       console.log(`- null: ${data.nil}`);
+    //       return [
+    //         { pass: true, message: '访问原始类型属性不应出错' }
+    //       ];
+    //     } catch (err) {
+    //       console.error('发生错误:', err);
+    //       return [
+    //         { pass: false, message: `访问原始类型属性出错: ${err.message}` }
+    //       ];
+    //     }
+    //   }
+    // );
+
+    // // 测试9：移除监听器
+    // renderTestCase(
+    //   'remove-listener',
+    //   '测试9：移除监听器',
+    //   '测试手动移除监听器后是否还会触发回调',
+    //   () => {
+    //     const data = createBindingProxy({ counter: 0 });
+    //     const callback = createMockCallback();
+        
+    //     addListener(data, 'counter', callback);
+    //     data.counter = 1;
+        
+    //     const firstCallCount = callback.getCalls().length;
+        
+    //     const listeners = data.listeners.get('counter');
+    //     listeners.delete(callback);
+        
+    //     data.counter = 2;
+        
+    //     return [
+    //       { 
+    //         pass: callback.getCalls().length === firstCallCount, 
+    //         message: '移除监听器后不应再被调用' 
+    //       }
+    //     ];
+    //   }
+    // );
+
+    // // 测试10：DOM绑定扩展测试
+    // renderTestCase(
+    //   'dom-binding',
+    //   '测试10：DOM绑定扩展测试',
+    //   '测试数据绑定在DOM元素上的实际效果',
+    //   () => {
+    //     // 创建测试DOM
+    //     const testDiv = document.createElement('div');
+    //     testDiv.id = 'test-element';
+    //     testDiv.textContent = 'Initial value';
+    //     document.querySelector('.test-body').appendChild(testDiv);
+
+    //     // 创建数据模型
+    //     const model = createBindingProxy({
+    //       text: 'Initial value'
+    //     });
+
+    //     // 创建双向绑定
+    //     const updateDOM = (newValue) => {
+    //       testDiv.textContent = newValue;
+    //     };
+    //     const updateModel = (event) => {
+    //       model.text = testDiv.textContent;
+    //     };
+
+    //     // 添加监听器
+    //     addListener(model, 'text', updateDOM);
+
+    //     // 改变模型数据
+    //     model.text = 'Updated from model';
+        
+    //     // 模拟DOM事件更新模型
+    //     testDiv.textContent = 'Updated from DOM';
+    //     updateModel();
+
+    //     return [
+    //       { 
+    //         pass: testDiv.textContent === 'Updated from DOM', 
+    //         message: 'DOM应当更新为"Updated from DOM"' 
+    //       },
+    //       { 
+    //         pass: model.text === 'Updated from DOM', 
+    //         message: '模型数据应当更新为"Updated from DOM"' 
+    //       }
+    //     ];
+    //   }
+    // );
+  </script>
+</body>
+</html> 

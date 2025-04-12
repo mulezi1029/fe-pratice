@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #anim {
+            width: 300px;
+            height: 300px;
+            background-color: red;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 300px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="anim"></div>
+    <button>点击进行动画</button>
+
+    <script>
+        let play = false;
+        let rqId
+        // animate 动画函数：移动元素位置从 0 到 300，使用 requestAnimationFrame
+        let box = document.getElementById('anim');
+        let x = 0;
+        function animate() {
+            x += 1;
+            box.style.transform = 'translateX(' + x + 'px)';
+            rqId = requestAnimationFrame(animate);
+            play = true;
+        }
+        // const end = 300
+        // const duration = 4000
+        // let start = 0
+        // const animate = (val) => {
+        //     console.log(val)
+        //     // 计算进度：已经过去的时间 / 总时间
+        //     const progress = (val - start) / duration
+        //     document.querySelector('.anim').style.transform = `translateX(${progress * end}px)`
+        //     if (progress < 1) {
+        //         requestAnimationFrame(animate)
+        //     }
+        // }
+        document.querySelector('button').addEventListener('click', () => {
+            if (play) {
+                cancelAnimationFrame(rqId)
+                play = false
+                return
+            }
+            requestAnimationFrame(animate)
+        })
+    </script>
+</body>
+
+</html>

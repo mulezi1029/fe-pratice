@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<title>下划线跟随动画的可滚动的tab标签</title>
+		<style>
+			/* 基础样式重置 */
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			/* 容器样式 */
+			.tab-container {
+				width: 600px;
+				margin: 20px auto;
+				overflow-x: auto;
+				position: relative;
+				scrollbar-width: none; /* Firefox */
+				-ms-overflow-style: none; /* IE */
+			}
+
+			/* 隐藏Chrome滚动条 */
+			.tab-container::-webkit-scrollbar {
+				display: none;
+			}
+
+			/* Tab列表样式 */
+			.tab-list {
+				display: flex;
+				position: relative;
+				padding-bottom: 4px;
+				list-style: none;
+				width: max-content;
+			}
+
+			/* 单个Tab样式 */
+			.tab-item {
+				flex: 0 0 auto;
+				padding: 12px 24px;
+				cursor: pointer;
+				border: none;
+				background: none;
+				font: 16px/1.5 'Microsoft YaHei', sans-serif;
+				color: #666;
+				transition: color 0.3s;
+				position: relative;
+			}
+
+			/* 激活态Tab样式 */
+			.tab-item.active {
+				color: #2196f3;
+			}
+
+			/* 高亮条样式 */
+			.highlight-bar {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				height: 2px;
+				background: #2196f3;
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				will-change: left, width;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Tab容器 -->
+		<div class="tab-container">
+			<!-- Tab列表 -->
+			<div class="tab-list" id="tabList">
+				<!-- 初始Tab项 -->
+				<button class="tab-item active">首页</button>
+				<button class="tab-item">推荐</button>
+				<button class="tab-item">热点</button>
+				<!-- 高亮指示条 -->
+				<div class="highlight-bar" id="highlightBar"></div>
+			</div>
+		</div>
+
+		<script>
+			// 初始化
+			const tabList = document.getElementById('tabList')
+			const highlightBar = document.getElementById('highlightBar')
+			let activeTab = tabList.querySelector('.tab-item.active')
+
+			function init() {
+				updateHighlight(activeTab)
+			}
+			init()
+
+			// 事件委托处理点击
+			tabList.addEventListener('click', function (e) {
+				const targetTab = e.target.closest('.tab-item')
+				if (!targetTab || targetTab === activeTab) return
+
+				// 切换激活状态
+				activeTab.classList.remove('active')
+				targetTab.classList.add('active')
+				activeTab = targetTab
+
+				// 更新界面
+				updateHighlight(targetTab)
+				scrollToCenter(targetTab)
+			})
+
+			// 更新高亮条位置
+			function updateHighlight(tab) {
+				if (!tab || !highlightBar) return
+
+				const { offsetWidth: tabWidth, offsetLeft: tabLeft } = tab
+				debugger
+				highlightBar.style.cssText = `
+                    width: ${tabWidth}px;
+                    left: ${tabLeft}px;
+                `
+			}
+
+			// 滚动居中逻辑
+			function scrollToCenter(tab) {
+				const container = tab.closest('.tab-container')
+				if (!container) return
+
+				const { offsetLeft: tabLeft, offsetWidth: tabWidth } = tab
+				const containerWidth = container.offsetWidth
+				const scrollPosition = tabLeft - (containerWidth - tabWidth) / 2
+
+				// 边界检测
+				const maxScroll = tabList.scrollWidth - containerWidth
+				const finalScroll = Math.max(0, Math.min(scrollPosition, maxScroll))
+
+				container.scrollTo({
+					left: finalScroll,
+					behavior: 'smooth',
+				})
+			}
+
+			// 动态添加测试Tab（演示用）
+			setTimeout(() => {
+				const tabs = ['体育', '财经', '科技', '娱乐', '汽车', '房产']
+				tabs.forEach((text, index) => {
+					const newTab = document.createElement('button')
+					newTab.className = 'tab-item'
+					newTab.textContent = text
+					tabList.insertBefore(newTab, highlightBar)
+				})
+			}, 1000)
+		</script>
+	</body>
+</html>

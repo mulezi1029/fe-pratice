@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>元素坐标变化示例</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+			rel="stylesheet"
+		/>
+		<style>
+			body {
+				height: 2000px;
+			}
+
+			.target-element {
+				position: absolute;
+				top: 500px;
+				left: 400px;
+				width: 100px;
+				height: 100px;
+				background-color: #3498db;
+				color: white;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+      .coords-show-mark{
+        position: relative;
+        top: 100px;
+        left: 100px;
+        /* width: 200px;
+        height: 200px; */
+        background-color: #e74c3c;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-radius: 10px;
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+        font-size: 20px;
+        font-weight: bold;
+      }
+		</style>
+	</head>
+
+	<body>
+		<div class="target-element" id="target">目标元素</div>
+		<div class="fixed top-4 left-4 bg-white p-4 shadow-md">
+			<p>窗口相对坐标: <span id="client-coords">(0, 0)</span></p>
+			<p>文档相对坐标: <span id="document-coords">(0, 0)</span></p>
+		</div>
+
+		<div class="coords-show-mark">点击，底部出现提示消息</div>
+
+		<script>
+			const target = document.getElementById('target')
+			const clientCoordsSpan = document.getElementById('client-coords')
+			const documentCoordsSpan = document.getElementById('document-coords')
+
+			function updateCoordinates() {
+				const rect = target.getBoundingClientRect()
+				const clientX = rect.x
+				const clientY = rect.y
+				const documentX = clientX + window.scrollX
+				const documentY = clientY + window.scrollY
+
+				// left = x
+				// top = y
+				// right = x + width
+				// bottom = y + height
+
+				console.log('元素相当于窗口的坐标:', clientX, clientY)
+				console.log('元素相当于文档的坐标:', documentX, documentY)
+				console.log('元素的宽度:', rect.width)
+				console.log('元素的高度:', rect.height)
+				console.log('元素的左边距离窗口距离:', rect.left)
+				console.log('元素的上边距离窗口距离:', rect.top)
+				console.log('元素的右边距离窗口距离:', rect.right)
+				console.log('元素的下边距离窗口距离:', rect.bottom)
+				debugger
+				clientCoordsSpan.textContent = `(${clientX.toFixed(
+					2
+				)}, ${clientY.toFixed(2)})`
+				documentCoordsSpan.textContent = `(${documentX.toFixed(
+					2
+				)}, ${documentY.toFixed(2)})`
+			}
+
+			window.addEventListener('scroll', updateCoordinates)
+			window.addEventListener('load', updateCoordinates)
+		</script>
+
+		<script>
+			function createMessageUnder(elem, html) {
+				// 创建 message 元素
+				let message = document.createElement('div')
+				// 在这里最好使用 CSS class 来定义样式
+				message.style.cssText = 'position:absolute; color: red'
+				// 分配坐标，不要忘记 "px"！
+				let coords = elem.getBoundingClientRect()
+        console.log(coords)
+				message.style.left = coords.left + 'px'
+				message.style.top = coords.bottom+ window.pageYOffset + 'px'
+				message.innerHTML = html
+				return message
+			}
+
+			const coordsShowMark = document.querySelector('.coords-show-mark')
+
+			coordsShowMark.addEventListener('click', () => {
+        console.log('coordsShowMark被点击了')
+        const msg = createMessageUnder(coordsShowMark,'涕泗横流，泪如雨下')
+        document.body.append(msg) // 加到文档中，而不是 coordsShowMark 中
+				setTimeout(() => {
+					msg.remove()
+				}, 5000)
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 整个文档的背景色 */
+        html {
+            background-color: bisque;
+        }
+
+        /* body 设为可滚动 */
+        body {
+            margin: 0px;
+            padding: 0px;
+            height: 2000px;
+            background-color: burlywood;
+            overscroll-behavior: contain;
+            /* auto | contain | none */
+            /* auto 时，具有滚动链效果，具有弹性触底回弹效果 */
+            /* contain 时，不具有滚动链效果，具有弹性触底回弹效果 */
+            /* none 时，都没有 */
+        }
+
+        /* section 设置固定高度，内容超出高度，使得内容区域可滚动 */
+        section {
+            margin: 0px auto;
+            overflow: auto;
+            width: 800px;
+            height: 100px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overscroll-behavior: contain;
+            /* auto | contain | none */
+            /* auto 时，具有滚动链效果 */
+        }
+
+        article {
+            background-color: lightblue;
+            padding: 10px;
+        }
+
+        span {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>overscroll-behavior</h1>
+    <section>
+        <article>
+            <p>浏览器对于页面以及页面中元素滚动行为的处理：</p>
+            <ul>
+                <li>当页面滚动到顶部或者底部时，浏览器默认会有一个类似 <span>触底反弹</span> 的效果。</li>
+                <li>当页面中某个内容区域可滚动时，其滚动到底部后，继续操作鼠标进行滚动，会使得页面继续滚动，这种行为称为<span> 滚动链</span>。</li>
+            </ul>
+            <p>当页面或内容的可滚动区域滚动到触及顶部或者底部时，浏览器倾向于提供一种“触底”效果，甚至进行页面刷新。你可能也发现了，当对话框中含有可滚动内容时，一旦滚动至对话框的边界，对话框下方的页面内容也开始滚动了——这被称为“滚动链”
+            </p>
+            <p>body 设置高度足够大，使得可滚动。</p>
+            <p>section 设置为固定高度，其内的 article 内容超出高度，使得 section 内容区域可滚动</p>
+            <p>对 section 区域设置 overscroll-behaivor 属性：</p>
+            <ul>
+                <li>auto：具有滚动链效果</li>
+                <li>contain：不具有滚动链效果，但是保留弹性触底效果</li>
+                <li>none：不具有滚动链效果，不保留弹性触底效果</li>
+        </article>
+    </section>
+</body>
+
+</html>

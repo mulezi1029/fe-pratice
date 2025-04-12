@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #sidebar-menu {
+            width: 0;
+            overflow: hidden;
+            transition: width 0.5s ease-in-out;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="menu-toggle">Toggle Menu</button>
+    <div id="sidebar-menu">
+        <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+        </ul>
+    </div>
+    <script>
+
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        let isMenuOpen = false;
+        function toggleMenu() {
+            let targetWidth = isMenuOpen ? 0 : 200;
+            let currentWidth = parseInt(window.getComputedStyle(sidebarMenu).width);
+            let step = (targetWidth - currentWidth) / 10;
+            function animateMenu() {
+                currentWidth += step;
+                sidebarMenu.style.width = currentWidth + 'px';
+                if (Math.abs(targetWidth - currentWidth) > 1) {
+                    requestAnimationFrame(animateMenu);
+                } else {
+                    sidebarMenu.style.width = targetWidth + 'px';
+                    isMenuOpen = !isMenuOpen;
+                }
+            }
+            requestAnimationFrame(animateMenu);
+        }
+        menuToggle.addEventListener('click', toggleMenu);
+    </script>
+</body>
+
+</html>

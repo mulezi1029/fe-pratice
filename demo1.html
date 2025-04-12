@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ECharts 一个图例对应两组数据</title>
+		<!-- 引入 ECharts 文件 -->
+		<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+	</head>
+
+	<body>
+		<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+		<div id="main" style="width: 600px; height: 400px"></div>
+		<script type="text/javascript">
+			// 基于准备好的dom，初始化echarts实例
+			var myChart = echarts.init(document.getElementById('main'))
+
+			// 指定图表的配置项和数据
+			var option = {
+				legend: {
+					data: ['数据集合'],
+				},
+				tooltip: {
+					trigger: 'axis',
+				},
+				xAxis: {
+					type: 'category',
+					data: ['苹果', '香蕉', '橙子', '葡萄', '草莓'],
+				},
+				yAxis: {
+					type: 'value',
+				},
+				series: [
+					{
+						name: '数据集合',
+						type: 'line',
+						data: [120, 200, 150, 80, 70],
+						lineStyle: {
+							color: 'skyblue',
+						},
+						symbol: 'circle',
+						symbolSize: 10,
+					},
+					{
+						name: '数据集合',
+						type: 'line',
+						data: [90, 160, 120, 60, 50],
+						lineStyle: {
+							color: 'lightgreen',
+						},
+						symbol: 'square',
+						symbolSize: 10,
+					},
+				],
+			}
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option)
+		</script>
+	</body>
+</html>

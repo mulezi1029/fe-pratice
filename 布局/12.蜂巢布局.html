@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --size: calc(100vw/9);
+        }
+
+        .container {
+            overflow: hidden;
+        }
+
+        .line {
+            display: flex;
+            /* overflow: hidden; */
+        }
+
+        .line:nth-child(even) {
+            transform: translateX(calc(-1*var(--size)/2));
+        }
+
+        .line:nth-child(n+2) {
+            margin-top: calc(-1*var(--size)/6);
+        }
+
+        .item {
+            flex-shrink: 0;
+            width: var(--size);
+            height: var(--size);
+            clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 95%, 5% 75%, 5% 25%);
+            background-color: #000;
+            outline: red;
+        }
+
+        .highlight {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="line">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="line">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="line">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="line">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.item').forEach((item, index, items) => {
+            item.addEventListener('mouseenter', () => {
+                // 清除之前的高亮
+                items.forEach(i => i.classList.remove('highlight'));
+
+                console.log(index)
+                const row = Math.ceil((index + 1) / 10)
+                const currentRowIndex = (index + 1) % 10
+
+                // 计算并高亮周围的6个元素
+                // 处理边界
+                const surroundingIndices = [
+                    index - 1, index + 1, // 左右
+                    index - 10, row % 2 == 0 ? index - 11 : index - 9, // 上
+
+                    index + 10, row % 2 == 0 ? index + 9 : index + 11  // 下
+                ];
+
+                surroundingIndices.forEach(i => {
+                    if (items[i]) {
+                        items[i].classList.add('highlight');
+                    }
+                });
+            });
+
+            item.addEventListener('mouseleave', () => {
+                // 清除高亮
+                items.forEach(i => i.classList.remove('highlight'));
+            });
+        });
+    </script>
+</body>
+
+</html>

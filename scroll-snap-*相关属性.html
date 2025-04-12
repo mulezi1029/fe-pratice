@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .example article {
+            width: auto;
+            display: flex;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            scrollbar-color: #fff #fff;
+            /* scrollbar-width: none; */
+        }
+
+        /* .example article::-webkit-scrollbar {
+            display: none;
+        } */
+
+        .example article div {
+            color: #fff;
+            scroll-snap-align: center;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            scroll-snap-stop: end;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 800px;
+            height: 100px;
+            margin: 10px;
+            background-color: #087bff;
+            border-radius: 15px;
+        }
+
+        .example article div:nth-child(even) {
+            background-color: #28a754;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>scroll-snap-*：</h1>
+    <section class="info">
+        <article>
+            <p>scroll-snap-*：</p>
+            <ul>
+                <li>scroll-snap-type：定义滚动容器的滚动捕捉行为类型。</li>
+                <p>
+                    滚动容器：滚动容器通常是指可以进行滚动操作的区域，比如网页中的一个可滚动的部分或者一个特定的软件界面中的可滚动区域。
+                </p>
+                <p>
+                    滚动捕捉行为：滚动捕捉行为类型是指在滚动这个容器时，对滚动操作的特定响应方式，例如可能有瞬间捕捉到特定位置、平滑捕捉等不同的行为模式。
+                </p>
+                <p>
+                    scroll-snap-type：<对齐方式>
+                        <严格性>;
+                </p>
+                <p>
+                    取值：
+                <ul>
+
+                </ul>
+                </p>
+                <li>scroll-snap-align</li>
+            </ul>
+        </article>
+    </section>
+    <section class="example">
+        <article>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+        </article>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab滚动和高亮</title>
+  <style>
+    /* 容器样式 */
+    .tab-container {
+      position: relative;
+      width: 300px;
+      overflow-x: auto;
+      white-space: nowrap;
+      border: 1px solid #ccc;
+      scrollbar-width: none; /* Firefox */
+    }
+
+    /* 隐藏滚动条 */
+    .tab-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* tab样式 */
+    .tab {
+      display: inline-block;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    /* 高亮横线样式 */
+    .active-tab {
+      position: relative;
+    }
+
+    .underline{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background-color: blue;
+      transition: all 0.3s ease;
+      will-change: left, width;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="tab-container">
+    <div class="tab" data-index="0">Tab 1</div>
+    <div class="tab" data-index="1">Tab 2</div>
+    <div class="tab" data-index="2">Tab 3</div>
+    <div class="tab" data-index="3">Tab 4</div>
+    <div class="tab" data-index="4">Tab 5</div>
+    <div class="underline"></div>
+  </div>
+
+  <script>
+    const container = document.querySelector('.tab-container');
+    const tabs = document.querySelectorAll('.tab');
+    const underline = document.querySelector('.underline');
+    let activeTabIndex;
+    function init() {
+      activeTabIndex = 0;
+      // 设置第一个tab为高亮
+      tabs[activeTabIndex].classList.add('active-tab');
+      highlightUnderline(activeTabIndex);
+    }
+    init();
+
+    function highlightUnderline(index){
+      const curActiveTab = tabs[index];
+      const { offsetLeft, clientWidth,offsetWidth } = curActiveTab;
+      console.log(`Active Tab Index: ${index}, Offset Left: ${offsetLeft}, offsetLeft: ${offsetWidth}, clientWidth: ${clientWidth}`); 
+      underline.style.width = `${offsetWidth}px`;
+      underline.style.left = `${offsetLeft}px`;
+    }
+
+    function scrollToCenter(index){
+      const curActiveTab = tabs[index];
+      const { offsetLeft, clientWidth,offsetWidth } = curActiveTab;
+      const containerWidth = container.clientWidth;
+      const scrollLeft = offsetLeft - (containerWidth / 2) + (offsetWidth / 2);
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
+      console.log(`Scroll Left: ${scrollLeft}, Container Width: ${containerWidth}, offsetLeft: ${offsetLeft}, offsetWidth: ${offsetWidth}`);
+    }
+
+
+
+
+    // 注册事件
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        // 移除之前的高亮
+        tabs[activeTabIndex].classList.remove('active-tab');
+        // 设置当前tab为高亮
+        tab.classList.add('active-tab');
+        activeTabIndex = index;
+        // 将当前 tab 尽可能居中
+        scrollToCenter(index);
+        // 高亮横线动画
+        highlightUnderline(index);
+      });
+    });
+  </script>
+</body>
+
+</html>

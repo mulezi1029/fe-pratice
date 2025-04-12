@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 要对 html 设置 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        section.example article p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 800px;
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="ind">scroll-behavior</h1>
+    <section class="info">
+        <article>
+            <p>scroll-behavior 控制可滚动元素的正常滚动行为</p>
+            <ul>
+                <p>取值有两种：</p>
+                <li>auto：默认的滚动行为，表现效果如：点击锚点链接后会瞬间跳转到对应的位置处。</li>
+                <li>smooth：平滑滚动行为，表现效果如：点击锚点链接后，会有一个平滑滚动效果，慢慢滚动到对应的位置处。</li>
+        </article>
+    </section>
+    <section class="example">
+        <h2>Example：</h2>
+        <article>
+            <a href="#top">top</a>
+            <a href="#middle">middle</a>
+            <a href="#bottom">bottom</a>
+            <br>
+            <br>
+            <span>点击上面的链接，查看效果:</span>
+            <p id="top">top</p>
+            <p id="middle">middle</p>
+            <p id="bottom">bottom</p>
+            <div><a href="#ind">回顶部</a></div>
+        </article>
+    </section>
+</body>
+
+</html>

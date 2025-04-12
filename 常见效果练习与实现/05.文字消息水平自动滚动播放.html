@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .notice{
+      display: flex;
+      align-items: center;
+      width: 200px;
+      height: 30px;
+      line-height: 30px;
+    }
+    .label{
+      height: 30px;
+    }
+    .notice-content{
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .notice-text{
+      display: inline-block;
+    }
+    .notice-text.scroll:hover{
+      animation-play-state: paused;
+    }
+    .notice-text.scroll{
+      animation: scrollX 15s linear infinite;
+    }
+    @keyframes scrollX {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+      
+    }
+  </style>
+</head>
+<body>
+  <div class="notice">
+      <div class="label">公告：</div>
+      <div class="notice-content">
+        <span class="notice-text">这里是标题内容，如果很长的话会超过一行，这时候需要水平滚动显示。</span>
+      </div>
+  </div>
+  <button>设置随机公告内容</button>
+  <script>
+    const noticeContent = document.querySelector('.notice-content');
+    const noticeText = document.querySelector('.notice-text');
+    function checkShouldAddScroll(){
+      if(noticeText.scrollWidth > noticeContent.clientWidth){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    // 判断内容是否超出父元素，超出则添加滚动的动画类 scroll
+    window.addEventListener('DOMContentLoaded', () => {
+      if(checkShouldAddScroll()){
+        noticeText.classList.add('scroll');
+      }else{
+        noticeText.classList.remove('scroll');
+      }
+    });
+
+    // 设置随机公告内容
+    const button = document.querySelector('button');
+    button.addEventListener('click', () => {
+      // 先清空滚动动画类
+      noticeText.classList.remove('scroll');
+      noticeText.innerHTML = '';
+      // 生成随机文本
+      const randomText = Math.random().toString(8).substr(2) 
+      console.log(randomText);
+      noticeText.textContent = randomText;
+      if(checkShouldAddScroll()){
+        noticeText.classList.add('scroll');
+      }else{
+        noticeText.classList.remove('scroll');
+      }
+    });
+
+
+  </script>
+</body>
+</html>

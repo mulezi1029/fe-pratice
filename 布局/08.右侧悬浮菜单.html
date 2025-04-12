@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 2000px;
+        }
+
+        .nav {
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 500px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <p>使用场景：元素固定在浏览器视口左侧或者右侧的中间位置，不随滚动条滚动而变化。</p>
+    <p>实现方法：使用position: fixed; left: 0; top: 50%; transform: translateY(-50%);</p>
+
+    <div class="nav"></div>
+</body>
+
+</html>

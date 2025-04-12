@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.marquee-container {
+  height: 1.2em;       /* 单行高度 */
+  overflow: hidden;
+  position: relative;
+  background: #f0f0f0; /* 可选背景色 */
+}
+
+.marquee-content {
+  position: absolute;
+  width: 100%;
+  animation: marquee 5s linear infinite;
+  white-space: normal;
+}
+
+/* 初始时隐藏动画 */
+.marquee-content.paused {
+  animation-play-state: running;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+</style>
+</head>
+<body>
+<div class="marquee-container">
+  <div class="marquee-content paused">
+    <span class="marquee-text">这里是标题内容，如果很长的话会超过一行，这时候需要垂直滚动显示。</span>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const container = document.querySelector('.marquee-container');
+  const content = document.querySelector('.marquee-content');
+  const text = document.querySelector('.marquee-text');
+
+  // 检测是否需要滚动
+  if (text.scrollHeight > container.clientHeight) {
+    // 克隆文本
+    const clone = text.cloneNode(true);
+    content.appendChild(clone);
+    
+    // 计算动画持续时间（按每秒滚动30px计算）
+    const duration = text.scrollHeight / 30;
+    content.style.animationDuration = `${duration}s`;
+    
+    // 启动动画
+    content.classList.remove('paused');
+  }
+});
+</script>
+</body>
+</html>

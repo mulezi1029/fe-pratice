@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>移动端菜单示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            display: block;
+            margin: 10px;
+        }
+
+        #mobileMenu {
+            display: none;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            width: 200px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        #mobileMenu.active {
+            display: block;
+            max-height: 1000px;
+            /* 足够大以容纳菜单内容 */
+        }
+
+        #mobileMenu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #mobileMenu li {
+            position: relative;
+        }
+
+        #mobileMenu li a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        #mobileMenu li a:hover {
+            background-color: #f4f4f4;
+        }
+
+        .sub-menu-trigger::after {
+            content: "\003e";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .sub-menu {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .sub-menu-trigger.active.sub-menu {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="menuToggle">菜单</button>
+    <nav id="mobileMenu">
+        <ul>
+            <li><a href="#">Trip.com Group</a></li>
+            <li class="sub-menu-trigger">
+                <a href="#">About</a>
+                <ul class="sub-menu">
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Leadership</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Equality, diversity & inclusion</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Brands</a></li>
+            <li><a href="#">Partners</a></li>
+            <li class="sub-menu-trigger">
+                <a href="#">Meet us at events</a>
+                <ul class="sub-menu">
+                    <li><a href="#">Industries</a>
+                        <ul class="sub-sub-menu">
+                            <li><a href="#">Hotels</a></li>
+                            <li><a href="#">Flights</a></li>
+                            <li><a href="#">Tours</a></li>
+                            <li><a href="#">Car rentals</a></li>
+                            <li><a href="#">Cruises</a></li>
+                            <li><a href="#">Trains</a></li>
+                            <li><a href="#">Corporate travel</a></li>
+                            <li><a href="#">Finance services</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">Investors</a></li>
+            <li><a href="#">Careers</a></li>
+        </ul>
+    </nav>
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const subMenuTriggers = document.querySelectorAll('.sub-menu-trigger');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        subMenuTriggers.forEach((trigger) => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                trigger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

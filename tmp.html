@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+function useGenerateSharkKeys(originSharkData) {
+  const gener = (data) => {
+    // 前缀
+    let prefix = data.pageName
+    // 结果
+    const sharkKeys = []
+    const sharkValues = []
+    // 深度优先遍历
+    const dfs = (data, prefix) => {
+      for (let key in data) {
+        let tmpPrefix = ''
+        // 拼接前缀
+        if (key !== 'module') {
+          tmpPrefix = prefix + '_' + key
+        } else {
+          tmpPrefix = prefix
+        }
+        // 对于属性值是数组的情况,遍历数组每项值
+        if (Array.isArray(data[key])) {
+          for (let i = 0; i < data[key].length; i++) {
+            const value = data[key][i]
+            // 如果值是对象继续递归遍历
+            if (typeof value === 'object') {
+              dfs(value, tmpPrefix + '_' + (i + 1))
+            } else {
+              sharkKeys.push(tmpPrefix + '_' + (i + 1))
+              sharkValues.push(value)
+            }
+          }
+        }
+        // 对于属性值是对象的情况,递归遍历对象属性
+        else if (typeof data[key] === 'object') {
+          dfs(data[key], tmpPrefix)
+        }
+        // 对于属性值是基本类型的情况，直接添加到结果数组
+        else {
+          sharkKeys.push(tmpPrefix)
+          sharkValues.push(data[key])
+        }
+      }
+    }
+    dfs(data.module, prefix)
+
+    console.log(sharkKeys)
+    console.log(sharkValues)
+    return { sharkKeys, sharkValues }
+  }
+
+  const { sharkKeys, sharkValues } = gener(originSharkData)
+  let sharkKeysStr = ``
+  for (let key of sharkKeys) {
+    sharkKeysStr += `\n${key}`
+  }
+
+  let sharkValuesStr = ``
+  for (let value of sharkValues) {
+    sharkValuesStr += `\n${value}`
+  }
+
+  console.log(sharkKeysStr)
+  console.log(sharkValuesStr)
+}
+
+
+const statementOriginSharkData = {
+  pageName: 'statement',
+  module: {
+    pageTitle: 'Privacy Statement',
+    state1: {
+      title: 'WHEN THIS PRIVACY AND COOKIE STATEMENT APPLIES',
+      desc: [
+        'Trip.com Group is committed to protecting personal data. This privacy and cookie statement will inform you as to how we collect and use your personal data through your use of this website, including any data you may provide when you sign up to our newsletter or contact us via this website.',
+        'This statement was last updated on March 10, 2025.'
+      ]
+    },
+    state2:{
+      title:'WHO WE ARE',
+      desc:[
+        'Trip.com Group is made up of different legal entities. Our parent entity is Trip.com Group Limited, a NASDAQ listed company with its address at No. 99 Fu Quan Road Shanghai, 200335 China. This privacy and cookie statement is issued on behalf of the Trip.com Group so when we mention Trip.com Group, “we”, “us” or “our” in this privacy and cookie statement, we are referring to the relevant company in the Trip.com Group responsible for processing your data.',
+        'To contact us, please email',
+        'You have the right to make a complaint at any time to your local supervisory authority for data protection issues; however, we would appreciate the chance to deal with your concerns, so please contact us in the first instance.'
+      ],
+      link:'pr@trip.com',
+    },
+    state3:{
+      title:'THE DATA WE COLLECT ABOUT YOU',
+      bold:[
+        'Contact data:',
+        'Reservation data:',
+      ],
+      desc:[
+        'Personal data means any information about an individual from which that person can be identified. We may collect, use, store and transfer different kinds of personal data, including:',
+        'Information you have provided to us directly:',
+        'first names, last names, business titles, company name and business email addresses, for subscribing you to our newsletter, and responding to your request to contact or collaborate with you.',
+        'ID information (e.g., passport), including the photo of ID, ID number, name, date of birth, expiration date, and nationality, when applicable, for activity registration and travel arrangements.',
+        'If you fail to provide sufficient contact data or reservation data, we will be unable to facilitate your request or provide relevant service to you.'
+      ]
+    },
+    state4:{
+      title:'HOW WE USE YOUR PERSONAL DATA',
+      column:[
+        'Purpose',
+        'Legal basis'
+      ],
+      info:[
+        {
+          name:'Subscribe you to our newsletter.',
+          basis:[
+            'Consent. ',
+            'You can ask to stop sending you marketing communications at any time by following the opt-out links within any marketing communication sent to you or by contacting us via the email address above.'
+          ]
+        },
+        {
+          name:'Respond to your request to contact or collaborate with you, for example for business, public relations or similar purposes.',
+          basis:[
+            'Consent. ',
+            'It is necessary for our legitimate interests (or those of a third party) and your interests and fundamental rights do not override those interests.'
+          ]
+        },
+        {
+          name:'Register for activities held by Trip.com Group, and for us to make travel-related reservations (such as flights) for you to attend such activities.',
+          basis:[
+            'Consent. ',
+            'It is necessary for us to process your personal data to perform our contract with you, or to take steps at your request prior to entering into a contract with you.'
+          ]
+        },
+        {
+          name:[
+            '1.Manage any subsequent relationship with you, including (i) providing you with notifications, updates and confirmations, and (ii) responding to any questions and requests.',
+            '2.Execute our internal business processes and management reporting.',
+            '3.Manage and resolve any complaints.',
+            '4.To administer and protect this website (including troubleshooting, data analysis, testing, system maintenance, support, reporting and hosting of data).'
+          ],
+          basis:[
+            'It is necessary for our legitimate interests (or those of a third party) and your interests and fundamental rights do not override those interests.'
+          ]
+        },
+        {
+          name:'Comply with our legal obligations and regulatory requirements.',
+          basis:[
+            'Necessary to comply with a legal obligation, for example to prevent fraud and illegal activities.'
+          ]
+        }
+      ]
+    },
+    state5:{
+      title:'DISCLOSURES OF PERSONAL DATA',
+      desc:[
+        'We may share your personal data with following parties for the purposes set out in above:',
+        'Companies in the Trip.com Group.',
+        'Third party vendors under contract to us to provide services or functions on our behalf, such as IT and legal services, business analytics, customer service and fraud prevention.',
+        'Regulators and other authorities.',
+        'If you are based in the European Economic Area (“EEA”) or the United Kingdon (“UK”)',
+        'Many of our Trip.com Group entities and the external third parties above are based outside the EEA or the UK, so their processing of your personal data will involve a transfer of data outside the EEA or the UK.',
+        'If you are based in the UK and we transfer your personal data out of the UK, or if you are based in the EEA and we transfer your data out of the EEA, we ensure a similar degree of protection (provided in the country that the personal data is being transferred from) is afforded to it by ensuring that at least one of the following safeguards is implemented:',
+        'We will only transfer personal data to countries that have been deemed to provide an adequate level of protection for personal data by the relevant authority.',
+        'Where we use certain service providers, we may use specific contracts approved by the relevant authority which give personal data the same protection it has in Europe.'
+      ]
+    },
+    state6:{
+      title:'HOW LONG WE USE PERSONAL DATA FOR',
+      desc:[
+        'We will only retain your personal data for as long as reasonably necessary to fulfil the purposes we collected it for, including for the purposes of satisfying any legal or regulatory requirements. We may retain your personal data for a longer period in the event of a complaint or if we reasonably believe there is a prospect of litigation in respect to our relationship with you.',
+        'To determine the appropriate retention period for personal data, we consider the amount, nature and sensitivity of the personal data, the potential risk of harm from unauthorised use or disclosure of your personal data, the purposes for which we process your personal data and whether we can achieve those purposes through other means, and the applicable legal, regulatory or other requirements.'
+      ]
+    },
+    state7:{
+      title:'YOUR LEGAL RIGHTS',
+      desc:[
+        'Under certain circumstances, you may (for e.g. if you are based in the EEA or the UK) have the right to:',
+        'Request access to your personal data (commonly known as a "subject access request"). This enables you to receive a copy of the personal data we hold about you and to check that we are lawfully processing it.',
+        'Request correction of the personal data that we hold about you. This enables you to have any incomplete or inaccurate data we hold about you corrected, though we may need to verify the accuracy of the new data you provide to us.',
+        'Request erasure of your personal data in certain circumstances. This enables you to ask us to delete or remove personal data where there is no good reason for us continuing to process it. You also have the right to ask us to delete or remove your personal data where you have successfully exercised your right to object to processing (see below), where we may have processed your information unlawfully or where we are required to erase your personal data to comply with local law. Note, however, that we may not always be able to comply with your request of erasure for specific legal reasons which will be notified to you, if applicable, at the time of your request.',
+        'Object to processing of your personal data where we are relying on a legitimate interest (or those of a third party) as the legal basis for that particular use of your data (including carrying out profiling based on our legitimate interests). In some cases, we may demonstrate that we have compelling legitimate grounds to process your information which override your right to object.',
+        'You also have the absolute right to object any time to the processing of your personal data for direct marketing purposes.',
+        'Request the transfer of your personal data to you or to a third party. We will provide to you, or a third party you have chosen, your personal data in a structured, commonly used, machine-readable format. Note that this right only applies to automated information which you initially provided consent for us to use or where we used the information to perform a contract with you.',
+        'Request restriction of processing of your personal data. This enables you to ask us to suspend the processing of your personal data in one of the following scenarios:',
+        "- If you want us to establish the data's accuracy;",
+        "- Where our use of the data is unlawful but you do not want us to erase it;",
+        "- Where you need us to hold the data even if we no longer require it as you need it to establish, exercise or defend legal claims; or",
+        "- You have objected to our use of your data but we need to verify whether we have overriding legitimate grounds to use it.",
+        "If you wish to exercise any of these rights, please contact us at"
+      ],
+      link:'pr@trip.com'
+    },
+    cookie:{
+      title:'COOKIES',
+      q1:{
+        title:'What is a cookie?',
+        desc:[
+          'Our website uses cookies that are essential for its operation.',
+          'A cookie is a small text file that we store on your computer or phone when you use our website. To learn more about cookies, please go to ',
+          'We may also use similar technologies such Software Development Kids (SDKs). In this statement we refer to all technologies as “cookies”.'
+        ],
+        link:'www.aboutcookies.org'
+      },
+      q2:{
+        title:'What type of cookies does Trip.com Group use?',
+        desc:[
+          'Essential cookies.',
+          'These are cookies that our website cannot operate without. They include, for example, cookies that enable you to log into our website. You can switch these cookies off in your browser settings, however you may then not be able to use our website.',
+          'You can find more information about the individual cookies we use and the purposes for which we use them in the table below. Please note that we do not use any analytical or targeting cookies or similar.',
+          'We use session and persistent cookies. Session cookies are deleted when you close your browser or our app. Persistent cookies remain on your computer or phone and are activated the next time you visit our website.'
+        ],
+        table:{
+          title:'Table of cookies',
+          colounms:[
+            'Cookie name',
+            'Provider',
+            'Purpose'
+          ],
+          essentialCookies:[
+            {
+              name:'_pd',
+              provider:'Trip.com Group',
+              purpose:'To optimize page performance.',
+            },
+            {
+              name: 'GUID',
+              provider: 'Trip.com Group',
+              purpose: 'To identify unique client .',
+            },
+            {
+              name: 'nfes_isSupportWebP',
+              provider: 'Trip.com Group',
+              purpose: 'To Check if webp format is supported.',
+            },
+            {
+              name: 'acceptCookie',
+              provider: 'Trip.com Group',
+              purpose: 'To check if user has accepted cookie policy.',
+            },
+            {
+              name: '_resDomain',
+              provider: 'Trip.com Group',
+              purpose: 'NFES application autowrite for service worker.',
+            }
+          ]
+        }
+      } 
+    },
+    save:'Save',
+    back:'Back',
+    cookieBanner:{
+      title:'Your privacy is important to us',
+      desc:'Our website uses cookies, which are essential for the site to function. To learn more about the cookies we use, please see our',
+      link:'Privacy Statement.'
+    },
+    cookieSetting:{
+      title:'Cookie Settings',
+      desc:'Please select which cookies you would like to accept on Trip.com Group:',
+      essenial:{
+        title:'Essential cookies',
+        desc:'These are cookies that our website cannot operate without. They include, for example, cookies that enable you to log into secure areas of our website, etc.'
+      },
+      noessential:{
+        title:'Non-essential cookies',
+        desc:'That allow us to provide you with a better user experience, improve our website and personalise the adverts that you see. For more information, see our',
+        link:'Cookie Statement.'
+      }
+    }
+  }
+}
+
+console.log(useGenerateSharkKeys(statementOriginSharkData))
+  </script>
+</body>
+</html>

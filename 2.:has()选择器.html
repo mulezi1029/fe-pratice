@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 选择的是 h2 元素，限制条件是后面紧跟了 p 元素 */
+        h2:has(+p) {
+            background-color: lightblue;
+        }
+
+        /* 选择的是 p 元素，限制条件是紧跟在 h2 后面的p 元素 */
+        h2+p {
+            background-color: lightcoral;
+        }
+
+        /* 选择的是 div，限制条件是有 p 作为子元素 */
+        div:has(p) {
+            background-color: lightgreen;
+        }
+
+        /* 选择 span，限制条件是后面有 p 作为兄弟元素 */
+        span:has(~ p) {
+            background-color: lightgray;
+        }
+
+        /* 选择的是 span，限制条件是后面紧根了 p 作为兄弟元素 */
+        span:has(+ p) {
+            background-color: lightyellow;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section>
+        <h2>兄弟</h2>
+        <p>111</p>
+    </section>
+
+    <section>
+        <h2>has</h2>
+        <p>222</p>
+    </section>
+
+    <div>
+        <section>
+            <p>2233</p>
+        </section>
+    </div>
+
+    <span>div</span>
+    <span>222</span>
+    <p></p>
+
+
+</body>
+
+</html>

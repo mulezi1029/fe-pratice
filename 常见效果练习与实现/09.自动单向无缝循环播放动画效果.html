@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrap {
+            width: 600px;
+            overflow: hidden;
+        }
+
+        .list-wrap {
+            /* width: fit-content; */
+            display: flex;
+        }
+
+        .list {
+            display: flex;
+            animation: imagesLoop 15s linear 1s infinite normal;
+        }
+
+        .list-item {
+            text-align: center;
+            width: 300px;
+            height: 200px;
+            margin-right: 10px;
+            background-color: lightblue;
+            line-height: 200px;
+        }
+
+        @keyframes imagesLoop {
+            0% {
+                transform: translateX(0px);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="list-wrap">
+            <div class="list">
+                <div class="list-item">Lorem.</div>
+                <div class="list-item">Aut.</div>
+                <div class="list-item">Fugit.</div>
+                <div class="list-item">Ad.</div>
+                <div class="list-item">Dolore!</div>
+                <div class="list-item">Similique?</div>
+            </div>
+            <div class="list">
+                <div class="list-item">Lorem.</div>
+                <div class="list-item">Aut.</div>
+                <div class="list-item">Fugit.</div>
+                <div class="list-item">Ad.</div>
+                <div class="list-item">Dolore!</div>
+                <div class="list-item">Similique?</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

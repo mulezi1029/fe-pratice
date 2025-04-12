@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<script type="module">
+    import { faker } from 'https://cdn.jsdelivr.net/npm/@faker-js/faker/+esm';
+
+    const randomName = faker.person.fullName(); // Willie Bahringer
+    const randomEmail = faker.internet.email(); // Tomasa_Ferry14@hotmail.com
+    
+      document.getElementById('name').value = randomName;
+      document.getElementById('email').value = randomEmail;
+    </script>
+    
+    <input id="name" />
+    <input id="email" />  
+	</body>
+</html>

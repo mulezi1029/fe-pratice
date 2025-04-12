@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .teardrop {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            width: 80px;
+            height: 80px;
+            /* 实现泪滴形状：主要用 border-radius，一个角保持直角，其它三个变为圆角，然后进行一定的旋转得到最终的效果。 */
+            border-radius: 0px 50% 50% 50%;
+            background-image: linear-gradient(rgb(246, 69, 69, 0.8),
+                    rgb(246, 69, 69, 0.9),
+                    rgb(246, 69, 69, 0.7));
+            transform: rotate(45deg);
+        }
+
+        .content {
+            /* 由于父元素旋转，子元素也会旋转，文字也会跟着旋转，向反方向旋转抵消 */
+            transform: rotate(-45deg);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="teardrop">
+        <div class="content">热销</div>
+    </div>
+</body>
+
+</html>
