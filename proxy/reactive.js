@@ -1,4 +1,13 @@
 // 创建一个简单的响应式系统
+// reactive 的核心实现思路:
+// 1. 使用 Proxy 代理对象,拦截对象的 get/set 操作
+// 2. 在 get 时通过 track 收集依赖(副作用函数)
+// 3. 在 set 时通过 trigger 触发相关依赖的执行
+// 4. 使用 Map 和 Set 存储依赖关系:
+//    - 外层 Map: target -> depsMap
+//    - 内层 Map: key -> effects Set
+// 5. effect 用于注册副作用函数,在访问响应式数据时自动收集依赖
+
 const {reactive, effect} = (() => {
     // 存储依赖关系
     const deps = new Map();
