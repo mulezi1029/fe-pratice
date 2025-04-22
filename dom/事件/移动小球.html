@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				background-color: #f0f0f0;
+			}
+			#field {
+				position: relative;
+				margin: 20px;
+				width: 200px;
+				height: 150px;
+				border: 10px solid black;
+				background-color: #00ff00;
+				overflow: hidden;
+				cursor: pointer;
+			}
+			#ball {
+				position: absolute;
+				left: 0;
+				top: 0;
+				will-change: left, top;
+				transition: left 1s, top 1s;
+			}
+		</style>
+	</head>
+
+	<body style="height: 2000px">
+		Click on a field to move the ball there.
+		<br />
+		The ball should never leave the field.
+
+		<div id="field">
+			<img src="https://en.js.cx/clipart/ball.svg" id="ball" /> . . . . . . . .
+			. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+			. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+			. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+			. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+			. . . . . . . . . . . . . . . . . . . . .
+		</div>
+
+		<script>
+			const field = document.getElementById('field')
+			const ball = document.getElementById('ball')
+			const ballWidth = ball.offsetWidth
+			const ballHeight = ball.offsetHeight
+
+			field.addEventListener('click', (e) => {
+				const fieldCords = field.getBoundingClientRect()
+
+				let targetLeft =
+					e.clientX - fieldCords.left - field.clientLeft - ballWidth/ 2
+				let targetTop =
+					e.clientY - fieldCords.top - field.clientTop - ballHeight / 2
+
+        console.log(targetLeft, targetTop)
+				// 边界处理
+				if (targetLeft < 0) {
+					targetLeft = 0
+				}
+				if (targetLeft > field.clientWidth - ballWidth) {
+					targetLeft = field.clientWidth - ballWidth
+				}
+				if (targetTop < 0) {
+					targetTop = 0
+				}
+				if (targetTop > field.clientHeight - ballHeight) {
+					targetTop = field.clientHeight - ballHeight
+				}
+
+				// 计算ball需要移动到的坐标
+				ball.style.left = targetLeft + 'px'
+				ball.style.top = targetTop + 'px'
+			})
+		</script>
+	</body>
+</html>

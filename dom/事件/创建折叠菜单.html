@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    .menu {
+      width: 200px;
+      padding: 10px;
+    }
+    .menu .title {
+      cursor: pointer;
+    }
+    .menu .title::before{
+      content: '▶ ';
+      font-size: 80%;
+      color: green;
+
+    }
+    .menu.open .title::before{
+      content: '▼ ';
+    }
+    .menu ul {
+      list-style: none;
+      padding: 0 20px;
+      margin: 0 ;
+      height: 0;
+      overflow: hidden; /* Added to hide content when collapsed */
+      transition: height 0.3s ease; /* Smooth transition for height */
+      will-change: height;
+    }
+    </style>
+</head>
+<body>
+
+  <div class="menu">
+    <div class="title">Sweeties (click me)!</div>
+    <ul>
+      <li>Cake</li>
+      <li>Donut</li>
+      <li>Honey</li>
+    </ul>
+  </div>
+
+  <script>
+    const menu = document.querySelector('.menu');
+    const title = menu.querySelector('.title');
+    const ul = menu.querySelector('ul');
+
+    console.log(ul.scrollHeight);
+    title.addEventListener('click',()=>{
+      menu.classList.toggle('open');
+      if(menu.classList.contains('open')){
+        ul.style.height = `${ul.scrollHeight}px`;
+      }else{
+        ul.style.height = 0;
+      }
+    });
+  </script>
+</body>
+</html>
