@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>URL 对象</h1>
+  <p>URL 对象用于处理 URL 字符串，提供了方便的属性和方法来解析和操作 URL。</p>
+  <input type="file" accept="image/*,video/*">
+  <img alt="预览" style="max-width: 100%; height: auto;">
+  <a href=""></a>
+  <script>
+    /**
+ * 文件预览：将用户上传的图片或视频直接显示在页面上
+ */
+ const input = document.querySelector('input[type="file"]');
+const img = document.querySelector('img');
+const a = document.querySelector('a');
+
+let objectURL = null;
+
+input.addEventListener('change', (event) => {
+  // if (objectURL) {
+  //   URL.revokeObjectURL(objectURL); // 释放旧的对象 URL
+  // }
+  
+  // const file = event.target.files[0];
+  // if (file) {
+  //   objectURL = URL.createObjectURL(file);
+  //   console.log(objectURL);
+  //   img.src = objectURL;
+  // }
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    console.log(e.target.result); // 输出读取的文件内容
+    img.src = e.target.result; // 将读取的文件内容设置为图片的 src
+  };
+  reader.readAsDataURL(file); // 读取文件为 Data URL
+});
+
+
+    /**
+     * 生成 Blob URL
+     */
+    const blob = new Blob(['Hello, World!'], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    a.href = url; // 将 Blob URL 设置为链接的 href
+    a.textContent = '点击这里访问 Blob URL'; // 设置链接文本
+    a.target = '_blank'; // 在新标签页中打开链接
+    url; // blob:https://www.example.com/100fc50c-6f92-4356-a382-d37a3b6fd6e5
+    // 访问链接可看到一个空白页面显示着 Hello, World!
+  </script>
+</body>
+
+</html>

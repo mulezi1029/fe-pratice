@@ -1,0 +1,551 @@
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 800 600"
+	width="100%"
+	height="100%"
+>
+	<!-- 样式定义 -->
+	<style>
+		.seat {
+			cursor: pointer;
+		}
+		.seat-available {
+			fill: #4a90e2;
+		}
+		.seat-available:hover {
+			fill: #357abd;
+		}
+		.seat-sold {
+			fill: #cccccc;
+			cursor: not-allowed;
+		}
+		.seat-selected {
+			fill: #ff4d4f;
+		}
+		.screen {
+			fill: #f0f0f0;
+			stroke: #333;
+			stroke-width: 2;
+		}
+		.legend-item {
+			font-family: Arial, sans-serif;
+			font-size: 12px;
+		}
+		.info-panel {
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+		}
+		.price {
+			font-weight: bold;
+		}
+	</style>
+
+	<!-- 屏幕 -->
+	<rect class="screen" x="200" y="30" width="400" height="50" rx="10" />
+	<text x="400" y="60" text-anchor="middle" font-family="Arial" font-size="18">
+		屏幕
+	</text>
+
+	<!-- 座位区域 -->
+	<g id="seats">
+		<!-- 第一排 -->
+		<g transform="translate(150, 120)">
+			<rect
+				class="seat seat-available"
+				id="A1"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A1
+			</text>
+		</g>
+		<g transform="translate(200, 120)">
+			<rect
+				class="seat seat-available"
+				id="A2"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A2
+			</text>
+		</g>
+		<g transform="translate(250, 120)">
+			<rect
+				class="seat seat-sold"
+				id="A3"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A3
+			</text>
+		</g>
+		<g transform="translate(300, 120)">
+			<rect
+				class="seat seat-available"
+				id="A4"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A4
+			</text>
+		</g>
+		<g transform="translate(350, 120)">
+			<rect
+				class="seat seat-available"
+				id="A5"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A5
+			</text>
+		</g>
+		<g transform="translate(450, 120)">
+			<rect
+				class="seat seat-available"
+				id="A6"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A6
+			</text>
+		</g>
+		<g transform="translate(500, 120)">
+			<rect
+				class="seat seat-available"
+				id="A7"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A7
+			</text>
+		</g>
+		<g transform="translate(550, 120)">
+			<rect
+				class="seat seat-available"
+				id="A8"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A8
+			</text>
+		</g>
+		<g transform="translate(600, 120)">
+			<rect
+				class="seat seat-sold"
+				id="A9"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A9
+			</text>
+		</g>
+		<g transform="translate(650, 120)">
+			<rect
+				class="seat seat-available"
+				id="A10"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				A10
+			</text>
+		</g>
+
+		<!-- 第二排 -->
+		<g transform="translate(150, 160)">
+			<rect
+				class="seat seat-sold"
+				id="B1"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B1
+			</text>
+		</g>
+		<g transform="translate(200, 160)">
+			<rect
+				class="seat seat-available"
+				id="B2"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B2
+			</text>
+		</g>
+		<g transform="translate(250, 160)">
+			<rect
+				class="seat seat-available"
+				id="B3"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B3
+			</text>
+		</g>
+		<g transform="translate(300, 160)">
+			<rect
+				class="seat seat-available"
+				id="B4"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B4
+			</text>
+		</g>
+		<g transform="translate(350, 160)">
+			<rect
+				class="seat seat-available"
+				id="B5"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B5
+			</text>
+		</g>
+		<g transform="translate(450, 160)">
+			<rect
+				class="seat seat-available"
+				id="B6"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B6
+			</text>
+		</g>
+		<g transform="translate(500, 160)">
+			<rect
+				class="seat seat-available"
+				id="B7"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B7
+			</text>
+		</g>
+		<g transform="translate(550, 160)">
+			<rect
+				class="seat seat-available"
+				id="B8"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B8
+			</text>
+		</g>
+		<g transform="translate(600, 160)">
+			<rect
+				class="seat seat-available"
+				id="B9"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B9
+			</text>
+		</g>
+		<g transform="translate(650, 160)">
+			<rect
+				class="seat seat-sold"
+				id="B10"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				B10
+			</text>
+		</g>
+
+		<!-- 第三排 -->
+		<g transform="translate(150, 200)">
+			<rect
+				class="seat seat-available"
+				id="C1"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C1
+			</text>
+		</g>
+		<g transform="translate(200, 200)">
+			<rect
+				class="seat seat-available"
+				id="C2"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C2
+			</text>
+		</g>
+		<g transform="translate(250, 200)">
+			<rect
+				class="seat seat-available"
+				id="C3"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C3
+			</text>
+		</g>
+		<g transform="translate(300, 200)">
+			<rect
+				class="seat seat-selected"
+				id="C4"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C4
+			</text>
+		</g>
+		<g transform="translate(350, 200)">
+			<rect
+				class="seat seat-available"
+				id="C5"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C5
+			</text>
+		</g>
+		<g transform="translate(450, 200)">
+			<rect
+				class="seat seat-available"
+				id="C6"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C6
+			</text>
+		</g>
+		<g transform="translate(500, 200)">
+			<rect
+				class="seat seat-available"
+				id="C7"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C7
+			</text>
+		</g>
+		<g transform="translate(550, 200)">
+			<rect
+				class="seat seat-selected"
+				id="C8"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C8
+			</text>
+		</g>
+		<g transform="translate(600, 200)">
+			<rect
+				class="seat seat-available"
+				id="C9"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C9
+			</text>
+		</g>
+		<g transform="translate(650, 200)">
+			<rect
+				class="seat seat-available"
+				id="C10"
+				x="0"
+				y="0"
+				width="30"
+				height="25"
+				rx="3"
+			/>
+			<text x="15" y="17" text-anchor="middle" fill="white" font-size="12">
+				C10
+			</text>
+		</g>
+	</g>
+
+	<!-- 图例 -->
+	<g transform="translate(200, 250)">
+		<rect class="seat-available" x="0" y="0" width="20" height="15" rx="2" />
+		<text class="legend-item" x="30" y="12">可选</text>
+	</g>
+	<g transform="translate(300, 250)">
+		<rect class="seat-sold" x="0" y="0" width="20" height="15" rx="2" />
+		<text class="legend-item" x="30" y="12">已售</text>
+	</g>
+	<g transform="translate(400, 250)">
+		<rect class="seat-selected" x="0" y="0" width="20" height="15" rx="2" />
+		<text class="legend-item" x="30" y="12">已选</text>
+	</g>
+
+	<!-- 信息面板 -->
+	<rect
+		x="250"
+		y="300"
+		width="300"
+		height="80"
+		rx="5"
+		fill="#f8f8f8"
+		stroke="#ddd"
+		stroke-width="1"
+	/>
+	<text class="info-panel" x="400" y="330" text-anchor="middle">
+		已选座位：C4, C8
+	</text>
+	<text class="info-panel" x="400" y="360" text-anchor="middle">
+		总价：
+		<tspan class="price">¥120</tspan>
+	</text>
+
+	<!-- 购票按钮 -->
+	<g id="buy-button" transform="translate(350, 400)">
+		<rect x="0" y="0" width="100" height="40" rx="5" fill="#4a90e2" />
+		<text x="50" y="25" text-anchor="middle" fill="white" font-size="16">
+			确认购票
+		</text>
+	</g>
+
+	<!-- 交互脚本 -->
+	<script>
+		// 获取所有可选座位 const availableSeats =
+		document.querySelectorAll('.seat-available'); const selectedSeats =
+		document.querySelectorAll('.seat-selected'); const selectedSeatsText =
+		document.querySelector('.info-panel:nth-of-type(1)'); const totalPriceText =
+		document.querySelector('.price'); const buyButton =
+		document.getElementById('buy-button'); let selectedCount = 2; // 初始已选2个
+		const seatPrice = 60; // 单个座位价格 // 更新信息面板 function
+		updateInfoPanel() { const selectedSeats =
+		document.querySelectorAll('.seat-selected'); const seatIds =
+		Array.from(selectedSeats).map(seat => seat.id).join(', ');
+		selectedSeatsText.textContent = `已选座位：${seatIds || '无'}`;
+		totalPriceText.textContent = `¥${selectedSeats.length * seatPrice}`; } //
+		为可选座位添加点击事件 availableSeats.forEach(seat => {
+		seat.addEventListener('click', () => { // 切换座位状态
+		seat.classList.remove('seat-available');
+		seat.classList.add('seat-selected'); selectedCount++; updateInfoPanel(); //
+		添加选中动画 seat.setAttribute('transform', 'scale(1.1)'); setTimeout(() =>
+		seat.setAttribute('transform', 'scale(1)'), 200); }); }); //
+		为已选座位添加取消选择事件 selectedSeats.forEach(seat => {
+		seat.addEventListener('click', () => {
+		seat.classList.remove('seat-selected');
+		seat.classList.add('seat-available'); selectedCount--; updateInfoPanel();
+		}); }); // 为购票按钮添加交互效果 buyButton.addEventListener('mouseover', ()
+		=> { buyButton.querySelector('rect').setAttribute('fill', '#357abd'); });
+		buyButton.addEventListener('mouseout', () => {
+		buyButton.querySelector('rect').setAttribute('fill', '#4a90e2'); });
+		buyButton.addEventListener('click', () => { if (selectedCount > 0) {
+		alert(`成功购买 ${selectedCount} 张票，总价：¥${selectedCount *
+		seatPrice}`); } else { alert('请至少选择一个座位'); } })
+	</script>
+</svg>

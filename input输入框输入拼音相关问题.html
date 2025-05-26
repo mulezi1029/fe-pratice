@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="ip">
+  <script>
+    const input = document.getElementById('ip');
+    let isComposing = false;
+    const search = function() {
+      console.log('Searching...');
+    };
+    input.addEventListener('input', function() {
+      if(!isComposing) {
+        console.log('Input event triggered');
+        search();
+      }
+    });
+    input.addEventListener('compositionstart', function() {
+      console.log('Composition started');
+      isComposing = true;
+    });
+    input.addEventListener('compositionend', function() {
+      console.log('Composition ended');
+      isComposing = false;
+      search();
+    });
+  </script>
+</body>
+</html>

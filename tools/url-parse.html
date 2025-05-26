@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL解析处理工具</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#36CFC9',
+            accent: '#FF7D00',
+            dark: '#1D2129',
+            light: '#F2F3F5',
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+				.content-auto {
+					content-visibility: auto;
+				}
+				.text-shadow {
+					text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				}
+				.transition-all-300 {
+					transition: all 0.3s ease;
+				}
+				.bg-gradient-primary {
+					background: linear-gradient(135deg, #165dff 0%, #0040c9 100%);
+				}
+				.scrollbar-thin {
+					scrollbar-width: thin;
+				}
+				.scrollbar-thin::-webkit-scrollbar {
+					width: 6px;
+				}
+				.scrollbar-thin::-webkit-scrollbar-thumb {
+					background-color: rgba(22, 93, 255, 0.5);
+					border-radius: 3px;
+				}
+			}
+		</style>
+</head>
+
+<body class="font-inter bg-gray-50 text-dark min-h-screen flex flex-col">
+  <!-- 顶部导航 -->
+  <header class="bg-gradient-primary text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+      <div class="flex items-center mb-4 md:mb-0">
+        <i class="fa-solid fa-link text-3xl mr-3 text-white"></i>
+        <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-shadow">
+          URL解析处理工具
+        </h1>
+        <span class="ml-2 bg-secondary/90 text-white text-xs px-2 py-1 rounded-full">小程序兼容版</span>
+      </div>
+      <div class="flex space-x-4">
+        <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/20 transition-all-300">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="help-button" class="p-2 rounded-full hover:bg-white/20 transition-all-300">
+          <i class="fa-solid fa-question-circle"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主内容区 -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <!-- URL输入区 -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-8 transform hover:shadow-xl transition-all-300">
+      <div class="flex items-center mb-4">
+        <i class="fa-solid fa-link text-primary text-xl mr-2"></i>
+        <h2 class="text-xl font-semibold">输入URL/小程序路径</h2>
+      </div>
+      <div class="relative">
+        <input type="text" id="url-input" placeholder="请输入URL或小程序路径..."
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300 text-lg" />
+        <button id="parse-button"
+          class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all-300 flex items-center">
+          <i class="fa-solid fa-magnifying-glass mr-2"></i>解析
+        </button>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <div class="w-full text-sm text-gray-500 mb-2">网页URL示例:</div>
+        <button class="quick-url px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm transition-all-300"
+          data-url="https://www.example.com:8080/path/to/resource?param1=value1&param2=value2#hash">
+          示例1: 标准URL
+        </button>
+        <button class="quick-url px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm transition-all-300"
+          data-url="https://user:pass@www.example.co.uk:8080/search?q=test+query&category=books#results">
+          示例2: 带认证信息
+        </button>
+
+        <div class="w-full text-sm text-gray-500 mt-2 mb-2">
+          小程序路径示例:
+        </div>
+        <button class="quick-url px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm transition-all-300"
+          data-url="/pages/index/index?userId=12345&type=detail">
+          示例3: 小程序页面路径
+        </button>
+        <button class="quick-url px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm transition-all-300"
+          data-url="plugin://myPlugin/player?videoId=98765">
+          示例4: 小程序插件路径
+        </button>
+        <button class="quick-url px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm transition-all-300"
+          data-url="pages/subPage?param1=value1&param1=value2&param3=#empty-hash">
+          示例5: 相对路径
+        </button>
+      </div>
+    </section>
+
+    <!-- 解析结果展示 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- URL组成部分 -->
+      <section class="bg-white rounded-xl shadow-lg p-6 transform hover:shadow-xl transition-all-300">
+        <div class="flex items-center mb-4">
+          <i class="fa-solid fa-sitemap text-primary text-xl mr-2"></i>
+          <h2 class="text-xl font-semibold">路径组成部分</h2>
+        </div>
+        <div class="space-y-3">
+          <div class="url-part" data-part="protocol">
+            <div class="text-sm text-gray-500">协议</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="username">
+            <div class="text-sm text-gray-500">用户名</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="password">
+            <div class="text-sm text-gray-500">密码</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="hostname">
+            <div class="text-sm text-gray-500">主机名</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="port">
+            <div class="text-sm text-gray-500">端口</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="pathname">
+            <div class="text-sm text-gray-500">页面路径</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="search">
+            <div class="text-sm text-gray-500">查询参数</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="hash">
+            <div class="text-sm text-gray-500">哈希值</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="isMiniProgram">
+            <div class="text-sm text-gray-500">是否小程序路径</div>
+            <div class="font-medium break-all"></div>
+          </div>
+          <div class="url-part" data-part="origin">
+            <div class="text-sm text-gray-500">源</div>
+            <div class="font-medium break-all"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 查询参数处理 -->
+      <section class="bg-white rounded-xl shadow-lg p-6 transform hover:shadow-xl transition-all-300">
+        <div class="flex items-center mb-4">
+          <i class="fa-solid fa-list-ul text-primary text-xl mr-2"></i>
+          <h2 class="text-xl font-semibold">查询参数处理</h2>
+        </div>
+        <div id="query-params-container" class="mb-4 max-h-[200px] overflow-y-auto scrollbar-thin">
+          <div class="text-center text-gray-500 py-8" id="empty-params-message">
+            <i class="fa-solid fa-info-circle mb-2"></i>
+            <p>解析URL后显示查询参数</p>
+          </div>
+          <div id="query-params-list" class="space-y-2 hidden"></div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 mt-4">
+          <div class="flex-grow">
+            <input type="text" id="new-param-key" placeholder="参数名"
+              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300" />
+          </div>
+          <div class="flex-grow">
+            <input type="text" id="new-param-value" placeholder="参数值"
+              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300" />
+          </div>
+          <button id="add-param-button"
+            class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary/90 transition-all-300 whitespace-nowrap">
+            <i class="fa-solid fa-plus mr-1"></i>添加参数
+          </button>
+        </div>
+
+        <div class="flex justify-between mt-4">
+          <button id="encode-params-button"
+            class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90 transition-all-300">
+            <i class="fa-solid fa-lock mr-1"></i>编码参数
+          </button>
+          <button id="decode-params-button"
+            class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all-300">
+            <i class="fa-solid fa-unlock mr-1"></i>解码参数
+          </button>
+          <button id="clear-params-button"
+            class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all-300">
+            <i class="fa-solid fa-trash mr-1"></i>清空参数
+          </button>
+        </div>
+      </section>
+
+      <!-- 处理结果 -->
+      <section class="bg-white rounded-xl shadow-lg p-6 transform hover:shadow-xl transition-all-300">
+        <div class="flex items-center mb-4">
+          <i class="fa-solid fa-code text-primary text-xl mr-2"></i>
+          <h2 class="text-xl font-semibold">处理结果</h2>
+        </div>
+        <div class="mb-4">
+          <div class="flex justify-between items-center mb-2">
+            <div class="text-sm text-gray-500">处理后的路径</div>
+            <div class="flex space-x-2">
+              <button id="copy-url-button" class="text-primary hover:text-primary/80 transition-all-300">
+                <i class="fa-solid fa-copy"></i>
+              </button>
+              <button id="open-url-button" class="text-primary hover:text-primary/80 transition-all-300"
+                title="在新窗口打开(仅网页URL)">
+                <i class="fa-solid fa-external-link-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div id="processed-url" class="bg-gray-50 p-3 rounded-lg min-h-[40px] break-all font-medium"></div>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-sm text-gray-500 mb-1">编码选项</label>
+            <div class="flex items-center space-x-4">
+              <label class="inline-flex items-center">
+                <input type="radio" name="encoding" value="none" checked class="text-primary focus:ring-primary" />
+                <span class="ml-2">不编码</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input type="radio" name="encoding" value="encodeURI" class="text-primary focus:ring-primary" />
+                <span class="ml-2">encodeURI</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input type="radio" name="encoding" value="encodeURIComponent"
+                  class="text-primary focus:ring-primary" />
+                <span class="ml-2">encodeURIComponent</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-500 mb-1">参数排序</label>
+            <div class="flex items-center space-x-4">
+              <label class="inline-flex items-center">
+                <input type="radio" name="sort" value="none" checked class="text-primary focus:ring-primary" />
+                <span class="ml-2">不排序</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input type="radio" name="sort" value="asc" class="text-primary focus:ring-primary" />
+                <span class="ml-2">升序</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input type="radio" name="sort" value="desc" class="text-primary focus:ring-primary" />
+                <span class="ml-2">降序</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="flex items-center">
+              <input type="checkbox" id="remove-empty" class="text-primary focus:ring-primary" />
+              <span class="ml-2 text-sm text-gray-500">移除空值参数</span>
+            </label>
+          </div>
+
+          <div>
+            <label class="flex items-center">
+              <input type="checkbox" id="preserve-leading-slash" class="text-primary focus:ring-primary" checked />
+              <span class="ml-2 text-sm text-gray-500">保留前导斜杠(小程序)</span>
+            </label>
+          </div>
+        </div>
+
+        <button id="apply-changes-button"
+          class="mt-4 w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-all-300 flex items-center justify-center">
+          <i class="fa-solid fa-magic mr-2"></i>应用更改
+        </button>
+      </section>
+    </div>
+
+    <!-- URL编码/解码工具 -->
+    <section class="mt-8 bg-white rounded-xl shadow-lg p-6 transform hover:shadow-xl transition-all-300">
+      <div class="flex items-center mb-4">
+        <i class="fa-solid fa-exchange-alt text-primary text-xl mr-2"></i>
+        <h2 class="text-xl font-semibold">URL编码/解码工具</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <div class="text-sm text-gray-500 mb-2">原始文本</div>
+          <textarea id="encode-input" rows="4" placeholder="输入要编码的文本..."
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300 resize-none"></textarea>
+          <button id="encode-text-button"
+            class="mt-2 bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90 transition-all-300">
+            <i class="fa-solid fa-lock mr-1"></i>编码文本
+          </button>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500 mb-2">编码结果</div>
+          <textarea id="encode-output" rows="4" placeholder="编码结果将显示在这里..."
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300 resize-none"
+            readonly></textarea>
+          <button id="copy-encoded-button"
+            class="mt-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all-300">
+            <i class="fa-solid fa-copy mr-1"></i>复制结果
+          </button>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500 mb-2">编码文本</div>
+          <textarea id="decode-input" rows="4" placeholder="输入要解码的文本..."
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300 resize-none"></textarea>
+          <button id="decode-text-button"
+            class="mt-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all-300">
+            <i class="fa-solid fa-unlock mr-1"></i>解码文本
+          </button>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500 mb-2">解码结果</div>
+          <textarea id="decode-output" rows="4" placeholder="解码结果将显示在这里..."
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300 resize-none"
+            readonly></textarea>
+          <button id="copy-decoded-button"
+            class="mt-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all-300">
+            <i class="fa-solid fa-copy mr-1"></i>复制结果
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 帮助模态框 -->
+  <div id="help-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-xl font-bold">使用帮助</h3>
+        <button id="close-help" class="text-gray-500 hover:text-gray-700">
+          <i class="fa-solid fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <h4 class="font-semibold text-lg mb-2">解析URL/小程序路径</h4>
+          <p>
+            在输入框中输入要解析的URL或小程序路径，点击"解析"按钮，系统将分析路径的各个组成部分并显示在右侧面板中。
+          </p>
+          <p>
+            支持标准URL格式和小程序特有的路径格式，如/pages/index/index?param=value
+            或 plugin://myPlugin/player
+          </p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-lg mb-2">查询参数操作</h4>
+          <p>
+            解析路径后，可以在"查询参数处理"面板中查看、添加、删除或修改查询参数。支持对参数进行编码和解码操作。
+          </p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-lg mb-2">路径处理选项</h4>
+          <p>
+            在"处理结果"面板中，可以选择不同的编码方式、参数排序方式，并可以选择移除空值参数或保留前导斜杠(适用于小程序路径)。点击"应用更改"按钮生成处理后的路径。
+          </p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-lg mb-2">编码/解码工具</h4>
+          <p>
+            页面底部提供了独立的URL编码/解码工具，可以对任意文本进行编码或解码操作。
+          </p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-lg mb-2">示例路径</h4>
+          <p>
+            点击输入框下方的示例按钮，可以快速加载预设的复杂URL或小程序路径进行测试。
+          </p>
+        </div>
+      </div>
+      <div class="p-6 border-t border-gray-200">
+        <button id="close-help-btn"
+          class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-all-300">
+          了解了
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-6">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <p>© 2025 URL解析处理工具 | 专业的前端URL/小程序路径处理助手</p>
+        </div>
+        <div class="flex space-x-4">
+          <a href="#" class="hover:text-primary transition-all-300">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="#" class="hover:text-primary transition-all-300">
+            <i class="fa-brands fa-twitter"></i>
+          </a>
+          <a href="#" class="hover:text-primary transition-all-300">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 主要URL解析逻辑
+      const urlInput = document.getElementById('url-input')
+      const parseButton = document.getElementById('parse-button')
+      const quickUrlButtons = document.querySelectorAll('.quick-url')
+      const urlParts = document.querySelectorAll('.url-part')
+      const queryParamsList = document.getElementById('query-params-list')
+      const emptyParamsMessage = document.getElementById(
+        'empty-params-message'
+      )
+      const processedUrl = document.getElementById('processed-url')
+      const applyChangesButton = document.getElementById(
+        'apply-changes-button'
+      )
+      const addParamButton = document.getElementById('add-param-button')
+      const newParamKey = document.getElementById('new-param-key')
+      const newParamValue = document.getElementById('new-param-value')
+      const encodeParamsButton = document.getElementById(
+        'encode-params-button'
+      )
+      const decodeParamsButton = document.getElementById(
+        'decode-params-button'
+      )
+      const clearParamsButton = document.getElementById('clear-params-button')
+      const copyUrlButton = document.getElementById('copy-url-button')
+      const openUrlButton = document.getElementById('open-url-button')
+      const removeEmptyCheckbox = document.getElementById('remove-empty')
+      const preserveLeadingSlash = document.getElementById(
+        'preserve-leading-slash'
+      )
+      const helpButton = document.getElementById('help-button')
+      const helpModal = document.getElementById('help-modal')
+      const closeHelp = document.getElementById('close-help')
+      const closeHelpBtn = document.getElementById('close-help-btn')
+      const themeToggle = document.getElementById('theme-toggle')
+      const encodeTextButton = document.getElementById('encode-text-button')
+      const decodeTextButton = document.getElementById('decode-text-button')
+      const encodeInput = document.getElementById('encode-input')
+      const encodeOutput = document.getElementById('encode-output')
+      const decodeInput = document.getElementById('decode-input')
+      const decodeOutput = document.getElementById('decode-output')
+      const copyEncodedButton = document.getElementById('copy-encoded-button')
+      const copyDecodedButton = document.getElementById('copy-decoded-button')
+
+      let currentUrl = null
+      let queryParams = new URLSearchParams()
+      let isMiniProgram = false
+
+      // 解析URL/小程序路径
+      function parseUrl(url) {
+        try {
+          // 检查是否是小程序路径
+          isMiniProgram =
+            url.startsWith('/') ||
+            url.startsWith('plugin://') ||
+            (url.includes('://') && !url.match(/^[a-z]+:\/\//i))
+
+          if (!isMiniProgram) {
+            // 标准URL处理
+            currentUrl = new URL(url)
+            queryParams = new URLSearchParams(currentUrl.search)
+          }
+          else {
+            // 小程序路径处理
+            currentUrl = {
+              protocol: '',
+              username: '',
+              password: '',
+              hostname: '',
+              port: '',
+              pathname: '',
+              search: '',
+              hash: '',
+              origin: '',
+              href: url,
+            }
+
+            // 提取路径名、查询参数和哈希
+            let pathPart = url
+            let searchPart = ''
+            let hashPart = ''
+
+            // 处理哈希
+            const hashIndex = url.indexOf('#')
+            if (hashIndex !== -1) {
+              hashPart = url.substring(hashIndex + 1)
+              pathPart = url.substring(0, hashIndex)
+            }
+
+            // 处理查询参数
+            const queryIndex = pathPart.indexOf('?')
+            if (queryIndex !== -1) {
+              searchPart = pathPart.substring(queryIndex + 1)
+              pathPart = pathPart.substring(0, queryIndex)
+            }
+
+            // 设置路径名
+            currentUrl.pathname = pathPart
+
+            // 设置查询参数
+            currentUrl.search = searchPart
+            queryParams = new URLSearchParams(searchPart)
+
+            // 设置哈希
+            currentUrl.hash = hashPart
+
+            // 检查是否是插件路径
+            if (pathPart.startsWith('plugin://')) {
+              const pluginParts = pathPart.split('/')
+              if (pluginParts.length >= 3) {
+                currentUrl.protocol = 'plugin:'
+                currentUrl.hostname = pluginParts[2]
+                currentUrl.pathname = pluginParts.slice(3).join('/')
+              }
+            }
+          }
+
+          // 更新URL组成部分显示
+          urlParts.forEach((part) => {
+            const partName = part.dataset.part
+            let value = currentUrl[partName]
+
+            if (partName === 'search' && value) {
+              value =
+                value.substring(0, 50) + (value.length > 50 ? '...' : '')
+            }
+
+            if (partName === 'isMiniProgram') {
+              value = isMiniProgram ? '是' : '否'
+            }
+
+            part.querySelector('div:nth-child(2)').textContent =
+              value || '(空)'
+          })
+
+          // 更新查询参数列表
+          updateQueryParamsList()
+
+          // 更新处理后的URL
+          updateProcessedUrl()
+
+          // 添加动画效果
+          urlInput.classList.add('border-green-500')
+          setTimeout(() => {
+            urlInput.classList.remove('border-green-500')
+          }, 1000)
+        } 
+        catch (error) {
+          alert('无效的URL/小程序路径，请检查后重试')
+          console.error('路径解析错误:', error)
+        }
+      }
+
+      // 更新查询参数列表
+      function updateQueryParamsList() {
+        if (queryParams.size === 0) {
+          queryParamsList.classList.add('hidden')
+          emptyParamsMessage.classList.remove('hidden')
+          return
+        }
+
+        queryParamsList.classList.remove('hidden')
+        emptyParamsMessage.classList.add('hidden')
+        queryParamsList.innerHTML = ''
+
+        queryParams.forEach((value, key) => {
+          const paramElement = document.createElement('div')
+          paramElement.className =
+            'flex items-center justify-between p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all-300'
+          paramElement.innerHTML = `
+                        <div class="flex-grow mr-2 break-all">
+                            <div class="font-medium">${key}</div>
+                            <div class="text-sm text-gray-500">${value || '(空)'}</div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="edit-param p-1 text-gray-500 hover:text-primary transition-all-300" data-key="${key}">
+                                <i class="fa-solid fa-pencil-alt"></i>
+                            </button>
+                            <button class="remove-param p-1 text-gray-500 hover:text-red-500 transition-all-300" data-key="${key}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    `
+          queryParamsList.appendChild(paramElement)
+        })
+
+        // 添加编辑和删除事件监听器
+        document.querySelectorAll('.edit-param').forEach((button) => {
+          button.addEventListener('click', function () {
+            const key = this.dataset.key
+            const value = queryParams.get(key)
+            promptEditParam(key, value)
+          })
+        })
+
+        document.querySelectorAll('.remove-param').forEach((button) => {
+          button.addEventListener('click', function () {
+            const key = this.dataset.key
+            queryParams.delete(key)
+            updateQueryParamsList()
+            updateProcessedUrl()
+          })
+        })
+      }
+
+      // 提示用户编辑参数
+      function promptEditParam(key, value) {
+        const newKey = prompt('编辑参数名', key)
+        if (newKey === null) return // 用户取消编辑
+
+        const newValue = prompt('编辑参数值', value)
+        if (newValue === null) return // 用户取消编辑
+
+        // 删除旧参数
+        queryParams.delete(key)
+
+        // 添加新参数
+        if (newKey) {
+          queryParams.set(newKey, newValue)
+          updateQueryParamsList()
+          updateProcessedUrl()
+        }
+      }
+
+      // 更新处理后的URL
+      function updateProcessedUrl() {
+        if (!currentUrl) return
+
+        // 获取当前选项
+        const encoding = document.querySelector(
+          'input[name="encoding"]:checked'
+        ).value
+        const sort = document.querySelector(
+          'input[name="sort"]:checked'
+        ).value
+        const removeEmpty = removeEmptyCheckbox.checked
+        const keepLeadingSlash = preserveLeadingSlash.checked
+
+        let processedUrlStr = ''
+
+        if (isMiniProgram) {
+          // 小程序路径处理
+          let pathname = currentUrl.pathname
+
+          // 处理参数
+          let processedParams = new URLSearchParams()
+
+          // 排序参数
+          let sortedKeys = Array.from(queryParams.keys())
+          if (sort === 'asc') {
+            sortedKeys.sort()
+          } else if (sort === 'desc') {
+            sortedKeys.sort().reverse()
+          }
+
+          // 添加参数
+          sortedKeys.forEach((key) => {
+            const values = queryParams.getAll(key)
+            values.forEach((value) => {
+              // 移除空值参数
+              if (removeEmpty && (value === undefined || value === '')) {
+                return
+              }
+
+              // 编码参数
+              let encodedValue = value
+              if (encoding === 'encodeURI') {
+                encodedValue = encodeURI(value)
+              } else if (encoding === 'encodeURIComponent') {
+                encodedValue = encodeURIComponent(value)
+              }
+
+              processedParams.append(key, encodedValue)
+            })
+          })
+
+          // 构建最终路径
+          processedUrlStr = pathname
+
+          // 保留前导斜杠
+          if (
+            keepLeadingSlash &&
+            !processedUrlStr.startsWith('/') &&
+            !processedUrlStr.startsWith('plugin://')
+          ) {
+            processedUrlStr = '/' + processedUrlStr
+          }
+
+          // 添加查询参数
+          if (processedParams.toString()) {
+            processedUrlStr += '?' + processedParams.toString()
+          }
+
+          // 添加哈希
+          if (currentUrl.hash) {
+            processedUrlStr += '#' + currentUrl.hash
+          }
+        } else {
+          // 标准URL处理
+          const processedUrlObj = new URL(currentUrl.href)
+
+          // 清空现有参数
+          processedUrlObj.search = ''
+
+          // 处理参数
+          let processedParams = new URLSearchParams()
+
+          // 排序参数
+          let sortedKeys = Array.from(queryParams.keys())
+          if (sort === 'asc') {
+            sortedKeys.sort()
+          } else if (sort === 'desc') {
+            sortedKeys.sort().reverse()
+          }
+
+          // 添加参数
+          sortedKeys.forEach((key) => {
+            const values = queryParams.getAll(key)
+            values.forEach((value) => {
+              // 移除空值参数
+              if (removeEmpty && (value === undefined || value === '')) {
+                return
+              }
+
+              // 编码参数
+              let encodedValue = value
+              if (encoding === 'encodeURI') {
+                encodedValue = encodeURI(value)
+              } else if (encoding === 'encodeURIComponent') {
+                encodedValue = encodeURIComponent(value)
+              }
+
+              processedParams.append(key, encodedValue)
+            })
+          })
+
+          // 设置处理后的参数
+          processedUrlObj.search = processedParams.toString()
+
+          // 更新显示
+          processedUrlStr = processedUrlObj.href
+        }
+
+        // 更新显示
+        processedUrl.textContent = processedUrlStr
+      }
+
+      // 复制URL到剪贴板
+      function copyToClipboard(text) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            // 显示复制成功的提示
+            const notification = document.createElement('div')
+            notification.className =
+              'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-y-0'
+            notification.textContent = '已复制到剪贴板!'
+            document.body.appendChild(notification)
+
+            setTimeout(() => {
+              notification.classList.add('translate-y-20', 'opacity-0')
+              setTimeout(() => {
+                document.body.removeChild(notification)
+              }, 300)
+            }, 2000)
+          })
+          .catch((err) => {
+            console.error('复制失败:', err)
+            alert('复制失败，请手动复制。')
+          })
+      }
+
+      // 事件监听器
+      parseButton.addEventListener('click', () => {
+        if (urlInput.value.trim()) {
+          parseUrl(urlInput.value)
+        }
+      })
+
+      urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          parseButton.click()
+        }
+      })
+
+      quickUrlButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          urlInput.value = button.dataset.url
+          parseButton.click()
+        })
+      })
+
+      addParamButton.addEventListener('click', () => {
+        const key = newParamKey.value.trim()
+        const value = newParamValue.value.trim()
+
+        if (key) {
+          queryParams.set(key, value)
+          updateQueryParamsList()
+          updateProcessedUrl()
+          newParamKey.value = ''
+          newParamValue.value = ''
+
+          // 添加动画效果
+          addParamButton.classList.add('bg-green-500')
+          setTimeout(() => {
+            addParamButton.classList.remove('bg-green-500')
+          }, 300)
+        }
+      })
+
+      encodeParamsButton.addEventListener('click', () => {
+        const newParams = new URLSearchParams()
+        queryParams.forEach((value, key) => {
+          newParams.append(encodeURIComponent(key), encodeURIComponent(value))
+        })
+        queryParams = newParams
+        updateQueryParamsList()
+        updateProcessedUrl()
+      })
+
+      decodeParamsButton.addEventListener('click', () => {
+        const newParams = new URLSearchParams()
+        queryParams.forEach((value, key) => {
+          try {
+            newParams.append(
+              decodeURIComponent(key),
+              decodeURIComponent(value)
+            )
+          } catch (e) {
+            newParams.append(key, value) // 如果解码失败，保留原始值
+          }
+        })
+        queryParams = newParams
+        updateQueryParamsList()
+        updateProcessedUrl()
+      })
+
+      clearParamsButton.addEventListener('click', () => {
+        if (confirm('确定要清空所有查询参数吗？')) {
+          queryParams = new URLSearchParams()
+          updateQueryParamsList()
+          updateProcessedUrl()
+        }
+      })
+
+      applyChangesButton.addEventListener('click', updateProcessedUrl)
+
+      copyUrlButton.addEventListener('click', () => {
+        if (processedUrl.textContent) {
+          copyToClipboard(processedUrl.textContent)
+        }
+      })
+
+      openUrlButton.addEventListener('click', () => {
+        if (
+          !isMiniProgram &&
+          processedUrl.textContent &&
+          processedUrl.textContent !== '(空)'
+        ) {
+          window.open(processedUrl.textContent, '_blank')
+        } else {
+          alert('无法打开小程序路径，请复制后在小程序开发工具中使用')
+        }
+      })
+
+      // 编码/解码工具
+      encodeTextButton.addEventListener('click', () => {
+        const text = encodeInput.value
+        if (text) {
+          const encoded = encodeURIComponent(text)
+          encodeOutput.value = encoded
+        }
+      })
+
+      decodeTextButton.addEventListener('click', () => {
+        const text = decodeInput.value
+        if (text) {
+          try {
+            const decoded = decodeURIComponent(text)
+            decodeOutput.value = decoded
+          } catch (error) {
+            alert('解码失败，输入可能不是有效的URL编码字符串')
+            console.error('解码错误:', error)
+          }
+        }
+      })
+
+      copyEncodedButton.addEventListener('click', () => {
+        if (encodeOutput.value) {
+          copyToClipboard(encodeOutput.value)
+        }
+      })
+
+      copyDecodedButton.addEventListener('click', () => {
+        if (decodeOutput.value) {
+          copyToClipboard(decodeOutput.value)
+        }
+      })
+
+      // 帮助模态框
+      helpButton.addEventListener('click', () => {
+        helpModal.classList.remove('hidden')
+        document.body.style.overflow = 'hidden'
+      })
+
+      closeHelp.addEventListener('click', () => {
+        helpModal.classList.add('hidden')
+        document.body.style.overflow = ''
+      })
+
+      closeHelpBtn.addEventListener('click', () => {
+        helpModal.classList.add('hidden')
+        document.body.style.overflow = ''
+      })
+
+      // 点击模态框外部关闭
+      helpModal.addEventListener('click', (e) => {
+        if (e.target === helpModal) {
+          helpModal.classList.add('hidden')
+          document.body.style.overflow = ''
+        }
+      })
+
+      // 主题切换
+      let isDarkMode = false
+      themeToggle.addEventListener('click', () => {
+        isDarkMode = !isDarkMode
+        document.body.classList.toggle('bg-gray-900', isDarkMode)
+        document.body.classList.toggle('text-white', isDarkMode)
+
+        const cards = document.querySelectorAll('.bg-white')
+        cards.forEach((card) => {
+          card.classList.toggle('bg-gray-800', isDarkMode)
+          card.classList.toggle('text-white', isDarkMode)
+        })
+
+        const inputs = document.querySelectorAll(
+          'input:not([type="radio"]):not([type="checkbox"]), textarea'
+        )
+        inputs.forEach((input) => {
+          input.classList.toggle('bg-gray-700', isDarkMode)
+          input.classList.toggle('text-white', isDarkMode)
+          input.classList.toggle('border-gray-600', isDarkMode)
+        })
+
+        const footer = document.querySelector('footer')
+        footer.classList.toggle('bg-gray-800', isDarkMode)
+
+        themeToggle.innerHTML = isDarkMode
+          ? '<i class="fa-solid fa-sun"></i>'
+          : '<i class="fa-solid fa-moon"></i>'
+      })
+
+      // 添加表单验证
+      newParamKey.addEventListener('input', () => {
+        if (newParamKey.value.trim()) {
+          addParamButton.classList.remove('opacity-50', 'cursor-not-allowed')
+          addParamButton.classList.add('hover:bg-secondary/90')
+        } else {
+          addParamButton.classList.add('opacity-50', 'cursor-not-allowed')
+          addParamButton.classList.remove('hover:bg-secondary/90')
+        }
+      })
+
+      // 初始化
+      urlInput.value = '/pages/index/index?userId=12345&type=detail'
+      parseButton.click()
+    })
+  </script>
+</body>
+
+</html>

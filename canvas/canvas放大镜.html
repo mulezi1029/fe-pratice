@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="canvas" style="display: block;margin: 0 auto;border: 1px solid #aaa;">浏览器不支持canvas，请升级</canvas>
+  <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var image = new Image();
+    var isMouseDown = false;
+    var scale;
+
+    //创建离屏的canvas
+    var MagnifyCanvas = document.createElement("canvas");
+    MagnifyCanvas.style.display = "none";
+    document.body.appendChild(MagnifyCanvas);
+    MagnifyCtx = MagnifyCanvas.getContext("2d");
+
+    window.onload = function () {
+      canvas.width = 600;
+      canvas.height = 400;
+      image.src =
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1610%2F20%2Fc16%2F28666491_1476977210753.jpg&refer=http%3A%2F%2Fimg.pconline.com.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1639854808&t=8c31d1b0991a4c8a5068e9f303c1fe90";
+      image.onload = function () {
+        // 将图片绘制到主canvas上
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height); 
+        
+        // 设置离屏canvas的大小与图片一致
+        MagnifyCanvas.width = image.width;
+        MagnifyCanvas.height = image.height;
+
+        // 设置放大倍数：离屏canvas的大小与主canvas的大小之比
+        scale = MagnifyCanvas.width / canvas.width;
+
+        // 将图片绘制到离屏canvas上
+        MagnifyCtx.drawImage(image, 0, 0); 
+      };
+    };
+
+    /**
+     * 将相对窗口的坐标转为相对主canvas的坐标
+     * @param {number} x 鼠标在窗口上的x坐标
+     * @param {number} y 鼠标在窗口上的y坐标
+     * @returns {Object} 返回一个对象，包含canvas上的x和y坐标
+     */
+    function windowToCanvas(x, y) {
+      var box = canvas.getBoundingClientRect() || canvas.getClientRect();
+      return { x: x - box.left, y: y - box.top };
+    }
+
+    /**
+     * 绘制canvas
+     * @param {boolean} isShow 是否显示放大镜
+     * @param {Object} loc 鼠标在canvas上的位置
+     */
+    function drawCanvasWithMaginfier(isShow, loc) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      isShow && drawMaginfier(loc);
+    }
+
+    /**
+     * 绘制放大镜
+     * @param {Object} loc 鼠标在canvas上的位置
+     */
+    function drawMaginfier(loc) {
+      //计算放大时，目标的位置
+      var x = loc.x * scale;
+      var y = loc.y * scale;
+
+      var r = 200;
+
+      //从离屏canvas上剪辑出一个圆
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = "#069";
+      ctx.arc(loc.x, loc.y, r, 0, 2 * Math.PI);
+      ctx.stroke();
+      ctx.clip();
+
+      ctx.drawImage(
+        MagnifyCanvas,
+        x - r,
+        y - r,
+        2 * r,
+        2 * r,
+        loc.x - r,
+        loc.y - r,
+        2 * r,
+        2 * r
+      );
+      ctx.restore();
+    }
+
+    /**
+     * 鼠标按下时，开始绘制放大镜
+     */
+    canvas.onmousedown = function (e) {
+      e.preventDefault();
+      isMouseDown = true;
+      var loc = windowToCanvas(e.clientX, e.clientY);  // 获取鼠标在canvas上的位置
+      drawCanvasWithMaginfier(true, loc);
+    };
+
+    /**
+     * 鼠标移动时，更新放大镜位置
+     */
+    // canvas.onmousemove = function (e) {
+    //   e.preventDefault();
+    //   if (isMouseDown) {
+    //     var loc = windowToCanvas(e.clientX, e.clientY);
+    //     drawCanvasWithMaginfier(true, loc);
+    //   }
+    // };
+
+    // canvas.onmouseup = function (e) {
+    //   e.preventDefault();
+    //   isMouseDown = false;
+    //   drawCanvasWithMaginfier(false);
+    // };
+
+    // canvas.onmouseout = function (e) {
+    //   e.preventDefault();
+    //   isMouseDown = false;
+    //   drawCanvasWithMaginfier(false);
+    // };
+
+  </script>
+</body>
+
+</html>
