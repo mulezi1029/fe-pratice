@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    .selected {
+      background: #0f0;
+    }
+
+    li {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  Click on a list item to select it.
+  <br>
+
+  <ul id="ul">
+    <li>Christopher Robin</li>
+    <li>Winnie-the-Pooh</li>
+    <li>Tigger</li>
+    <li>Kanga</li>
+    <li>Rabbit. Just rabbit.</li>
+  </ul>
+
+  <script>
+    // 获取列表元素
+    const ul = document.getElementById('ul');
+
+    function multiSelect(e){
+      e.target.classList.toggle('selected');
+    }
+    function toggleSelect(e) {
+      const selectedItems = ul.querySelectorAll('.selected');
+      if(selectedItems.length === 0){
+        // 如果没有选中项，直接选中当前项
+        e.target.classList.add('selected');
+        return;
+      }
+      if(selectedItems.length === 1 && selectedItems[0] === e.target){
+        // 如果当前项已经选中，直接取消选中
+        e.target.classList.remove('selected');
+        return;
+      }
+      // 清除其他选中项
+      selectedItems.forEach(item => {
+        item.classList.remove('selected');
+      });
+      // 选中当前项
+      e.target.classList.toggle('selected');
+    }
+
+    // 事件委托，给 ul 添加点击事件监听器
+    // 如果按下了 Ctrl 或 Meta 键，则允许多选
+    // 否则，清除其他选中项并选中当前项
+    ul.addEventListener('click', function (event) {
+      if (event.target.tagName !== 'LI') return
+      if (event.metaKey || event.ctrlKey) {
+        multiSelect(event);
+      } else {
+        toggleSelect(event);
+      }
+    }); 
+
+    ul.addEventListener('mousedown', (event) => {
+      // 阻止默认行为，避免选中时出现文本选择
+      event.preventDefault();
+    });
+    // 添加鼠标移入事件监听器
+    ul.addEventListener('mouseover', (event) => {
+      if (event.target.tagName === 'LI') {
+        event.target.style.color = 'blue'; // 鼠标移入时改变颜色
+      }
+    });
+    // 添加鼠标移出事件监听器
+    ul.addEventListener('mouseout', (event) => {
+      if (event.target.tagName === 'LI') {
+        event.target.style.color = ''; // 鼠标移出时恢复颜色
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .card {
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+      .header{
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        text-align: center;
+        color: #333;
+
+        &:hover {
+          background-color: #e0e0e0;
+          cursor: pointer;
+          color: red;
+        }
+      }
+
+      .body {
+        background-color: #f9f9f9;
+        padding: 10px;
+        color: green;
+      }
+
+      .footer {
+        background-color: #e0e0e0;
+        padding: 10px;
+        text-align: center;
+        color: blue;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="header">
+      <h2>Card Title</h2>
+      <p>Subtitle or description</p>
+    </div>
+    <div class="body">
+      <p>Content goes here...</p>
+      <p>Additional content can be added here...</p>
+    </div>
+    <div class="footer">
+      <p>Footer content goes here...</p>
+    </div>
+  </div>
+</body>
+
+</html>

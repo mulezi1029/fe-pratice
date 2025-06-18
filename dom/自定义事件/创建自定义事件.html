@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="btn">click</button>
+
+  <script>
+    const btn = document.getElementById('btn');
+    // 创建自定义事件
+    const myEvent = new Event('myEvent', {
+      bubbles: true, // 事件是否冒泡
+      cancelable: true // 事件是否可以取消
+    });
+    // 监听自定义事件
+    btn.addEventListener('myEvent', function (event) {
+      console.log('自定义事件触发了！',event);
+      console.log('事件冒泡:', event.bubbles);
+      console.log('事件可取消:', event.cancelable);
+    });
+    // 触发自定义事件
+    btn.addEventListener('click', function (e) {
+      console.log(e)
+      console.log('按钮被点击了，触发自定义事件');
+      btn.dispatchEvent(myEvent);
+    });
+  </script>
+</body>
+
+</html>

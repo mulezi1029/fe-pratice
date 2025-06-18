@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid black;
+      padding: 4px;
+    }
+
+    th {
+      cursor: pointer;
+    }
+
+    th:hover {
+      background: yellow;
+    }
+  </style>
+</head>
+
+<body>
+
+  <table id="grid">
+    <thead>
+      <tr>
+        <th data-type="number">Age</th>
+        <th data-type="string">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>5</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Pete</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Ann</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Eugene</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Ilya</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    // ...your code...
+    const table = document.getElementById('grid');
+    const headers = table.querySelectorAll('th');
+    const rows = table.querySelectorAll('tbody tr');
+    console.log(headers);
+
+    function sortRows(arrayRows,index,type){
+      let newArrayRows = []
+      switch (type) {
+        case 'number':
+          newArrayRows = arrayRows.sort((a, b) => {
+            const cellA = parseFloat(a.cells[index].textContent);
+            const cellB = parseFloat(b.cells[index].textContent);
+            return cellA - cellB; // 数字排序
+          });
+          break;
+        case 'string':
+          newArrayRows = arrayRows.sort((a, b) => {
+            const cellA = a.cells[index].textContent.toLowerCase();
+            const cellB = b.cells[index].textContent.toLowerCase();
+            return cellA.localeCompare(cellB); // 字符串排序
+          });
+          break;
+        // 这里可以添加更多的类型处理
+        default:
+          console.warn('Unsupported type:', type);
+          return arrayRows; // 返回原数组以防不支持的类型
+      }
+      console.log('Sorted rows:', newArrayRows);
+      return newArrayRows
+    }
+    
+    // 事件委托，给表格添加点击事件监听器
+    // 点击表头时，根据 data-type 属性进行排序
+    table.addEventListener('click',function(e){
+      const target = e.target;
+      if (target.tagName !== 'TH') return;
+
+      const type = target.dataset.type;
+      // const index = Array.from(headers).indexOf(target);  // 点击的表头对应的列索引 --> 可以通过 cellIndex 获取
+      const index = target.cellIndex; // 获取点击的表头对应的列索引
+      if (!type) {
+        console.warn('No data-type attribute found on the header.');
+        return; // 如果没有 data-type 属性，直接返回
+      }
+      console.log('Sorting by index:', index, 'type:', type);
+
+      // 根据 index 列的 type 类型实施行排序
+      const ArrayRows = Array.from(rows);
+      console.log('before sorted ArrayRows:', [...ArrayRows]);
+      const sortedRows = sortRows(ArrayRows, index, type);
+
+      // 清空现有的 tbody 内容
+      const tbody = table.querySelector('tbody');
+      tbody.innerHTML = '';
+      tbody.append(...sortedRows); // 将排序后的行添加到 tbody 中
+      console.log('Rows sorted and updated in the table.');
+    })
+  </script>
+
+</body>
+
+</html>

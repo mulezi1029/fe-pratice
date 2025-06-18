@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      height: 2000px;
+      /* make body scrollable, the tooltip should work after the scroll */
+    }
+
+    .tooltip {
+      /* some styles for the tooltip, you can use your own instead */
+      position: fixed;
+      padding: 10px 20px;
+      border: 1px solid #b3c9ce;
+      border-radius: 4px;
+      text-align: center;
+      font: italic 14px/1.3 arial, sans-serif;
+      color: #333;
+      background: #fff;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+    }
+  </style>
+</head>
+
+<body>
+
+  <p>LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa</p>
+  <p>LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa</p>
+
+  <button data-tooltip='<strong>the <div>tooltip</div> is longer than the element</strong>'>Short button</button>
+  <button data-tooltip="HTML<br>tooltip">One more button</button>
+
+  <p>Scroll the page to make buttons appear on the top, check if the tooltips show up correctly.</p>
+
+
+  <script>
+    // 鼠标移动到元素上时显示 tooltip
+    // 鼠标移出元素时隐藏 tooltip
+    // 使用事件委托
+    // 监听 mouseover 和 mouseout 事件
+    // 通过 dataset.tooltip 获取 tooltip 内容
+    // 创建 tooltip 元素并添加到 body
+    document.addEventListener('mouseover', function (event) {
+      if(!event.target.dataset.tooltip) return; // no tooltip
+      // 创建 tooltip 元素。如果已经存在 tooltip 元素，则不再创建
+      const existingTooltip = document.querySelector('.tooltip');
+      if (existingTooltip) {
+        existingTooltip.remove(); // remove existing tooltip
+      }
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.innerHTML = event.target.dataset.tooltip;
+      document.body.append(tooltip);
+      // 摆放 tooltip 位置
+      const tooltipCoords = tooltip.getBoundingClientRect();
+      const coords = event.target.getBoundingClientRect();
+      if(coords.top - tooltipCoords.height < 0) {
+        // 如果 tooltip 超出顶部边界，则放在元素下方
+        tooltip.style.top = coords.bottom + 5 + 'px';
+      } else {
+        // 否则放在元素上方
+        tooltip.style.top = coords.top - tooltipCoords.height - 5 + 'px';
+      }
+      let left = coords.left + (coords.width - tooltipCoords.width) / 2;
+      if (left < 0) left = 5; // 不允许 tooltip 超出左边界
+      tooltip.style.left = left + 'px';
+    });
+
+    document.addEventListener('mouseout', function (event) {
+      if(!event.target.dataset.tooltip) return; // no tooltip
+      // remove tooltip element
+      const tooltip = document.querySelector('.tooltip');
+      if(tooltip) tooltip.remove();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    #contents {
+      padding: 5px;
+      border: 1px green solid;
+    }
+  </style>
+</head>
+
+<body>
+
+  <p>点击所有 contents 内的 a 链接，询问用户是否真的要离开。如果用户不想离开，那就不离开。</p>
+  <fieldset id="contents">
+    <legend>contents1</legend>
+    <p>
+      How about to read <a href="http://wikipedia.org">Wikipedia</a> or visit <a href="http://w3.org"><i>W3.org</i></a> and learn about modern standards?
+    </p>
+  </fieldset>
+
+  <script>
+    const contents = document.getElementById('contents');
+    contents.addEventListener('click',function(e){
+      const target = e.target;
+      console.log('target', target);
+      if(target.closest('a') && contents.contains(target)){ 
+        e.preventDefault(); // 阻止默认行为，防止直接跳转
+        const href = target.getAttribute('href') || target.closest('a').getAttribute('href');
+        const confirmLeave = confirm(`你真的要离开当前页面并访问 ${href} 吗？`);
+        if (confirmLeave) {
+          window.location.href = href; // 如果用户确认，跳转到链接
+        }
+      }
+    });
+  </script>
+</body>
+</html>
