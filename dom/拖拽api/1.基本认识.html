@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .box {
+      display: flex;
+      justify-content: space-between;
+      width: 500px;
+      border: 1px solid #ccc;
+    }
+    .left-list {
+      width: 200px;
+      padding: 10px;
+      border-right: 1px solid #ccc;
+    }
+    .item {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+    .item:hover {
+      background-color: #e0e0e0;
+    }
+    .right {
+      flex-grow: 1;
+      padding: 10px;
+      background-color: #f9f9f9;    
+      border-left: 1px solid #ccc;
+    }
+    .target {
+      margin-left: 20px;
+      border: 2px solid #007bff;
+      background-color: #e9f5ff;
+    }
+    .dragging {
+      border: #007bff 2px dashed;
+      opacity: 0.5;
+      background-color: #d0e0ff;
+    }
+
+    .item-dragenter {
+      background-color: #cce5ff;
+      border: 2px dashed #007bff;
+    }
+  </style>
+</head>
+<body>
+  H5 提供的属性： draggable 属性：用于指定一个元素是否可以被拖动。
+  在 HTML 中，除了图像、链接和选择的文本默认的可拖拽行为之外，其他元素在默认情况下是不可拖拽的。
+  <br>
+  1、针对能够被拖动的元素，可以监听以下事件：
+    - dragstart：当拖动操作开始时触发。
+    - drag：当元素被拖动时持续触发。
+    - dragend：当拖动操作结束时触发。
+  2、针对目标元素（即被拖拽项目可能放置的地方），可以监听以下事件：网页或应用程序的大多数区域都不是放置数据的有效位置。因此，这些事件的默认处理是不允许放置。
+    - dragenter：当拖动的元素进入目标元素时触发。
+    - dragover：当拖动的元素在目标元素上方时持续触发。
+    - dragleave：当拖动的元素离开目标元素时触发。
+    - drop：当拖动的元素被放置到目标元素上时触发。
+
+    <div class="box">
+      <div class="left-list">
+        <li class="item" draggable="true">1</li>
+        <li class="item" draggable="true">2</li>
+        <li class="item" draggable="true">3</li> 
+        <li class="item" draggable="true">4</li>
+        <li class="item" draggable="true">5</li>
+      </div>
+      <div class="right target"></div>
+    </div>
+</p>
+<script>
+const items = document.querySelectorAll('.item');
+const target = document.querySelector('.target');
+// 为每个可拖动的元素添加事件监听器
+items.forEach(item => {
+  item.addEventListener('dragstart', (e) => {
+    console.log('dragstart', e.target.textContent);
+    setTimeout(() => {
+      e.target.classList.add('dragging');
+    }, 0);
+  });
+
+  item.addEventListener('dragend', (e) => {
+    console.log('dragend', e.target.textContent);
+    e.target.classList.remove('dragging');
+  });
+  item.addEventListener('click', (e) => {
+    console.log('click');
+  });
+});
+
+// 被拖动元素进入目标元素时，目标元素添加样式
+target.addEventListener('dragenter', (e) => {
+  // e.preventDefault();
+  target.classList.add('item-dragenter');
+});
+
+
+// 被拖动元素在目标元素上方时，阻止默认行为以允许放置
+target.addEventListener('dragover', (e) => {
+  e.preventDefault(); // Allow drop
+});
+
+// 被拖动元素放置到目标元素上时，目标元素添加样式并将被拖动的元素添加到目标元素中
+target.addEventListener('drop', (e) => {
+  console.log('drop', e.target);
+  const draggingItem = document.querySelector('.dragging');
+  if (!draggingItem) return; // 如果没有正在拖动的元素，直接返回
+  const cloneNode = draggingItem.cloneNode(true); // 克隆被拖动的元素
+  cloneNode.classList.remove('dragging'); 
+  
+  target.appendChild(cloneNode);
+  target.classList.remove('item-dragenter');
+});
+
+// 被拖动元素离开目标元素时，目标元素移除样式
+target.addEventListener('dragleave', (e) => {
+  console.log('dragleave', e.target);
+  target.classList.remove('item-dragenter');
+}); // false
+
+
+</script>
+</body>
+</html>

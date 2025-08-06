@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ant Design RangePicker 日期范围限制示例</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/antd@4.24.8/dist/antd.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@4.24.8/dist/antd.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/locale/zh-cn.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#6B7280',
+            accent: '#0EA5E9',
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      .transition-custom {
+        transition: all 0.3s ease;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-inter">
+  <div id="root" class="min-h-screen flex items-center justify-center p-4">
+    <!-- 内容将由 React 渲染 -->
+  </div>
+
+  <script>
+    // 确保中文语言环境
+    moment.locale('zh-cn');
+    const { RangePicker } = antd;
+    const { useState } = React;
+
+    // 主组件
+    function App() {
+      const [dateRange, setDateRange] = useState([null, null]);
+      
+      // 禁用日期逻辑
+      const disabledDate = (current, type) => {
+        if (!dateRange[0]) {
+          return false; // 如果没有选择开始日期，则不禁用任何日期
+        }
+        
+        const start = dateRange[0];
+        const maxDate = moment(start).add(180, 'days');
+        
+        if (type === 'start') {
+          // 开始日期不能晚于当前选择的结束日期
+          return dateRange[1] ? current.isAfter(dateRange[1], 'day') : false;
+        } else {
+          // 结束日期不能早于开始日期，且不能超过开始日期+180天
+          const isBeforeStartDate = current.isBefore(start, 'day');
+          const isAfterMaxDate = current.isAfter(maxDate, 'day');
+          return isBeforeStartDate || isAfterMaxDate;
+        }
+      };
+      
+      // 日期选择处理
+      const onDateChange = (dates) => {
+        setDateRange(dates);
+      };
+      
+      // 格式化日期显示
+      const formatDate = (date) => {
+        return date ? date.format('YYYY-MM-DD') : '未选择';
+      };
+      
+      return (
+        <div className="bg-white rounded-xl p-8 card-shadow max-w-md w-full transition-custom hover:shadow-lg">
+          <h2 className="text-[clamp(1.5rem,3vw,2rem)] font-bold text-gray-800 mb-6 flex items-center">
+            <i className="fa fa-calendar-check-o text-primary mr-3"></i>
+            日期范围选择
+          </h2>
+          
+          <div className="mb-8">
+            <p className="text-gray-600 mb-2">选择日期范围 (开始日期 + 180天限制)</p>
+            <RangePicker
+              className="w-full"
+              value={dateRange}
+              onChange={onDateChange}
+              disabledDate={(current) => {
+                // 判断当前是开始日期还是结束日期的选择
+                const isStart = dateRange[0] === null || (dateRange[0] && dateRange[1] === null);
+                return disabledDate(current, isStart ? 'start' : 'end');
+              }}
+              placeholder={['开始日期', '结束日期']}
+            />
+          </div>
+          
+          <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+            <h3 className="font-medium text-gray-700 mb-2">当前选择</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-gray-500 mb-1">开始日期</p>
+                <p className="font-medium text-primary">{formatDate(dateRange[0])}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-1">结束日期</p>
+                <p className="font-medium text-primary">{formatDate(dateRange[1])}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="text-sm text-gray-500 bg-gray-50 p-4 rounded-lg">
+            <p className="flex items-start mb-2">
+              <i className="fa fa-info-circle text-primary mt-1 mr-2"></i>
+              <span>结束日期不能早于开始日期，且不能超过开始日期之后的180天</span>
+            </p>
+            {dateRange[0] && (
+              <p className="flex items-start">
+                <i className="fa fa-calendar text-accent mt-1 mr-2"></i>
+                <span>
+                  最大可选结束日期:{' '}
+                  <span className="font-medium text-accent">
+                    {moment(dateRange[0]).add(180, 'days').format('YYYY-MM-DD')}
+                  </span>
+                </span>
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // 渲染应用
+    ReactDOM.render(React.createElement(App), document.getElementById('root'));
+  </script>
+</body>
+</html>
