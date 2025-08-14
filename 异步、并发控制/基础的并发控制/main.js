@@ -9,7 +9,7 @@ setupLogging();
 async function runComparison() {
   console.log('\n========== 并发控制策略比较测试 ==========\n');
   
-  const maxConcurrency = 5;
+  const maxConcurrency = 3;
   const results = [];
   
   try {

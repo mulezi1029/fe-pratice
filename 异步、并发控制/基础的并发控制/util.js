@@ -21,7 +21,7 @@ const buildTask = (taskId, duration, startTime) => {
 
 // 设置日志记录到文件
 const setupLogging = (logFileName = 'run_compare.log') => {
-  const logStream = fs.createWriteStream(path.resolve(__dirname,'./log', logFileName), { flags: 'a' });
+  const logStream = fs.createWriteStream(path.resolve(__dirname,'./log', logFileName), { flags: 'w' });
   const originalConsoleLog = console.log;
   console.log = (...args) => {
     originalConsoleLog(...args);
