@@ -1,0 +1,429 @@
+<html>
+
+<head>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+</head>
+<style type="text/css">
+  body {
+    margin: 0;
+    font-size: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  @font-face {
+    font-family: FZHZGBJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZHZGBJW.ttf");
+  }
+
+  @font-face {
+    font-family: FZLTDHJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZLTDHJW.ttf");
+  }
+
+  @font-face {
+    font-family: FZLTTHJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZLTTHJT.ttf");
+  }
+
+  @font-face {
+    font-family: AlibabaPuHuiTi-Bold;
+    src: url("/usr/share/fonts/default/TrueType/Alibaba-PuHuiTi-Bold.ttf");
+  }
+
+  @font-face {
+    font-family: FZLTHJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZLTHJW.ttf");
+  }
+
+  @font-face {
+    font-family: AlibabaPuHuiTi-Regular;
+    src: url("/usr/share/fonts/default/TrueType/Alibaba-PuHuiTi-Regular.ttf");
+  }
+
+  @font-face {
+    font-family: FZJUNH_JW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZJUNHJT.ttf");
+  }
+
+  /* @font-face {      font-family: FZHZGBJW--GB1-0;      src: url("./font/FZHZGBJW--GB1-0.TTF");    }    @font-face {      font-family: FZLTDHJW--GB1-0;      src: url("./font/FZLTDHJW--GB1-0.TTF");    }    @font-face {      font-family: FZLTTHJW--GB1-0;      src: url("./font/FZLTTHJW--GB1-0.TTF");    }    @font-face {      font-family: AlibabaPuHuiTi-Bold;      src: url("./font/Alibaba-PuHuiTi-Bold.ttf");    }    @font-face {      font-family: AlibabaPuHuiTi-Regular;      src: url("./font/Alibaba-PuHuiTi-Regular.ttf");    }    @font-face {      font-family: FZLTHJW--GB1-0;      src: url("./font/FZLTHJW--GB1-0.ttf");    }    @font-face {      font-family: FZJUNH_JW--GB1-0;      src: url("./font/FZJUNH_JW--GB1-0.ttf");    } */
+  .view {
+    width: 750px;
+    height: 1334px;
+    background: url("https://pages.ares.ctripcorp.com/union-application/yushouposter/wanghong1.png");
+    overflow: hidden;
+    position: relative;
+  }
+
+  .logo {
+    width: 192px;
+    height: 32px;
+    position: absolute;
+    bottom: 37px;
+    right: 37px;
+  }
+
+  .logo img {
+    width: 192px;
+    height: 32px;
+  }
+
+  .bottomLeft {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+
+  .bottomLeft img {
+    width: 310px;
+    height: 303px;
+  }
+
+  .noco1 img {
+    width: 471.67px;
+    height: 461px;
+  }
+
+  .view_15 {
+    /* gap: 4px;      top: 241px; */
+    left: 0px;
+    display: flex;
+    padding: 18px 30px 11px;
+    position: fixed;
+    background: #6141e6;
+    align-items: stretch;
+    border-radius: 0px 0px 24px 0px;
+    justify-content: space-between;
+  }
+
+  .img_8 {
+    width: 36px;
+    height: 31px;
+    margin-right: 4px;
+  }
+
+  .text_12 {
+    color: #ffffff;
+    font-size: 22px;
+    line-height: 30px;
+    text-align: left;
+    font-family: FZLTHJW--GB1-0, sans-serif;
+    /* font-weight: 400; */
+    white-space: nowrap;
+  }
+
+  .content {
+    width: 671px;
+    height: 1160px;
+    margin-top: 88px;
+    margin-left: 40px;
+    /* background: #f9faff; */
+    overflow: hidden;
+    position: relative;
+    padding: 0 29px;
+  }
+
+  .content {
+    transform: rotate(-2.85deg);
+  }
+
+  .title {
+    margin-top: 76px;
+    width: 594px;
+    height: 216px;
+    color: #12144b;
+    font-size: 98px;
+    font-family: FZHZGBJW--GB1-0;
+    font-weight: normal;
+    /* letter-spacing: 0px; */
+    line-height: 98px;
+  }
+
+  .img {
+    width: 613.86px;
+    height: 419.38px;
+    border-radius: 24px 24px 24px 24px;
+  }
+
+  .img img {
+    width: 613.86px;
+    height: 419.38px;
+    border-radius: 24px 24px 24px 24px;
+    object-fit: cover;
+  }
+
+  .price-box {
+    position: absolute;
+    height: 136.09px;
+    min-width: 200px;
+    display: inline-block;
+    background: #df41e6;
+    border-radius: 100px 0px 0px 100px;
+    right: 29px;
+    top: 332px;
+    padding-left: 40px;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+  }
+
+  .price {
+    /* height: 38px; */
+    color: #ffffff;
+    font-size: 28px;
+    font-family: AlibabaPuHuiTi-Bold;
+    font-weight: bold;
+    letter-spacing: 0px;
+    /* margin-top: 19px; */
+  }
+
+  #pri {
+    height: 62px;
+    color: #ffffa8;
+    font-size: 55px;
+    font-family: AlibabaPuHuiTi-Heavy;
+    font-weight: 900;
+    letter-spacing: 0px;
+    line-height: 55px;
+  }
+
+  .night {
+    height: 29px;
+    color: #ffffff;
+    font-size: 24px;
+    font-family: AlibabaPuHuiTi-Regular;
+    font-weight: normal;
+    letter-spacing: 0px;
+    line-height: 29px;
+    margin-top: 5px;
+  }
+
+  #huaxianprice {
+    text-decoration: line-through;
+  }
+
+  .prd-con {
+    color: #27217f;
+    font-size: 36px;
+    font-family: FZJUNH_JW--GB1-0;
+    font-weight: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+    margin-top: 10px;
+  }
+
+  .dot {
+    height: 1px;
+    width: 100%;
+    border-top: 1px dashed #27217f;
+    margin-top: 10px;
+  }
+
+  .info1 {
+    height: 136px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .info1 .info-img {
+    width: 185px;
+    height: 136px;
+    border-radius: 12px 45px 12px 12px;
+  }
+
+  .info1 .info-img img {
+    width: 185px;
+    height: 136px;
+    border-radius: 12px 45px 12px 12px;
+  }
+
+  .info-co {
+    color: #292285;
+    font-size: 24px;
+    font-family: AlibabaPuHuiTiR;
+    font-weight: normal;
+    letter-spacing: -0.58px;
+    margin-left: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+  }
+
+  .info2 {
+    height: 132px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+  }
+
+  .info-bo {
+    /* width: 100%; */
+    color: #292285;
+    font-size: 24px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+  }
+
+  .bottom-content {
+    position: absolute;
+    bottom: 39px;
+    left: 65px;
+    width: 530px;
+  }
+
+  .tag-list .tag {
+    /* height: 27px; */
+    color: #292285;
+    font-size: 24px;
+    font-family: FZLTHJW--GB1-0;
+    font-weight: normal;
+    letter-spacing: 0px;
+    display: inline-block;
+    padding: 2px 5px;
+    border: 2px #292285 solid;
+    border-radius: 5px;
+  }
+
+  #tag2 {
+    margin-left: 10px;
+  }
+
+  #tag3 {
+    margin-left: 10px;
+  }
+
+  .time {
+    color: #8d82fc;
+    font-size: 20px;
+    font-family: FZLTDHJW--GB1-0;
+    font-weight: normal;
+    letter-spacing: 0px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .remark {
+    color: #8d82fc;
+    font-size: 16px;
+    font-family: FZLTHJW--GB1-0;
+    font-weight: normal;
+    letter-spacing: 0px;
+  }
+
+  .qr {
+    width: 158px;
+    height: 158px;
+    position: absolute;
+    bottom: 39px;
+    right: 29px;
+    z-index: 3;
+  }
+
+  .qr img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .noco {
+    margin-top: 48px;
+    position: relative;
+    top: 0;
+    margin-left: 40px;
+    /* left: -20px; */
+  }
+
+  .small_text {
+    font-size: 50px;
+    height: 197px;
+    font-family: FZHZGBJW--GB1-0;
+    font-weight: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+    line-height: 65px;
+  }
+
+  .img_2 {
+    width: 35px;
+    height: 30px;
+    margin-right: 4px;
+    position: relative;
+    top: 0px;
+  }
+</style>
+
+<body>
+  <div class="view">
+    <div class="view_15"> <img src="https://dimg04.fx.ctripcorp.com/images/1gz4o12000damf62e0068.png" class="img_2" />
+      <span class="text_12">上海美景酒店榜测试测试 NO.9</span> </div>
+    <div class="content"> <!-- 超过12个字加 small_text -->
+      <div class="title">上海外滩测车试测道夫酒店</div>
+      <div class="img"> <img id="mianpic"
+          src="https://images4.c-ctrip.com/target/0220s12000c415l2zAE91_C_500_500.jpg" /> </div>
+      <div class="price-box">
+        <div class="price"> <span id="currency">¥</span> <span id="pri">500</span> <span id="qi">起/<span
+              id="nightnu">5</span id="wan">晚</span> </div>
+        <div class="night"> <span id="huaxianprice">¥1268</span> <span id="nightper">（每晚¥400起）</span><span> </span>
+        </div>
+      </div>
+      <div class="prd-con"> 总会豪雅临江套房1晚+早餐2份/天江套房1晚+早餐2份/天江套房1晚+早餐2份/天江套房1晚+早餐2份/天 </div>
+      <div class="dot"></div>
+      <div class="info1" style="display: none;">
+        <div class="info-img"> <img id="smallpic"
+            src="https://pages.ares.ctripcorp.com/union-application/yushouposter/ditu.png" /> </div>
+        <div class="info-co"> Minibar免费1份+Lamer惊喜套装1份+双人蔚景阁午餐1份 +双人思塾酒廊礼遇1份Minibar免费1+Lamer惊喜套装1份 +双人蔚景阁午餐1份测试测试测试测试测试
+        </div>
+      </div>
+      <div class="info2" style="display: none;">
+        <div class="info-bo"> Minibar免费1份+Lamer惊喜套装1份+双人蔚景阁午餐1份 +双人思塾酒廊礼遇1份Minibar免费1+Lamer惊喜套装1份
+          +双人蔚景阁午餐1份测试测试测试测试测试双人蔚景阁午餐1份测试测试测试测试测试 </div>
+      </div> <!-- 加noco -->
+      <div class="bottom-content noco">
+        <div class="tag-list">
+          <div class="tag" id="tag1">过车期可退</div>
+          <div class="tag" id="tag2">过期车可退</div>
+          <div class="tag" id="tag3">过期车可退</div>
+        </div>
+        <div class="time">可使用时间：2023/09/01前</div>
+        <div class="remark">具体使用规则见产品详情页</div>
+        <div class="remark">划线价并非原价仅供参考，详见具体产品说明。</div>
+      </div>
+      <div class="qr"> <img src="https://pages.ares.ctripcorp.com/union-application/yushouposter/ditu.png" /> </div>
+    </div>
+    <div class="logo"> <img src="https://dimg04.fx.ctripcorp.com/images/1gz4l12000damf612BB8A.png" class="img_6" />
+    </div>
+    <div class="bottomLeft noco1"> <img
+        src="https://pages.ares.ctripcorp.com/union-application/yushouposter/bottomLeft.png" /> </div>
+  </div>
+</body>
+
+</html>

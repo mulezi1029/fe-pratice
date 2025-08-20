@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多行文本省略号底部对齐方案</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .demo-item {
+            background: white;
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .demo-title {
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 8px;
+        }
+        
+        .demo-text {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #fafafa;
+        }
+        
+        /* 方案1: 标准方法（对比用） */
+        .method-standard {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            line-height: 1.5;
+        }
+        
+        /* 方案2: 伪元素模拟省略号 */
+        .method-pseudo {
+            position: relative;
+            max-height: 3em; /* 2行文本的高度 */
+            line-height: 1.5;
+            overflow: hidden;
+            padding-right: 1em;
+        }
+        
+        .method-pseudo::after {
+            content: '...';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(to right, transparent, #fafafa 50%);
+            padding-left: 20px;
+        }
+        
+        /* 方案3: 使用伪元素遮罩 */
+        .method-mask {
+            position: relative;
+            max-height: 3em;
+            line-height: 1.5;
+            overflow: hidden;
+        }
+        
+        .method-mask::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 1em;
+            height: 1.5em;
+            background: linear-gradient(to right, transparent, #fafafa);
+        }
+        
+        .method-mask::after {
+            content: '...';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #fafafa;
+            color: #333;
+        }
+        
+        /* 方案4: 使用JavaScript + CSS的混合方案 */
+        .method-js {
+            position: relative;
+            max-height: 3em;
+            line-height: 1.5;
+            overflow: hidden;
+        }
+        
+        .method-js .ellipsis {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(to right, transparent, #fafafa 50%);
+            padding-left: 20px;
+            display: none;
+        }
+        
+        /* 方案5: 使用flexbox布局调整 */
+        .method-flex {
+            display: flex;
+            flex-direction: column;
+            height: 3em;
+            line-height: 1.5;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .method-flex .text-content {
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .method-flex::after {
+            content: '...';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(to right, transparent, #fafafa 50%);
+            padding-left: 20px;
+        }
+        
+        /* 方案6: 改进的伪元素方案 */
+        .method-improved {
+            position: relative;
+            max-height: 3em;
+            line-height: 1.5;
+            overflow: hidden;
+            word-break: break-word;
+        }
+        
+        .method-improved::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 1.5em;
+            background: linear-gradient(to right, rgba(250,250,250,0), #fafafa 70%);
+            pointer-events: none;
+        }
+        
+        .method-improved::after {
+            content: '...';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #fafafa;
+            color: #666;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+        
+        .pros-cons {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .pros {
+            color: #28a745;
+        }
+        
+        .cons {
+            color: #dc3545;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>多行文本省略号底部对齐解决方案</h1>
+        
+        <div class="demo-item">
+            <div class="demo-title">方案1: 标准CSS方法（对比参考）</div>
+            <div class="demo-text method-standard">
+                这是一段很长的文本，用来测试多行文本溢出省略号的显示效果，我们需要观察省略号的位置是否在底部对齐。
+            </div>
+            <div class="code-block">
+.method-standard {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    line-height: 1.5;
+}
+            </div>
+            <div class="pros-cons">
+                <div class="pros">✓ 优点：标准方法，兼容性好</div>
+                <div class="cons">✗ 缺点：省略号位置无法精确控制，不在底部对齐</div>
+            </div>
+        </div>
+
+        <div class="demo-item">
+            <div class="demo-title">方案2: 伪元素模拟省略号（推荐）</div>
+            <div class="demo-text method-pseudo">
+                这是一段很长的文本，用来测试多行文本溢出省略号的显示效果，我们需要观察省略号的位置是否在底部对齐。
+            </div>
+            <div class="code-block">
+.method-pseudo {
+    position: relative;
+    max-height: 3em; /* 2行文本的高度 */
+    line-height: 1.5;
+    overflow: hidden;
+    padding-right: 1em;
+}
+
+.method-pseudo::after {
+    content: '...';
+    position: absolute;
+    <span class="highlight">bottom: 0;</span>
+    <span class="highlight">right: 0;</span>
+    background: linear-gradient(to right, transparent, #fafafa 50%);
+    padding-left: 20px;
+}
+            </div>
+            <div class="pros-cons">
+                <div class="pros">✓ 优点：省略号完全底部对齐，纯CSS实现</div>
+                <div class="cons">✗ 缺点：需要知道背景色，可能遮挡部分文字</div>
+            </div>
+        </div>
+
+        <div class="demo-item">
+            <div class="demo-title">方案3: 双伪元素遮罩方案</div>
+            <div class="demo-text method-mask">
+                这是一段很长的文本，用来测试多行文本溢出省略号的显示效果，我们需要观察省略号的位置是否在底部对齐。
+            </div>
+            <div class="code-block">
+.method-mask {
+    position: relative;
+    max-height: 3em;
+    line-height: 1.5;
+    overflow: hidden;
+}
+
+.method-mask::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1em;
+    height: 1.5em;
+    background: linear-gradient(to right, transparent, #fafafa);
+}
+
+.method-mask::after {
+    content: '...';
+    position: absolute;
+    <span class="highlight">bottom: 0;</span>
+    <span class="highlight">right: 0;</span>
+    background: #fafafa;
+    color: #333;
+}
+            </div>
+            <div class="pros-cons">
+                <div class="pros">✓ 优点：更好的遮罩效果，省略号位置精确</div>
+                <div class="cons">✗ 缺点：代码稍复杂，需要双伪元素</div>
+            </div>
+        </div>
+
+        <div class="demo-item">
+            <div class="demo-title">方案4: JavaScript动态计算方案</div>
+            <div class="demo-text method-js" data-original-text="这是一段很长的文本，用来测试多行文本溢出省略号的显示效果，我们需要观察省略号的位置是否在底部对齐。JavaScript可以动态计算文本是否溢出。">
+                <span class="ellipsis">...</span>
+            </div>
+            <div class="code-block">
+// JavaScript实现
+function addEllipsis(element) {
+    const originalText = element.dataset.originalText;
+    const maxHeight = parseFloat(getComputedStyle(element).maxHeight);
+    
+    element.textContent = originalText;
+    
+    if (element.scrollHeight > maxHeight) {
+        const ellipsis = element.querySelector('.ellipsis');
+        ellipsis.style.display = 'block';
+        
+        // 动态调整文本长度直到不溢出
+        let text = originalText;
+        while (element.scrollHeight > maxHeight && text.length > 0) {
+            text = text.slice(0, -1);
+            element.childNodes[0].textContent = text;
+        }
+    }
+}
+            </div>
+            <div class="pros-cons">
+                <div class="pros">✓ 优点：精确控制，可以避免遮挡文字</div>
+                <div class="cons">✗ 缺点：需要JavaScript，性能开销</div>
+            </div>
+        </div>
+
+        <div class="demo-item">
+            <div class="demo-title">方案5: 改进的伪元素方案（最佳实践）</div>
+            <div class="demo-text method-improved">
+                这是一段很长的文本，用来测试多行文本溢出省略号的显示效果，我们需要观察省略号的位置是否在底部对齐。这个方案结合了渐变遮罩。
+            </div>
+            <div class="code-block">
+.method-improved {
+    position: relative;
+    max-height: 3em;
+    line-height: 1.5;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.method-improved::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 1.5em;
+    background: linear-gradient(to right, rgba(255,255,255,0), #fafafa 70%);
+    pointer-events: none;
+}
+
+.method-improved::after {
+    content: '...';
+    position: absolute;
+    <span class="highlight">bottom: 0;</span>
+    <span class="highlight">right: 0;</span>
+    background: #fafafa;
+    color: #666;
+    font-weight: bold;
+    line-height: 1.5;
+}
+            </div>
+            <div class="pros-cons">
+                <div class="pros">✓ 优点：完美的底部对齐，自然的渐变过渡，纯CSS实现</div>
+                <div class="cons">✗ 缺点：需要知道背景色</div>
+            </div>
+        </div>
+
+        <div class="demo-item">
+            <div class="demo-title">📋 实施建议</div>
+            <div style="padding: 15px; background: #e7f3ff; border-radius: 5px; margin: 10px 0;">
+                <h4>推荐使用方案5（改进的伪元素方案）：</h4>
+                <ul>
+                    <li><strong>适用场景：</strong>背景色固定的多行文本截断</li>
+                    <li><strong>关键技术：</strong>position: absolute + bottom: 0 实现底部对齐</li>
+                    <li><strong>渐变遮罩：</strong>使用linear-gradient创建自然过渡效果</li>
+                    <li><strong>注意事项：</strong>需要根据实际背景色调整渐变色值</li>
+                </ul>
+                
+                <h4>针对您的代码修改建议：</h4>
+                <div class="code-block">
+.main-title-two-line {
+    position: relative;
+    max-height: 3em; /* 根据font-size调整 */
+    line-height: 1.5;
+    overflow: hidden;
+    /* 移除原有的 -webkit-box 相关属性 */
+}
+
+.main-title-two-line::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 1.5em;
+    background: linear-gradient(to right, transparent, 你的背景色 70%);
+}
+
+.main-title-two-line::after {
+    content: '...';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: 你的背景色;
+    line-height: 1.5;
+}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript方案的实现
+        document.addEventListener('DOMContentLoaded', function() {
+            const jsElements = document.querySelectorAll('.method-js');
+            
+            jsElements.forEach(function(element) {
+                const originalText = element.dataset.originalText;
+                const ellipsis = element.querySelector('.ellipsis');
+                
+                // 先设置文本
+                element.childNodes[0] = document.createTextNode(originalText);
+                
+                // 检查是否溢出
+                const maxHeight = parseFloat(getComputedStyle(element).maxHeight);
+                
+                if (element.scrollHeight > maxHeight) {
+                    ellipsis.style.display = 'block';
+                    
+                    // 二分查找最适合的文本长度
+                    let left = 0;
+                    let right = originalText.length;
+                    let bestFit = '';
+                    
+                    while (left <= right) {
+                        const mid = Math.floor((left + right) / 2);
+                        const testText = originalText.substring(0, mid);
+                        element.childNodes[0].textContent = testText;
+                        
+                        if (element.scrollHeight <= maxHeight) {
+                            bestFit = testText;
+                            left = mid + 1;
+                        } else {
+                            right = mid - 1;
+                        }
+                    }
+                    
+                    element.childNodes[0].textContent = bestFit;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

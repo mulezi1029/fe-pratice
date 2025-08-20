@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亲子预售海报模板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+
+        .poster-container {
+            width: 320px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-tag {
+            background: #FFE066;
+            color: #333;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+
+        .main-bg {
+            width: 100%;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect fill="%234A90E2" width="320" height="200"/><text x="160" y="100" text-anchor="middle" fill="white" font-size="16">营地背景图</text></svg>') center/cover;
+            position: relative;
+        }
+
+        .title-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+        }
+
+        .main-title {
+            background: rgba(255, 102, 102, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .sub-title {
+            background: rgba(255, 193, 7, 0.9);
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .gallery-section {
+            padding: 15px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .gallery-item {
+            width: 80px;
+            height: 60px;
+            background: #ddd;
+            border-radius: 8px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><rect fill="%23ddd" width="80" height="60"/><text x="40" y="35" text-anchor="middle" fill="%23666" font-size="10">图片</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .price-section {
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .price-info {
+            flex: 1;
+        }
+
+        .price-main {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .price-sub {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            text-decoration: line-through;
+        }
+
+        .price-unit {
+            color: white;
+            font-size: 14px;
+        }
+
+        .mascot {
+            width: 60px;
+            height: 60px;
+            background: #FFA500;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .description {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 12px;
+            line-height: 1.4;
+            margin: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .bottom-info {
+            padding: 15px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .time-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .time-icon {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+        }
+
+        .logo {
+            text-align: right;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 10px;
+        }
+
+        /* 控制面板样式 */
+        .control-panel {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 320px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .variant-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .variant-btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .variant-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .variant-btn.active {
+            background: #4A90E2;
+            color: white;
+            border-color: #4A90E2;
+        }
+
+        /* 不同变体的样式调整 */
+        .variant-1 .main-title { background: rgba(255, 102, 102, 0.9); }
+        .variant-2 .main-title { background: rgba(76, 175, 80, 0.9); }
+        .variant-3 .main-title { background: rgba(76, 175, 80, 0.9); }
+        .variant-4 .main-title { background: rgba(156, 39, 176, 0.9); }
+        .variant-5 .main-title { background: rgba(156, 39, 176, 0.9); }
+        .variant-6 .main-title { background: rgba(255, 152, 0, 0.9); }
+
+        /* 云朵文字效果样式 */
+        .cloud-effect .main-title {
+            background: transparent !important;
+            color: #FF4500;
+            text-shadow: 
+                2px 2px 0px #CC3300,
+                4px 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .cloud-effect .main-title::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -15px;
+            right: -15px;
+            bottom: -8px;
+            background: white;
+            border-radius: 30px;
+            z-index: -1;
+            box-shadow:
+                /* 主体云朵 */
+                0 0 0 5px white,
+                /* 左侧云朵凸起 */
+                -20px -6px 0 -3px white,
+                -15px -10px 0 -2px white,
+                -25px 3px 0 -5px white,
+                /* 右侧云朵凸起 */
+                20px -6px 0 -3px white,
+                15px -10px 0 -2px white,
+                25px 3px 0 -5px white,
+                /* 顶部云朵凸起 */
+                -8px -15px 0 -3px white,
+                0px -18px 0 -5px white,
+                8px -15px 0 -3px white,
+                /* 底部小凸起 */
+                -6px 8px 0 -6px white,
+                6px 8px 0 -6px white,
+                /* 外层阴影 */
+                0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .cloud-effect .main-title::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -10px;
+            right: -10px;
+            bottom: -4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            z-index: -1;
+            box-shadow:
+                -12px -5px 0 -2px rgba(255, 255, 255, 0.6),
+                12px -5px 0 -2px rgba(255, 255, 255, 0.6),
+                -6px -12px 0 -3px rgba(255, 255, 255, 0.6),
+                6px -12px 0 -3px rgba(255, 255, 255, 0.6);
+        }
+
+        /* 云朵效果的不同颜色变体 */
+        .cloud-effect.variant-1 .main-title { color: #FF4500; }
+        .cloud-effect.variant-2 .main-title { color: #228B22; }
+        .cloud-effect.variant-3 .main-title { color: #228B22; }
+        .cloud-effect.variant-4 .main-title { color: #8A2BE2; }
+        .cloud-effect.variant-5 .main-title { color: #8A2BE2; }
+        .cloud-effect.variant-6 .main-title { color: #FF6600; }
+    </style>
+</head>
+<body>
+    <div class="control-panel">
+        <h3>选择海报变体：</h3>
+        <div class="variant-buttons">
+            <button class="variant-btn active" onclick="setVariant(1)">亲子-1</button>
+            <button class="variant-btn" onclick="setVariant(2)">亲子-2</button>
+            <button class="variant-btn" onclick="setVariant(3)">亲子-3</button>
+            <button class="variant-btn" onclick="setVariant(4)">亲子-4</button>
+            <button class="variant-btn" onclick="setVariant(5)">亲子-5</button>
+            <button class="variant-btn" onclick="setVariant(6)">亲子-6</button>
+        </div>
+        
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                <input type="checkbox" id="cloudEffect" onchange="toggleCloudEffect()" style="margin: 0;">
+                <span>启用云朵文字效果</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="poster-container variant-1" id="poster">
+        <div class="top-tag">🔸2025新春度假村套餐</div>
+        
+        <div class="main-bg">
+            <div class="title-overlay">
+                <div class="main-title" id="mainTitle">艾蒙七大全好友</div>
+                <div class="sub-title" id="subTitle">到环城星时标准字号</div>
+            </div>
+        </div>
+
+        <div class="gallery-section" id="gallery">
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+        </div>
+
+        <div class="price-section">
+            <div class="price-info">
+                <div class="price-main">￥7999</div>
+                <div class="price-sub">￥12666</div>
+                <div class="price-unit">起/晚</div>
+            </div>
+            <div class="mascot">🐰</div>
+        </div>
+
+        <div class="description" id="description">
+            【套餐包含】外半日游1份(含爱戏1份)+自制马戏表演子之缘*(含内份商务套餐含一门票对）全国旅游、可定家庭游等系列综合度...
+        </div>
+
+        <div class="bottom-info">
+            <div class="time-info">
+                <div class="time-icon"></div>
+                <span>可使用时间 2025/09/01前</span>
+            </div>
+            <div class="tags">
+                <span class="tag">豪城酒店</span>
+                <span class="tag">安心游楽</span>
+                <span class="tag">舒适酒店</span>
+            </div>
+            <div style="font-size: 10px; margin-top: 8px;">
+                至地服务：艾蒙(泽东)环球儿童度假、艾蒙旅游电話：...
+            </div>
+            <div class="logo">🏨在境游玩JT</div>
+        </div>
+    </div>
+
+    <script>
+        // 6种变体的数据配置
+        const variants = {
+            1: {
+                mainTitle: "艾蒙七大全好友",
+                subTitle: "到环城星时标准字号",
+                galleryCount: 3,
+                description: "【套餐包含】外半日游1份(含爱戏1份)+自制马戏表演子之缘*(含内份商务套餐含一门票对）全国旅游、可定家庭游等系列综合度..."
+            },
+            2: {
+                mainTitle: "安吉云上青原度假村",
+                subTitle: "北欢阿同时间文案21个最合适的孝来多的牛用番想号",
+                galleryCount: 2,
+                description: "【套餐包含】外半日游1份(含爱戏1份)+自制马戏表演子之缘*(含内份商务套餐含一门票对）全国旅游、可定家庭游等系列综合度..."
+            },
+            3: {
+                mainTitle: "安吉云上青原度假村",
+                subTitle: "北欢阿同时间文案21个最合适的孝来多的牛用番想...",
+                galleryCount: 1,
+                description: "【套餐包含】外半日游1份(含爱戏1份)+自制马戏表演子之缘*(含内份商务套餐含一门票对）全国旅游、可定家庭游等系列综合度..."
+            },
+            4: {
+                mainTitle: "安吉云上青原度假村艾蒙超高长安好友18个",
+                subTitle: "安吉云上最原度假村·松景部度酒店",
+                galleryCount: 3,
+                description: "【套餐包含】外半日游1份(含爱戏1份)+自制马戏表演子之缘*(含内份商务套餐含一门票对）全国旅游、可定家庭游等系列综合度..."
+            },
+            5: {
+                mainTitle: "安吉云上青原度假村艾蒙超高长安好友",
+                subTitle: "安吉云上最原度假村·松景部度酒店",
+                galleryCount: 2,
+                description: "【套餐包含】外半日游1份(含爱戏1份)+自制马戏表演子之缘*(含内份商务套餐含一门票对）全国旅游、可定家庭游等系列综合度..."
+            },
+            6: {
+                mainTitle: "安吉郝泽酒店",
+                subTitle: "安吉云上最原度假村·松景部度酒店",
+                galleryCount: 1,
+                description: "【套餐包含】外半日游1份(含爱戏1份)+自制马戏表演子之缘*(含内份商务套餐含一门票对）全国旅游、可定家庭游等系列综合度..."
+            }
+        };
+
+        let currentVariant = 1;
+        let cloudEffectEnabled = false;
+
+        function setVariant(variantNum) {
+            // 更新按钮状态
+            document.querySelectorAll('.variant-btn').forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // 如果是程序调用，手动设置对应按钮为active
+                document.querySelector(`button[onclick="setVariant(${variantNum})"]`).classList.add('active');
+            }
+            
+            currentVariant = variantNum;
+            
+            // 更新海报样式类
+            updatePosterClass();
+            
+            // 获取变体数据
+            const data = variants[variantNum];
+            
+            // 更新内容
+            document.getElementById('mainTitle').textContent = data.mainTitle;
+            document.getElementById('subTitle').textContent = data.subTitle;
+            document.getElementById('description').textContent = data.description;
+            
+            // 更新图片库
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            for (let i = 0; i < data.galleryCount; i++) {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                gallery.appendChild(item);
+            }
+        }
+
+        function toggleCloudEffect() {
+            cloudEffectEnabled = document.getElementById('cloudEffect').checked;
+            updatePosterClass();
+        }
+
+        function updatePosterClass() {
+            const poster = document.getElementById('poster');
+            let className = `poster-container variant-${currentVariant}`;
+            if (cloudEffectEnabled) {
+                className += ' cloud-effect';
+            }
+            poster.className = className;
+        }
+
+        // 初始化第一个变体
+        setVariant(1);
+    </script>
+</body>
+</html>

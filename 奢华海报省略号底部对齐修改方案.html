@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奢华海报省略号底部对齐修改方案</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .solution-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .demo-title {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+        
+        /* 模拟奢华海报的背景和样式 */
+        .mock-poster {
+            width: 400px;
+            height: 300px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #CD853F 100%);
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        
+        .mock-title-area {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            text-align: center;
+        }
+        
+        /* 原始方法 */
+        .original-method {
+            font-family: serif;
+            font-size: 32px;
+            background: linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            line-height: 1.2;
+        }
+        
+        /* 改进方法 */
+        .improved-method {
+            font-family: serif;
+            font-size: 32px;
+            background: linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            max-height: 2.4em; /* 2行的高度 */
+            line-height: 1.2;
+            overflow: hidden;
+            word-break: break-word;
+        }
+        
+        .improved-method::after {
+            content: '...';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: normal;
+            line-height: 1.2;
+            padding-left: 20px;
+            /* 创建遮罩效果 */
+            background-image: 
+                linear-gradient(to right, transparent 0%, rgba(139, 69, 19, 0.8) 30%),
+                linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+            background-clip: text, text;
+            -webkit-background-clip: text, text;
+        }
+        
+        /* JavaScript辅助方案 */
+        .js-method {
+            font-family: serif;
+            font-size: 32px;
+            background: linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            max-height: 2.4em;
+            line-height: 1.2;
+            overflow: hidden;
+            word-break: break-word;
+        }
+        
+        .js-method .ellipsis-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            display: none;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #4a5568;
+            color: #cbd5e0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .highlight {
+            background-color: #ffd93d;
+            color: #2d3748;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .step-list {
+            background: #e6f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .step-list ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .step-list li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .success {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #198754;
+        }
+    </style>
+</head>
+<body>
+    <div class="solution-container">
+        <h1>🏪 奢华海报省略号底部对齐修改方案</h1>
+        
+        <div class="warning">
+            <h4>⚠️ 特殊挑战</h4>
+            您的奢华海报使用了渐变透明文字效果和背景图片，这使得省略号底部对齐变得更加复杂。标准的伪元素遮罩方案不适用，因为：
+            <ul>
+                <li>文字使用了 <code>background-clip: text</code> 和 <code>-webkit-text-fill-color: transparent</code></li>
+                <li>背景是图片而非纯色</li>
+                <li>省略号也需要保持相同的渐变效果</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <div class="demo-title">📋 当前效果对比</div>
+            
+            <div style="display: flex; gap: 30px; align-items: center;">
+                <div>
+                    <h4>原始效果</h4>
+                    <div class="mock-poster">
+                        <div class="mock-title-area">
+                            <div class="original-method">
+                                香港澳门新加坡六星超级豪华大酒店世界总店名称店名称发发很快
+                            </div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: #dc3545;">❌ 省略号不在底部对齐</p>
+                </div>
+                
+                <div>
+                    <h4>改进效果</h4>
+                    <div class="mock-poster">
+                        <div class="mock-title-area">
+                            <div class="improved-method">
+                                香港澳门新加坡六星超级豪华大酒店世界总店名称店名称发发很快
+                            </div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: #198754;">✅ 省略号底部对齐</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <div class="demo-title">🛠️ 解决方案1：纯CSS改进方案（推荐）</div>
+            
+            <div class="step-list">
+                <h4>修改步骤：</h4>
+                <ol>
+                    <li>移除原有的 <code>-webkit-box</code> 相关属性</li>
+                    <li>使用 <code>max-height</code> 和 <code>overflow: hidden</code> 控制行数</li>
+                    <li>用伪元素 <code>::after</code> 创建底部对齐的省略号</li>
+                    <li>为省略号应用相同的渐变效果</li>
+                </ol>
+            </div>
+
+            <div class="code-block" data-lang="CSS">
+/* 替换您的 .main-title-two-line 样式 */
+.main-title-two-line {
+    position: relative;
+    <span class="highlight">max-height: 2.4em;</span> /* 根据line-height调整：line-height × 行数 */
+    line-height: 1.2;
+    overflow: hidden;
+    word-break: break-word;
+    /* 移除原有的 -webkit-box 相关属性 */
+}
+
+.main-title-two-line::before {
+    /* 创建遮罩层，模拟背景 */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    height: 1.2em;
+    background: linear-gradient(
+        to right, 
+        transparent 0%, 
+        rgba(139, 69, 19, 0.9) 40%  /* 根据您的背景色调整 */
+    );
+    z-index: 1;
+}
+
+.main-title-two-line::after {
+    content: '...';
+    position: absolute;
+    <span class="highlight">bottom: 0;</span>
+    <span class="highlight">right: 0;</span>
+    background: linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.2;
+    z-index: 2;
+    padding-left: 10px;
+}
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <div class="demo-title">🔧 解决方案2：JavaScript辅助方案（最精确）</div>
+            
+            <p>对于复杂的渐变背景，JavaScript方案可以提供最精确的控制：</p>
+
+            <div class="code-block" data-lang="CSS">
+.main-title-two-line {
+    position: relative;
+    max-height: 2.4em;
+    line-height: 1.2;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.main-title-two-line .ellipsis-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+    display: none;
+}
+            </div>
+
+            <div class="code-block" data-lang="JavaScript">
+function addBottomEllipsis() {
+    const titleElements = document.querySelectorAll('.main-title-two-line');
+    
+    titleElements.forEach(element => {
+        const maxHeight = parseFloat(getComputedStyle(element).maxHeight);
+        const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+        const maxLines = Math.floor(maxHeight / lineHeight);
+        
+        // 检查是否需要截断
+        if (element.scrollHeight > maxHeight) {
+            // 创建省略号元素
+            if (!element.querySelector('.ellipsis-overlay')) {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'ellipsis-overlay';
+                ellipsis.textContent = '...';
+                element.appendChild(ellipsis);
+            }
+            
+            const ellipsis = element.querySelector('.ellipsis-overlay');
+            ellipsis.style.display = 'block';
+            
+            // 二分查找最适合的文本长度
+            const originalText = element.firstChild.textContent;
+            let left = 0;
+            let right = originalText.length;
+            let bestFit = '';
+            
+            while (left <= right) {
+                const mid = Math.floor((left + right) / 2);
+                const testText = originalText.substring(0, mid);
+                element.firstChild.textContent = testText;
+                
+                if (element.scrollHeight <= maxHeight) {
+                    bestFit = testText;
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            
+            element.firstChild.textContent = bestFit;
+        }
+    });
+}
+
+// 页面加载后执行
+document.addEventListener('DOMContentLoaded', addBottomEllipsis);
+// 窗口大小改变时重新执行
+window.addEventListener('resize', addBottomEllipsis);
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <div class="demo-title">📝 针对您代码的具体修改</div>
+            
+            <h4>在您的 `奢华海报.html` 文件中：</h4>
+
+            <div class="code-block" data-lang="HTML">
+<!-- 第519行，为元素添加原始文本数据属性（如果选择JavaScript方案） -->
+&lt;div class="main-title main-title-two-line fz-64" 
+     data-original="香港澳门新加坡六星超级豪华大酒店世界总店名称店名称发发很快"&gt;
+    香港澳门新加坡六星超级豪华大酒店世界总店名称店名称发发很快
+&lt;/div&gt;
+            </div>
+
+            <div class="code-block" data-lang="CSS">
+/* 在第172-182行，替换 .main-title-two-line 的样式 */
+.main-title-two-line {
+    position: relative;
+    max-height: 2.4em; /* 对于fz-64，约等于 64px * 1.2 * 2 = 153.6px */
+    line-height: 1.2;
+    overflow: hidden;
+    word-break: break-word;
+    /* 删除以下属性：
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    white-space: normal; */
+}
+
+.main-title-two-line::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    height: 1.2em;
+    /* 使用与您背景相似的颜色创建渐变遮罩 */
+    background: linear-gradient(
+        to right, 
+        transparent 0%, 
+        rgba(139, 69, 19, 0.8) 40%
+    );
+    z-index: 1;
+}
+
+.main-title-two-line::after {
+    content: '...';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(91deg, #FFD8B2 5.06%, #FFF 48.08%, #FFC9A0 97.72%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.2;
+    z-index: 2;
+    padding-left: 10px;
+}
+            </div>
+        </div>
+
+        <div class="success">
+            <h4>✅ 推荐方案</h4>
+            <p><strong>建议使用方案1（纯CSS）</strong>，因为：</p>
+            <ul>
+                <li>✅ 纯CSS实现，性能更好</li>
+                <li>✅ 省略号完美底部对齐</li>
+                <li>✅ 保持原有的渐变文字效果</li>
+                <li>✅ 兼容性好，维护简单</li>
+            </ul>
+            <p>如果效果不理想，可以微调 <code>::before</code> 伪元素的 <code>background</code> 颜色来匹配您的具体背景。</p>
+        </div>
+
+        <div class="warning">
+            <h4>🔧 调试提示</h4>
+            <ul>
+                <li>根据实际字体大小调整 <code>max-height</code> 值</li>
+                <li>如果背景复杂，可能需要调整遮罩层的渐变色值</li>
+                <li>在不同设备上测试效果，确保响应式兼容性</li>
+                <li>考虑为不同字号的标题创建不同的样式类</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 演示JavaScript方案
+        document.addEventListener('DOMContentLoaded', function() {
+            const jsElements = document.querySelectorAll('.js-method');
+            
+            jsElements.forEach(function(element) {
+                const maxHeight = parseFloat(getComputedStyle(element).maxHeight);
+                
+                if (element.scrollHeight > maxHeight) {
+                    // 创建省略号
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'ellipsis-overlay';
+                    ellipsis.textContent = '...';
+                    ellipsis.style.display = 'block';
+                    element.appendChild(ellipsis);
+                    
+                    // 简化的文本截断（实际应用中需要更精确的算法）
+                    const originalText = element.textContent.replace('...', '');
+                    const truncatedText = originalText.substring(0, originalText.length * 0.7);
+                    element.firstChild.textContent = truncatedText;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,635 @@
+<html>
+
+<head>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+</head>
+<style>
+  @font-face {
+    font-family: AlibabaPuHuiTi-Heavy;
+    src: url("/usr/share/fonts/default/TrueType/Alibaba-PuHuiTi-Heavy.ttf");
+  }
+
+  @font-face {
+    font-family: FZSHUIY_DAJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZSYJT-D.ttf");
+  }
+
+  @font-face {
+    font-family: FZHZGBJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZHZGBJW.ttf");
+  }
+
+  @font-face {
+    font-family: FZLTDHJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZLTDHJT.ttf");
+  }
+
+  @font-face {
+    font-family: FZLTTHJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZLTTHJT.ttf");
+  }
+
+  @font-face {
+    font-family: AlibabaPuHuiTi-Bold;
+    src: url("/usr/share/fonts/default/TrueType/Alibaba-PuHuiTi-Bold.ttf");
+  }
+
+  @font-face {
+    font-family: AlibabaPuHuiTi-Regular;
+    src: url("/usr/share/fonts/default/TrueType/Alibaba-PuHuiTi-Regular.ttf");
+  }
+
+  @font-face {
+    font-family: FZLTHJW--GB1-0;
+    src: url("/usr/share/fonts/default/TrueType/FZLTHJW.ttf");
+  }
+
+  body {
+    margin: 0;
+    font-size: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .view {
+    width: 750px;
+    height: 1334px;
+    overflow: hidden;
+    background: url('https://pages.ares.ctripcorp.com/union-application/yushouposter/dongjibg.png');
+    /* background-image: ; */
+  }
+
+  .view_01 {
+    width: 750px;
+    height: 1604px;
+    position: relative;
+    margin-top: -149px;
+    margin-bottom: -121px;
+  }
+
+  .view_02 {
+    top: 150px;
+    left: 0px;
+    width: 750px;
+    height: 1334px;
+    position: absolute;
+    /* background: linear-gradient(-180deg, #9cd7ff 0%, #4851f7 100%); */
+  }
+
+  .view_03 {
+    top: 1252px;
+    left: 41px;
+    width: 709px;
+    height: 294px;
+    overflow: scroll;
+    position: absolute;
+  }
+
+  .img {
+    width: 746px;
+    height: 294px;
+    margin-right: -37px;
+  }
+
+  .img_1 {
+    top: 140px;
+    left: 0px;
+    width: 750px;
+    height: 296px;
+    position: absolute;
+  }
+
+  .view_04 {
+    position: fixed;
+    top: 0px;
+    /* display: inline-block; */
+    width: 100%;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .view_05 {
+    /* gap: 4px; */
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 44px;
+    height: 44px;
+    background: #505cf8;
+    align-items: stretch;
+    padding: 0px 30px;
+    border-radius: 0px 0px 22px 22px;
+  }
+
+  .img_2 {
+    width: 35px;
+    height: 30px;
+    margin-right: 4px;
+    position: relative;
+    top: 5px;
+  }
+
+  .text {
+    color: #ffffff;
+    font-size: 22px;
+    text-align: left;
+    font-family: FZLTHJW--GB1-0, sans-serif;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .view_06 {
+    /* gap: 178px; */
+    top: 854px;
+    left: 148px;
+    width: 453px;
+    display: flex;
+    padding: 283px 0px 178px 118px;
+    position: absolute;
+    background: url("https://dimg04.fx.ctripcorp.com/images/1gz4q12000dcl8fd665A0.png") no-repeat top / contain;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .view_07 {
+    /* gap: 9px; */
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+
+  .view_08 {
+    padding: 6px 17px;
+    background: #c4ff5f;
+    border-radius: 6px;
+    margin-right: 9px;
+  }
+
+  .text_01 {
+    color: #000000;
+    font-size: 24px;
+    text-align: center;
+    font-family: FZLTHJW--GB1-0, sans-serif;
+    font-weight: normal;
+    white-space: nowrap;
+  }
+
+  .view_09 {
+    padding: 6px 17px;
+    background: #c4ff5f;
+    border-radius: 6px;
+    margin-right: 9px;
+  }
+
+  .view_19 {
+    padding: 6px 17px;
+    background: #c4ff5f;
+    border-radius: 6px;
+    margin-right: 9px;
+  }
+
+  .text_02 {
+    color: #000000;
+    font-size: 24px;
+    text-align: center;
+    font-family: FZLTHJW--GB1-0, sans-serif;
+    font-weight: normal;
+    white-space: nowrap;
+  }
+
+  .view_10 {
+    margin-top: 178px;
+    /* gap: 6px; */
+    width: 336px;
+    display: flex;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .text_03 {
+    color: #ffffff;
+    font-size: 20px;
+    text-align: left;
+    font-family: FZLTDHJW--GB1-0, sans-serif;
+    font-weight: normal;
+    white-space: nowrap;
+    margin-bottom: 6px;
+  }
+
+  .text_04 {
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 6px;
+    text-align: left;
+    font-family: FZLTHJW--GB1-0, sans-serif;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .text_05 {
+    color: #ffffff;
+    font-size: 16px;
+    align-self: stretch;
+    text-align: left;
+    font-family: FZLTHJW--GB1-0, sans-serif;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .view_11 {
+    top: 457px;
+    left: 0px;
+    width: 750px;
+    height: 547px;
+    padding: 64px 0px 365px 375px;
+    position: absolute;
+    /* background: url("https://dimg04.fx.ctripcorp.com/images/1gz6h12000dcl8fcu1DCA.png")        no-repeat top / contain; */
+  }
+
+  .view_11_img {
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 750px;
+    height: 547px;
+  }
+
+  .view_11_img .border {
+    position: absolute;
+    width: 750px;
+    height: 547px;
+    z-index: 1;
+  }
+
+  .view_11_img #primg {
+    position: absolute;
+    padding-top: 2px;
+    width: 750px;
+    height: 545px;
+    z-index: 0;
+    object-fit: cover;
+  }
+
+  .view_12 {
+    /* gap: 2px; */
+    display: flex;
+    padding: 10px 47px 14px 2px;
+    background: #c4ff5f;
+    align-items: stretch;
+    border-radius: 16px 0px 0px 16px;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+
+  .view_13 {
+    width: 324px;
+    height: 62px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+
+  .text_06 {
+    top: 0px;
+    left: 0px;
+    width: 238px;
+    height: 62px;
+    display: flex;
+    overflow: hidden;
+    position: absolute;
+    text-align: center;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .text_06_span_0 {
+    color: #ff5151;
+    font-size: 55px;
+    font-family: AlibabaPuHuiTi-Heavy, sans-serif;
+    font-weight: 900;
+    line-height: 55px;
+  }
+
+  .text_07 {
+    top: 17px;
+    left: 216px;
+    width: 108px;
+    height: 38px;
+    display: flex;
+    overflow: hidden;
+    position: absolute;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .text_07_span_0 {
+    color: #000000;
+    font-size: 28px;
+    font-family: AlibabaPuHuiTi-Bold, sans-serif;
+    font-weight: 700;
+  }
+
+  .view_14 {
+    /* gap: 5px; */
+    display: flex;
+    align-self: flex-end;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+
+  .view_15 {
+    width: 94px;
+    height: 29px;
+    position: relative;
+  }
+
+  .text_08 {
+    top: 0px;
+    left: 9px;
+    width: 85px;
+    height: 29px;
+    display: flex;
+    overflow: hidden;
+    position: absolute;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .text_08_span_0 {
+    color: #000000;
+    font-size: 24px;
+    font-family: AlibabaPuHuiTi-Regular, sans-serif;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  .img_3 {
+    top: 13px;
+    left: 0px;
+    width: 93px;
+    height: 1px;
+    position: absolute;
+  }
+
+  .text_09 {
+    width: 179px;
+    height: 29px;
+    display: flex;
+    overflow: hidden;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .text_09_span_0 {
+    color: #000000;
+    font-size: 24px;
+    font-family: AlibabaPuHuiTi-Regular, sans-serif;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  .view_16 {
+    top: 1137px;
+    left: 546px;
+    width: 131px;
+    height: 39px;
+    padding: 6px 17px;
+    position: absolute;
+    background: #c4ff5f;
+    border-radius: 6px;
+  }
+
+  .text_10 {
+    color: #000000;
+    font-size: 24px;
+    text-align: center;
+    font-family: FZLTHJW--GB1-0, sans-serif;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .text_11 {
+    top: 1016px;
+    left: 266px;
+    width: 449px;
+    min-height: 74px;
+    display: flex;
+    overflow: hidden;
+    position: absolute;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .text_11_span_0 {
+    color: #ffffff;
+    font-size: 30px;
+    font-family: FZLTDHJW--GB1-0, sans-serif;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+
+  .text_12 {
+    top: 1198px;
+    left: 266px;
+    width: 411px;
+    height: 151px;
+    display: flex;
+    overflow: hidden;
+    position: absolute;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .text_12_span_0 {
+    color: #ffffff;
+    font-size: 22px;
+    font-family: FZLTHJW--GB1-0, sans-serif;
+    font-weight: 400;
+    line-height: 36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+
+  .img_4 {
+    top: 890px;
+    left: 41px;
+    width: 186px;
+    height: 256px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 3;
+  }
+
+  .img_4 img {
+    width: 186px;
+    height: 118px;
+    border: 2px solid #ffffff;
+    border-radius: 28px 28px 28px 28px;
+    object-fit: cover;
+  }
+
+  .text_13 {
+    top: 234px;
+    left: 65px;
+    color: #ffffff;
+    width: 633px;
+    position: absolute;
+    font-size: 100px;
+    text-align: left;
+    font-family: FZSHUIY_DAJW--GB1-0, sans-serif;
+    font-weight: 400;
+    line-height: 100px;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .img_5 {
+    top: 1206px;
+    left: 47px;
+    width: 180px;
+    height: 180px;
+    position: absolute;
+  }
+
+  .img_6 {
+    top: 1399px;
+    left: 41px;
+    width: 186px;
+    height: 31px;
+    position: absolute;
+  }
+
+  .text_small {
+    font-size: 60px;
+    line-height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+
+  .price-box {
+    position: absolute;
+    height: 136.09px;
+    min-width: 200px;
+    display: inline-block;
+    background: #C4FF5F;
+    border-radius: 16px 0px 0px 16px;
+    right: 0px;
+    top: 58px;
+    padding-left: 20px;
+    padding-right: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+  }
+
+  .price {
+    /* height: 38px; */
+    color: #000000;
+    font-size: 28px;
+    font-family: AlibabaPuHuiTi-Bold;
+    font-weight: bold;
+    letter-spacing: 0px;
+    /* margin-top: 19px; */
+  }
+
+  #pri {
+    height: 62px;
+    color: #ff5151;
+    font-size: 55px;
+    font-family: AlibabaPuHuiTi-Heavy;
+    font-weight: 900;
+    letter-spacing: 0px;
+    line-height: 55px;
+  }
+
+  .night {
+    height: 29px;
+    color: #000000;
+    font-size: 24px;
+    font-family: AlibabaPuHuiTi-Regular;
+    font-weight: normal;
+    letter-spacing: 0px;
+    line-height: 29px;
+    margin-top: 5px;
+  }
+
+  #huaxianprice {
+    text-decoration: line-through;
+  }
+</style>
+
+<body>
+  <div class="view">
+    <div class="view_01">
+      <div class="view_02"></div>
+      <div class="view_04">
+        <div class="view_05"> <img src="https://dimg04.fx.ctripcorp.com/images/1gz4o12000damf62e0068.png"
+            class="img_2" /> <span class="text">上海美景酒店榜 NO.9</span> </div>
+      </div>
+      <div class="view_06">
+        <div class="view_07">
+          <div class="view_08"> <span class="text_01" id="tag1">暑期可用</span> </div>
+          <div class="view_09"> <span class="text_02" id="tag2">过期可退</span> </div>
+          <div class="view_19"> <span class="text_02" id="tag3">随时可退</span> </div>
+        </div>
+        <div class="view_10"> <span class="text_03">可使用时间：2023/08/31前</span> <span class="text_04">具体使用规则见产品详情页</span>
+          <span class="text_05"> 划线价并非原价仅供参考，详见具体产品说明。 </span> </div>
+      </div>
+      <div class="view_11">
+        <div class="view_11_img"> <img class="border"
+            src="https://pages.ares.ctripcorp.com/union-application/yushouposter/dongjiposter.png" /> <img id="primg"
+            src="https://pages.ares.ctripcorp.com/union-application/yushouposter/ditu.png" /> </div>
+        <div class="price-box">
+          <div class="price"> <span>¥</span> <span id="pri">12500</span> <span>起/<span id="nightnu">5</span>晚</span>
+          </div>
+          <div class="night"> <span id="huaxianprice">¥1268</span> <span id="nightper">（每晚¥400起）</span><span></span>
+          </div>
+        </div>
+        <!-- <div class="view_12">            <div class="view_13">              <div class="text_06">                <span><span class="text_06_span_0" id="price">10200</span></span>              </div>              <div class="text_07">                <span><span class="text_07_span_0">起/<span id="night">5</span>晚</span></span>              </div>            </div>            <div class="view_14">              <div class="view_15">                <div class="text_08">                  <span><span class="text_08_span_0">¥1268</span></span>                </div>                <img                  src="https://dimg04.fx.ctripcorp.com/images/1gz6i12000dcl8fdaA0B4.png"                  class="img_3"                />              </div>              <div class="text_09">                <span><span class="text_09_span_0">（每晚¥400起）</span></span>              </div>            </div>          </div> -->
+      </div> <!-- <div class="view_16"><span class="text_10">随时可退</span></div> -->
+      <div class="text_11"> <span> <span class="text_11_span_0"> 喜来登度假酒店豪华双床房2晚连住+早 </span> </span> </div>
+      <div class="text_12"> <span> <span class="text_12_span_0">
+            2大1小温泉（入住期间含1次）1份+2大1小水乐园（入住期间含1次）1份+LUGE滑车或征西滑道（2选1，入住期间含1次）测试测试测试测试测试测试试测试测试测试测试试测试测试测试测试 </span> </span>
+      </div>
+      <div class="img_4"> <img id="pr1"
+          src="https://pages.ares.ctripcorp.com/union-application/yushouposter/ditu.png" /> <img id="pr2"
+          src="https://pages.ares.ctripcorp.com/union-application/yushouposter/ditu.png" /> </div>
+      <!-- 超过2行添加 12个字 text_small -->
+      <div class="text_13 text_small">长白山达喜来长白山达喜来</div> <img
+        src="https://pages.ares.ctripcorp.com/union-application/yushouposter/ditu.png" class="img_5" /> <img
+        src="https://dimg04.fx.ctripcorp.com/images/1gz4l12000damf612BB8A.png" class="img_6" />
+    </div>
+  </div>
+</body>
+
+</html>
