@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes">
+  <title>亲子海报</title>
+  <style>
+    @font-face {
+      /* 方正兰亭黑简体 */
+      font-family: 'FZLanTingHeiS-R-GB';
+      /* src: url('../fonts/FZLanTingHeiS-R-GB.TTF') format('truetype'); */
+      src: url('/usr/share/fonts/default/TrueType/FZLTHJT.ttf') format('truetype');
+    }
+
+    @font-face {
+      /* 方正兰亭中粗黑简体-GBK */
+      font-family: 'FZLanTingHeiS-DB1-GBK';
+      src: url('../fonts/FZLanTingHeiS-DB1-GBK.ttf') format('truetype');  
+      src: url('/usr/share/fonts/default/TrueType/FZLTCHJT.ttf') format('truetype');
+    }
+
+    @font-face {
+      /* 方正兰亭中粗黑简体-GB */
+      font-family: 'FZLanTingHeiS-DB-GB';
+      /* src: url('../fonts/FZLanTingHeiS-DB-GB.TTF') format('truetype'); */
+      src: url('/usr/share/fonts/default/TrueType/FZLTZHJT.ttf') format('truetype');
+    }
+
+    @font-face {
+      /* 方正兰亭大黑简体 */
+      font-family: 'FZLanTingHeiS-EB-GB';
+      /* src: url('../fonts/方正兰亭中粗黑_GBK.ttf') format('truetype'); */
+      src: url('/usr/share/fonts/default/TrueType/FZLTDHJT.ttf') format('truetype');
+    }
+
+    @font-face {
+      /* 方正兰亭特黑简体 */
+      font-family: 'FZLanTingHei-H-GBK';
+      /* src: url('../fonts/方正兰亭中黑简体.TTF.TTF') format('truetype'); */
+      src: url('/usr/share/fonts/default/TrueType/FZLTTHJT.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'AaHouDiHei';
+      src: url('../fonts/Aa厚底黑.ttf') format('truetype');
+    }
+
+    body {
+      margin: 0;
+      font-size: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .fz-36 {
+      font-size: 36px;
+    }
+
+    .fz-28 {
+      font-size: 28px;
+    }
+
+    .poster-container {
+      width: 750px;
+      height: 1625px;
+      position: relative;
+      background-color: #32a6f3;
+      overflow: hidden;
+    }
+
+    /* 顶部标签 */
+    .top-badge {
+      position: absolute;
+      top: 110px;
+      left: 0;
+      display: flex;
+      padding: 7px 28px 7px 11px;
+      background: #fff955;
+      align-items: center;
+      border-radius: 0px 100px 100px 0px;
+      justify-content: space-between;
+      z-index: 10;
+    }
+
+    .badge-icon {
+      width: 29px;
+      height: 31px;
+      margin-right: 4px;
+      object-fit: contain;
+    }
+
+    .badge-text {
+      color: #924012;
+      font-size: 23px;
+      font-family: FZLanTingHeiS-R-GB;
+    }
+
+    /* 主图区域 */
+    .main-image-area {
+      position: relative;
+      top: 128px;
+      left: 0px;
+      right: 0px;
+      height: 578px;
+      overflow: hidden;
+    }
+
+    .main-image-bg {
+      position: absolute;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .main-image {
+      width: 100%;
+      object-fit: cover;
+    }
+
+    /* 主标题区域 */
+    .main-title-area {
+      position: relative;
+      text-align: center;
+    }
+
+    .main-title-bg {
+      position: absolute;
+      width: 100%;
+      background-size: contain;
+      top: -50px;
+      left: 0;
+    }
+
+    .title-area {
+      position: relative;
+      left: 0;
+      top: 80px;
+      z-index: 10;
+      width: 100%;
+      height: 183px;
+    }
+
+    .main-title {
+      margin: 0 auto;
+      max-width: 590px;
+      height: 185px;
+      background-size: contain;
+      color: #ff650c;
+      font-size: 80px;
+      font-family: AaHouDiHei;
+      text-align: center;
+      transform: skewY(-1deg);
+      text-shadow: -1px -1px 10px white, 1px -1px 10px white, -1px 1px 10px white, 1px 1px 10px white, 0 -1px 10px white, 0 1px 10px white, -1px 0 10px white, 1px 0 10px white, -2px -2px 10px white, 2px -2px 10px white, -2px 2px 10px white, 2px 2px 10px white, 0 -2px 10px white, 0 2px 10px white, -2px 0 10px white, 2px 0 10px white, -3px -3px 10px white, 3px -3px 10px white, -3px 3px 10px white, 3px 3px 10px white, 0 -3px 10px white, 0 3px 10px white, -3px 0 10px white, 3px 0 10px white, -4px -4px 10px white, 4px -4px 10px white, -4px 4px 10px white, 4px 4px 10px white, 0 -4px 10px white, 0 4px 10px white, -4px 0 10px white, 4px 0 10px white, -5px -5px 10px white, 5px -5px 10px rgb(24, 11, 11), -5px 5px 10px white, 5px 5px 10px white, 0 -5px 10px white, 0 5px 10px white, -5px 0 10px white, 5px 0 10px white;
+    }
+
+    .fz-70 {
+      font-size: 70px;
+    }
+
+    .fz-80 {
+      font-size: 80px;
+    }
+
+    .fz-60 {
+      font-size: 60px;
+    }
+
+    .main-title-two-line {
+      position: relative;
+      top: -60px;
+    }
+
+    .main-title-two-line span {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+    }
+
+    .subtitle {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 100px;
+      margin: 0 auto;
+      padding: 5px 45px;
+      width: 638px;
+      color: #131313;
+      font-size: 28px;
+      font-family: FZLanTingHeiS-DB1-GBK;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 小图展示区 */
+    .small-images {
+      padding: 0 30px;
+      display: flex;
+      justify-content: center;
+      height: 186px;
+      gap: 18px;
+      margin-top: 100px;
+    }
+
+    .small-image-container{
+      border-radius: 30px;
+      border: 5px solid #FFF;
+      flex: 1;
+      height: 100%;
+      max-width: 434px;
+      overflow: hidden;
+    }
+
+    .small-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 价格区域 */
+    .price-section {
+      position: relative;
+      width: 520px;
+      height: 168px;
+      background-image: url('https://pages.ares.ctripcorp.com/union-application/yushouposter/qz-price-bg.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      padding: 26px 16px 7px 38px;
+      border-radius: 0 25px 8px 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .price-main {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .currency {
+      margin-right: 2px;
+      color: #fcff51;
+      font-size: 40px;
+      font-family: FZLanTingHeiS-EB-GB;
+      font-weight: 900;
+    }
+
+    .price-amount {
+      color: #fcff51;
+      font-size: 90px;
+      font-family: FZLanTingHeiS-EB-GB;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .price-unit {
+      margin-left: 4px;
+      color: #ffffff;
+      font-size: 40px;
+      font-family: FZLanTingHeiS-DB1-GBK;
+    }
+
+    .price-desc {
+      margin-top: 10px;
+      margin-left: 25px;
+      display: flex;
+      flex-direction: column;
+      letter-spacing: 2px;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      margin-right: 8px;
+      color: #ffffff;
+      font-size: 30px;
+      font-family: FZLanTingHeiS-R-GB;
+    }
+
+    .price-desc-extra {
+      background: url('https://pages.ares.ctripcorp.com/union-application/yushouposter/qz-per-price-bg.png') no-repeat right center / 100% 100%;
+      position: absolute;
+      right: 0px;
+      top: 15px;
+      width: 188px;
+      height: 50px;
+      line-height: 40px;
+      color: #481e06;
+      font-size: 28px;
+      font-family: FZLanTingHeiS-R-GB;
+      padding-inline: 10px;
+    }
+
+    .flower-bg {
+      position: absolute;
+      right: 27px;
+      bottom: 385px;
+    }
+
+    /* 套餐内容 */
+    .package-content {
+      position: relative;
+      margin-top: 17px;
+      width: 688px;
+      height: 151px;
+      margin: 17px auto;
+    }
+
+    .content {
+      position: relative;
+      background: linear-gradient(180deg, #ffffff 2%, #e5fff9 25%, #fffcf7 100%);
+      border-radius: 30px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      padding: 19px 15px 13px 32px;
+    }
+
+    .package-title {
+      position: absolute;
+      top: 19px;
+      left: 32px;
+      display: inline-block;
+      padding: 3px 12px;
+      background: linear-gradient(-159deg, #ffb700 0%, #ff6a00 100%);
+      border-radius: 20px;
+      color: #ffffff;
+      font-size: 27px;
+      font-family: FZLanTingHeiS-DB-GB;
+      font-weight: 500;
+    }
+
+    .package-text {
+      margin-left: 10px;
+      color: #1a90de;
+      font-size: 26px;
+      font-family: FZLanTingHeiS-R-GB;
+      line-height: 42px;
+      text-indent: 5em;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .more-info {
+      padding: 0 32px;
+      margin-top: 33px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .use-time {
+      display: flex;
+      align-items: center;
+    }
+
+    .use-time img {
+      width: 35px;
+      height: 35px;
+      margin-right: 8px;
+    }
+
+    .time-text {
+      font-size: 32px;
+      font-family: FZLanTingHei-H-GBK;
+      background: linear-gradient(90deg, #FFFFFF 0%, #ffff62 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bolder;
+    }
+
+    .tags {
+      margin-top: 10px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .tag-item {
+      padding: 5px 13px;
+      height: 36px;
+      border: 2px solid #ffffff;
+      border-radius: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 22px;
+      font-family: FZLanTingHeiS-DB-GB;
+    }
+
+    .tip {
+      width: 392px;
+      height: 46px;
+      margin-top: 13px;
+      color: #ffffff;
+      font-size: 20px;
+      font-family: FZLanTingHeiS-R-GB;
+    }
+
+    .right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .qr-code {
+      width: 130px;
+      height: 130px;
+      background: #ffffff;
+      border-radius: 50%;
+    }
+
+    .brand {
+      margin-top: 16px;
+    }
+
+    .brand img {
+      width: 167.07px;
+      height: 28px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="poster-container"> 
+    <!-- 顶部徽章 -->
+    <div class="top-badge">
+      <img class="badge-icon" src="https://pages.ares.ctripcorp.com/union-application/yushouposter/qz-kb-logo.png"
+        alt="口碑榜"> <span class="badge-text">三亚美景酒店榜 No.19</span>
+    </div> <!-- 主图区域 -->
+    <div class="main-image-area">
+      <img src="https://pages.ares.ctripcorp.com/union-application/yushouposter/qz-main-pd-img.png"
+        class="main-image-bg" alt="">
+      <img src="https://images4.c-ctrip.com/target/0206q120009ppo7257BF2_C_500_500.jpg" class="main-image">
+    </div> <!-- 标题区域 -->
+    <div class="main-title-area">
+      <img src="https://pages.ares.ctripcorp.com/union-application/yushouposter/qz-title-bg.png" class="main-title-bg"
+        alt="">
+      <div class="title-area"> <!-- 一行字：1~7个字符：额外加上类名：main-title-one-line fz-80 -->
+        <!-- <div class="main-title main-title-one-line fz-80">文案七个字符内</div> -->
+        <!-- 一行字：8~9个字符：额外加上类名：main-title-one-line fz-70 -->
+        <!-- <div class="main-title main-title-one-line fz-70">文案八到九个字符</div> -->
+        <!-- 两行字：10~18个字符：额外加上类名：main-title-two-line fz-60 -->
+        <div class="main-title main-title-two-line fz-60">
+          <span>三亚山海天JW万豪酒店</span>
+        </div> <!-- 1~16 个字：加上类名 fz-36 --> <!-- 大于16个字：加上类名 fz-28 -->
+        <div class="subtitle fz-36">
+          迎海轩尊贵海景大床房2晚(连住)
+        </div>
+      </div>
+    </div> <!-- 小图展示 -->
+    <div class="small-images"> <!-- 最多三张 -->
+      <div class="small-image-container">
+        <img id="pr1" src="https://images4.c-ctrip.com/target/1mc5u12000jq2dwgkEF16_R5_Q90_Mwater.jpg" alt="酒店图1"
+        class="small-image">
+      </div>
+      <div class="small-image-container">
+        <img id="pr2" src="https://images4.c-ctrip.com/target/0206d120007y47z0u659B_R5_Q90_Mwater.jpg" alt="酒店图2"
+        class="small-image">
+      </div>
+      <div class="small-image-container">
+        <img id="pr3" src="https://images4.c-ctrip.com/target/0201t1200081sia7386E3_R5_Q90_Mwater.jpg" alt="酒店图3"
+        class="small-image">
+      </div>
+    </div> <!-- 价格区域 -->
+    <div class="price-section">
+      <div class="price-main"> <span class="currency">¥</span> <span class="price-amount">1734</span>
+      </div>
+      <div class="price-desc"> <span class="original-price">¥2999</span> <span class="price-unit">起/2晚</span>
+      </div>
+      <div class="price-desc-extra">
+        每晚¥867起
+      </div>
+    </div>
+    <div class="flower-bg">
+      <img src="https://pages.ares.ctripcorp.com/union-application/yushouposter/qz-flower-img.png" alt="">
+    </div> <!-- 套餐内容 -->
+    <div class="package-content">
+      <div class="content"> <span class="package-title">套餐内容</span> <span
+          class="package-text">早餐2份/天+每日2位12岁以下儿童自助早餐1份/天+儿童物品免费租借1份+精美旅拍1份+高尔夫旅行客人特色服务包1份+大堂吧休闲双人下午茶1份+三亚免税礼遇1份+水疗200代金券1份+星奇宝贝蔚蓝计划丨儿童全日沉浸式活动1份+热带天堂森林公园成人门票8折优惠1份+无限次畅玩2850㎡小龖(dá)人主题儿童乐园1份+专属机场代表服务1份+儿童挖沙工具使用4小时1份+三亚凤凰岭景区双人5折门票权益1份+酒店至南山寺旅游区往返穿梭巴士1份+呀诺达景区门票8折优惠及景区直通车1份+迷你吧1份+0-3岁儿童辅食1份+至大东海沙滩及鹿回头景区穿梭巴士1份</span>
+      </div>
+    </div>
+    <div class="more-info">
+      <div class="left">
+        <div class="use-time">
+          <img src="https://pages.ares.ctripcorp.com/union-application/yushouposter/qz-time-icon.png" alt="时间"> <span
+            class="time-text">可使用时间2025/10/31前</span>
+        </div>
+        <div class="tags"> <span id="tag1" class="tag-item">暑假不加价</span> <span id="tag2" class="tag-item"
+            style="opacity: 0">安心预囤</span> <span id="tag3" class="tag-item" style="opacity: 0">不约可退</span>
+        </div>
+        <div class="tip">
+          具体使用规则见产品详情页划线价并非原价仅 供参考，详见具体产品说明。
+        </div>
+      </div>
+      <div class="right">
+        <div class="qr-code">
+          <img src="" class="img">
+        </div>
+        <div class="brand">
+          <img src="https://pages.ares.ctripcorp.com/union-application/yushouposter/qz-trip-logo.png" alt="携程">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
