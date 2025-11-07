@@ -1,0 +1,46 @@
+{
+  "name": "enhanced-mcp-server",
+  "version": "2.0.0",
+  "description": "功能丰富的 MCP 服务器，包含文件系统、网络操作、系统信息等多种工具",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "enhanced": "node enhanced-server.js",
+    "dev": "nodemon server.js",
+    "dev:enhanced": "nodemon enhanced-server.js",
+    "test": "node test.js",
+    "test:enhanced": "node enhanced-test.js",
+    "validate": "node tools/index.js",
+    "docs": "node scripts/generate-docs.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "nodejs",
+    "filesystem",
+    "network",
+    "tools",
+    "assistant"
+  ],
+  "author": "MCP Developer",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "server.js",
+    "enhanced-server.js",
+    "tools/",
+    "README.md",
+    "MCP服务器开发完全教程.md"
+  ]
+}

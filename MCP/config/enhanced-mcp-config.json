@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "enhanced-mcp-server": {
+      "command": "node",
+      "args": [
+        "/Users/cy/Desktop/个人学习/html:css布局案例、动效交互练习/MCP/enhanced-server.js"
+      ],
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}

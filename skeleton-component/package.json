@@ -1,0 +1,51 @@
+{
+  "name": "universal-skeleton-react",
+  "version": "1.0.0",
+  "description": "一个高度可配置、适用于多种场景的 React 骨架屏组件库",
+  "main": "components/index.js",
+  "keywords": [
+    "react",
+    "skeleton",
+    "loading",
+    "placeholder",
+    "ui-components",
+    "骨架屏"
+  ],
+  "author": "你的名字",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/universal-skeleton-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/universal-skeleton-react/issues"
+  },
+  "homepage": "https://github.com/your-username/universal-skeleton-react#readme",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "demo": "打开 demo.html 查看演示"
+  },
+  "files": [
+    "components/",
+    "styles/",
+    "README.md",
+    "package.json"
+  ],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

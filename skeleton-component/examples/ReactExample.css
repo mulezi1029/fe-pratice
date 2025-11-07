@@ -1,0 +1,83 @@
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.reload-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.config-panel {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.config-controls {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.user-card, .article-card {
+  border: 1px solid #e9e9e9;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.demo-group {
+  margin-bottom: 24px;
+  padding: 16px;
+  border: 1px solid #e9e9e9;
+  border-radius: 8px;
+}
+
+.demo-group h3 {
+  margin-bottom: 12px;
+  color: #34495e;
+}
+
+.skeleton-list-item {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.skeleton-table-row {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
