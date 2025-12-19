@@ -1,0 +1,70 @@
+
+===== FIFO Pool Run =====
+
+总耗时理论值下界： 10000
+处理任务：Task1
+Task1 开始执行，当前并发数: 1
+Task1 start @1ms
+处理任务：Task2
+Task2 开始执行，当前并发数: 2
+Task2 start @1ms
+处理任务：Task3
+Task3 开始执行，当前并发数: 3
+Task3 start @2ms
+处理任务：Task4
+并发数已达上限，Task4 加入等待队列
+处理任务：Task5
+并发数已达上限，Task5 加入等待队列
+处理任务：Task6
+并发数已达上限，Task6 加入等待队列
+处理任务：Task7
+并发数已达上限，Task7 加入等待队列
+处理任务：Task8
+并发数已达上限，Task8 加入等待队列
+处理任务：Task9
+并发数已达上限，Task9 加入等待队列
+处理任务：Task10
+并发数已达上限，Task10 加入等待队列
+Task2 end   @203ms
+Task2 执行完毕，当前并发数: 2
+Task4 从等待队列中取出，准备执行
+Task4 开始执行，当前并发数: 3
+Task4 start @204ms
+Task1 end   @303ms
+Task1 执行完毕，当前并发数: 2
+Task5 从等待队列中取出，准备执行
+Task5 开始执行，当前并发数: 3
+Task5 start @303ms
+Task4 end   @304ms
+Task4 执行完毕，当前并发数: 2
+Task6 从等待队列中取出，准备执行
+Task6 开始执行，当前并发数: 3
+Task6 start @304ms
+Task3 end   @403ms
+Task3 执行完毕，当前并发数: 2
+Task7 从等待队列中取出，准备执行
+Task7 开始执行，当前并发数: 3
+Task7 start @403ms
+Task5 end   @805ms
+Task5 执行完毕，当前并发数: 2
+Task8 从等待队列中取出，准备执行
+Task8 开始执行，当前并发数: 3
+Task8 start @807ms
+Task6 end   @1204ms
+Task6 执行完毕，当前并发数: 2
+Task9 从等待队列中取出，准备执行
+Task9 开始执行，当前并发数: 3
+Task9 start @1205ms
+Task7 end   @1404ms
+Task7 执行完毕，当前并发数: 2
+Task10 从等待队列中取出，准备执行
+Task10 开始执行，当前并发数: 3
+Task10 start @1404ms
+Task8 end   @1907ms
+Task8 执行完毕，当前并发数: 2
+Task9 end   @3706ms
+Task9 执行完毕，当前并发数: 1
+Task10 end   @11406ms
+Task10 执行完毕，当前并发数: 0
+FIFO Results: [1,2,3,4,5,6,7,8,9,10]
+FIFO 总耗时: 11410ms

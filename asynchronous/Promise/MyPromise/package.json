@@ -1,0 +1,17 @@
+{
+  "name": "my-promise",
+  "version": "1.0.0",
+  "description": "A custom Promise implementation",
+  "main": "test.js",
+  "scripts": {
+    "test": "promises-aplus-tests test.js",
+    "p": "promises-aplus-tests p.js",
+    "p1": "promises-aplus-tests promise.js"
+  },
+  "keywords": ["promise"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "promises-aplus-tests": "^2.1.2"
+  }
+}
