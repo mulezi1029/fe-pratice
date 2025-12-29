@@ -17,7 +17,7 @@
 
 ## 在线访问
 
-🔗 [点击访问在线工具](https://mulezi1029.github.io/url-parse-tool/)
+🔗 [点击访问在线工具](https://mulezi1029.github.io/fe-pratice/)
 
 ## 本地使用
 
