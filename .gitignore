@@ -31,3 +31,7 @@ Temporary Items
 *.njsproj
 *.sln
 *.sw?
+node_modules
+
+# Exclude submodule directories (not needed for GitHub Pages)
+duyi/
