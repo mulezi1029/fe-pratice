@@ -84,8 +84,8 @@
         <h2 class="text-xl font-semibold">输入URL/小程序路径</h2>
       </div>
       <div class="relative">
-        <input type="text" id="url-input" placeholder="请输入URL或小程序路径..."
-          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300 text-lg" />
+        <input type="text" id="url-input" placeholder="请输入URL或小程序路径，例如：/pages/index/index?userId=12345&type=detail"
+          class="w-full pr-28 px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all-300 text-lg" />
         <button id="parse-button"
           class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all-300 flex items-center">
           <i class="fa-solid fa-magnifying-glass mr-2"></i>解析
@@ -117,6 +117,25 @@
           data-url="pages/subPage?param1=value1&param1=value2&param3=#tab=home&view=grid">
           示例5: 相对路径带Hash参数
         </button>
+      </div>
+    </section>
+
+    <!-- 历史记录 -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-8 transform hover:shadow-xl transition-all-300">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+          <i class="fa-solid fa-clock-rotate-left text-primary text-xl mr-2"></i>
+          <h2 class="text-xl font-semibold">历史记录</h2>
+        </div>
+        <button id="clear-history-button" class="text-sm text-gray-500 hover:text-red-500 transition-all-300 flex items-center">
+          <i class="fa-solid fa-trash mr-1"></i>清空历史
+        </button>
+      </div>
+      <div id="history-list" class="space-y-2 max-h-[200px] overflow-y-auto scrollbar-thin">
+        <div class="text-center text-gray-500 py-4 text-sm" id="empty-history-message">
+          <i class="fa-solid fa-info-circle mb-1"></i>
+          <p>解析URL后将显示历史记录</p>
+        </div>
       </div>
     </section>
 
@@ -185,7 +204,7 @@
             <i class="fa-solid fa-question-circle text-primary mr-1"></i>
             URL查询参数 (?)
           </div>
-          <div id="query-params-container" class="mb-2 max-h-[150px] overflow-y-auto scrollbar-thin">
+          <div id="query-params-container" class="mb-2 overflow-y-auto scrollbar-thin">
             <div class="text-center text-gray-500 py-4 text-sm" id="empty-params-message">
               <i class="fa-solid fa-info-circle mb-1"></i>
               <p>解析URL后显示查询参数</p>
@@ -492,11 +511,149 @@
       const decodeOutput = document.getElementById('decode-output')
       const copyEncodedButton = document.getElementById('copy-encoded-button')
       const copyDecodedButton = document.getElementById('copy-decoded-button')
+      const historyList = document.getElementById('history-list')
+      const emptyHistoryMessage = document.getElementById('empty-history-message')
+      const clearHistoryButton = document.getElementById('clear-history-button')
 
       let currentUrl = null
       let queryParams = new URLSearchParams()
       let hashParams = new URLSearchParams()
       let isMiniProgram = false
+      const HISTORY_STORAGE_KEY = 'urlParseHistory'
+      const MAX_HISTORY_COUNT = 50
+
+      /**
+       * 获取历史记录
+       * @returns {Array} 历史记录数组
+       */
+      function getHistory() {
+        try {
+          const historyStr = localStorage.getItem(HISTORY_STORAGE_KEY)
+          return historyStr ? JSON.parse(historyStr) : []
+        } catch (error) {
+          console.error('获取历史记录失败:', error)
+          return []
+        }
+      }
+
+      /**
+       * 保存历史记录
+       * @param {string} url - 要保存的URL
+       */
+      function saveHistory(url) {
+        if (!url || !url.trim()) return
+        
+        try {
+          let history = getHistory()
+          
+          // 移除重复项
+          history = history.filter(item => item.url !== url)
+          
+          // 添加到开头
+          history.unshift({
+            url: url,
+            timestamp: Date.now()
+          })
+          
+          // 限制历史记录数量
+          if (history.length > MAX_HISTORY_COUNT) {
+            history = history.slice(0, MAX_HISTORY_COUNT)
+          }
+          
+          localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history))
+          updateHistoryDisplay()
+        } catch (error) {
+          console.error('保存历史记录失败:', error)
+        }
+      }
+
+      /**
+       * 更新历史记录显示
+       */
+      function updateHistoryDisplay() {
+        const history = getHistory()
+        
+        if (history.length === 0) {
+          historyList.innerHTML = ''
+          const emptyMsg = document.createElement('div')
+          emptyMsg.className = 'text-center text-gray-500 py-4 text-sm'
+          emptyMsg.id = 'empty-history-message'
+          emptyMsg.innerHTML = '<i class="fa-solid fa-info-circle mb-1"></i><p>解析URL后将显示历史记录</p>'
+          historyList.appendChild(emptyMsg)
+          return
+        }
+        
+        historyList.innerHTML = ''
+        history.forEach((item, index) => {
+          const historyItem = document.createElement('div')
+          historyItem.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all-300 cursor-pointer history-item'
+          historyItem.dataset.url = item.url
+          
+          const date = new Date(item.timestamp)
+          const timeStr = date.toLocaleString('zh-CN', {
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+          
+          historyItem.innerHTML = `
+            <div class="flex-grow mr-2 break-all">
+              <div class="font-medium text-sm text-gray-800">${item.url}</div>
+              <div class="text-xs text-gray-500 mt-1">${timeStr}</div>
+            </div>
+            <button class="remove-history-item p-1 text-gray-400 hover:text-red-500 transition-all-300 ml-2" title="删除此项">
+              <i class="fa-solid fa-times"></i>
+            </button>
+          `
+          
+          // 点击历史记录项加载URL
+          historyItem.addEventListener('click', function(e) {
+            if (!e.target.closest('.remove-history-item')) {
+              urlInput.value = item.url
+              parseUrl(item.url)
+            }
+          })
+          
+          // 删除单个历史记录项
+          const removeBtn = historyItem.querySelector('.remove-history-item')
+          removeBtn.addEventListener('click', function(e) {
+            e.stopPropagation()
+            removeHistoryItem(item.url)
+          })
+          
+          historyList.appendChild(historyItem)
+        })
+      }
+
+      /**
+       * 删除单个历史记录项
+       * @param {string} url - 要删除的URL
+       */
+      function removeHistoryItem(url) {
+        try {
+          let history = getHistory()
+          history = history.filter(item => item.url !== url)
+          localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history))
+          updateHistoryDisplay()
+        } catch (error) {
+          console.error('删除历史记录失败:', error)
+        }
+      }
+
+      /**
+       * 清除所有历史记录
+       */
+      function clearHistory() {
+        if (confirm('确定要清空所有历史记录吗？')) {
+          try {
+            localStorage.removeItem(HISTORY_STORAGE_KEY)
+            updateHistoryDisplay()
+          } catch (error) {
+            console.error('清除历史记录失败:', error)
+          }
+        }
+      }
 
       // 解析URL/小程序路径
       function parseUrl(url) {
@@ -604,6 +761,9 @@
 
           // 更新处理后的URL
           updateProcessedUrl()
+
+          // 保存历史记录
+          saveHistory(url)
 
           // 添加动画效果
           urlInput.classList.add('border-green-500')
@@ -1259,9 +1419,11 @@
         }
       })
 
+      // 清除历史记录按钮事件
+      clearHistoryButton.addEventListener('click', clearHistory)
+
       // 初始化
-      urlInput.value = '/pages/index/index?userId=12345&type=detail'
-      parseButton.click()
+      updateHistoryDisplay()
     })
   </script>
 </body>
