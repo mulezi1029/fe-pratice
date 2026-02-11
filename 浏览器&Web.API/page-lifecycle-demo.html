@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浏览器页面生命周期事件与可见性API综合演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            color: #7f8c8d;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        
+        .demo-area {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        
+        .status-box {
+            margin: 10px 0;
+            padding: 12px;
+            background-color: white;
+            border-left: 4px solid #3498db;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .event-log {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+        
+        .event-entry {
+            margin: 5px 0;
+            padding: 3px 0;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .event-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .event-entry.load { color: #2ecc71; }
+        .event-entry.unload { color: #e74c3c; }
+        .event-entry.beforeunload { color: #f39c12; }
+        .event-entry.pageshow { color: #3498db; }
+        .event-entry.visibilitychange { color: #9b59b6; }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .button-group {
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button.warning {
+            background-color: #e74c3c;
+        }
+        
+        button.warning:hover {
+            background-color: #c0392b;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .comparison-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .video-demo {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        video {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        
+        .test-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f4f8;
+            border-radius: 5px;
+            border: 1px dashed #3498db;
+        }
+        
+        .test-section h3 {
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>浏览器页面生命周期事件与可见性API综合演示</h1>
+        
+        <div class="info-box">
+            <h3>说明</h3>
+            <p>本演示展示了浏览器页面生命周期中的关键事件（load、unload、beforeunload、pageshow）以及页面可见性API的使用和区别。通过不同的测试方法，可以观察这些事件的触发时机和行为特点。</p>
+        </div>
+        
+        <div class="section">
+            <h2>1. 事件状态监控</h2>
+            
+            <div class="demo-area">
+                <div class="status-box">
+                    <strong>load 事件状态：</strong>
+                    <span id="load-status">未触发</span>
+                </div>
+                <div class="status-box">
+                    <strong>pageshow 事件状态：</strong>
+                    <span id="pageshow-status">未触发</span>
+                </div>
+                <div class="status-box">
+                    <strong>是否从缓存加载：</strong>
+                    <span id="persisted-status">-</span>
+                </div>
+                <div class="status-box">
+                    <strong>beforeunload 事件状态：</strong>
+                    <span id="beforeunload-status">未触发</span>
+                </div>
+                <div class="status-box">
+                    <strong>unload 事件状态：</strong>
+                    <span id="unload-status">未触发</span>
+                </div>
+                <div class="status-box">
+                    <strong>页面是否隐藏：</strong>
+                    <span id="hidden-status">-</span>
+                </div>
+                <div class="status-box">
+                    <strong>可见性状态：</strong>
+                    <span id="visibility-state">-</span>
+                </div>
+            </div>
+            
+            <div class="event-log" id="event-log"></div>
+        </div>
+        
+        <div class="section">
+            <h2>2. 测试方法</h2>
+            
+            <div class="test-section">
+                <h3>2.1 测试 load 和 pageshow 事件</h3>
+                <ul>
+                    <li>首次打开页面</li>
+                    <li>点击浏览器刷新按钮</li>
+                    <li>在新标签页中打开此页面</li>
+                </ul>
+            </div>
+            
+            <div class="test-section">
+                <h3>2.2 测试 beforeunload 和 unload 事件</h3>
+                <ul>
+                    <li>点击链接（当前标签页）：<a href="https://www.example.com" target="_self">跳转到example.com</a></li>
+                    <li>点击链接（新标签页，不会触发beforeunload）：<a href="https://www.example.com" target="_blank">在新标签页打开example.com</a></li>
+                    <li>关闭浏览器标签页</li>
+                    <li>点击下面的按钮强制刷新：</li>
+                    <div class="button-group">
+                        <button onclick="location.reload()">强制刷新页面</button>
+                    </div>
+                </ul>
+            </div>
+            
+            <div class="test-section">
+                <h3>2.3 测试页面可见性 API</h3>
+                <ul>
+                    <li>切换到其他浏览器标签页</li>
+                    <li>最小化浏览器窗口</li>
+                    <li>锁定设备屏幕（移动设备）</li>
+                </ul>
+            </div>
+            
+            <div class="test-section">
+                <h3>2.4 测试往返缓存 (bfcache)</h3>
+                <ul>
+                    <li>点击：<a href="https://www.example.com" target="_self">进入example.com</a></li>
+                    <li>然后点击浏览器的后退按钮返回此页面</li>
+                    <li>观察 pageshow 事件的 persisted 属性</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>3. 实际应用示例</h2>
+            
+            <h3>3.1 视频播放控制</h3>
+            <p>利用页面可见性 API 控制视频播放：当页面不可见时暂停视频，当页面可见时恢复播放。</p>
+            <div class="video-demo">
+                <video id="demo-video" width="640" height="360" controls loop>
+                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                    您的浏览器不支持 video 标签。
+                </video>
+                <div class="status-box" style="margin-top: 10px;">
+                    <strong>视频状态：</strong>
+                    <span id="video-status">就绪</span>
+                </div>
+            </div>
+            
+            <h3>3.2 表单未保存提示</h3>
+            <p>使用 beforeunload 事件防止用户意外丢失未保存的表单数据。</p>
+            <div class="demo-area">
+                <form id="test-form">
+                    <label for="name">姓名：</label>
+                    <input type="text" id="name" name="name" style="margin-right: 10px;">
+                    <label for="email">邮箱：</label>
+                    <input type="email" id="email" name="email">
+                    <div style="margin-top: 10px;">
+                        <button type="button" onclick="saveForm()">保存</button>
+                        <button type="button" onclick="resetForm()">重置</button>
+                    </div>
+                </form>
+                <div class="status-box" style="margin-top: 10px;">
+                    <strong>表单状态：</strong>
+                    <span id="form-status">未修改</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>4. 事件与API对比</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>load</th>
+                        <th>unload</th>
+                        <th>beforeunload</th>
+                        <th>pageshow</th>
+                        <th>Page Visibility API</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>触发时机</td>
+                        <td>资源完全加载后</td>
+                        <td>页面即将卸载</td>
+                        <td>页面卸载前</td>
+                        <td>页面显示时<br>（包括缓存恢复）</td>
+                        <td>页面可见性变化时</td>
+                    </tr>
+                    <tr>
+                        <td>缓存感知</td>
+                        <td>无</td>
+                        <td>无</td>
+                        <td>无</td>
+                        <td>有（persisted属性）</td>
+                        <td>无直接关联</td>
+                    </tr>
+                    <tr>
+                        <td>阻止行为</td>
+                        <td>不可</td>
+                        <td>不可</td>
+                        <td>可以（确认对话框）</td>
+                        <td>不可</td>
+                        <td>不可</td>
+                    </tr>
+                    <tr>
+                        <td>主要用途</td>
+                        <td>资源加载完成后的初始化</td>
+                        <td>资源清理</td>
+                        <td>防止意外离开</td>
+                        <td>页面状态恢复、缓存检测</td>
+                        <td>可见性状态监控与控制</td>
+                    </tr>
+                    <tr>
+                        <td>典型场景</td>
+                        <td>图片懒加载<br>数据初始化</td>
+                        <td>清理定时器<br>断开长连接</td>
+                        <td>表单未保存提示</td>
+                        <td>恢复页面状态<br>缓存数据更新</td>
+                        <td>视频播放控制<br>动画暂停<br>网络请求优化</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // 辅助函数：添加日志
+        function addLog(message, eventType) {
+            const logContainer = document.getElementById('event-log');
+            const entry = document.createElement('div');
+            entry.className = `event-entry ${eventType}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        // 辅助函数：更新状态
+        function updateStatus(elementId, status, isHighlight = false) {
+            const element = document.getElementById(elementId);
+            element.textContent = status;
+            element.className = isHighlight ? 'highlight' : '';
+        }
+        
+        // 1. load 事件
+        window.addEventListener('load', () => {
+            updateStatus('load-status', '已触发', true);
+            addLog('load 事件触发：页面所有资源加载完成', 'load');
+        });
+        
+        // 2. unload 事件
+        window.addEventListener('unload', () => {
+            // 注意：由于页面即将卸载，这里的DOM操作可能不会显示
+            console.log('unload 事件触发：页面即将卸载');
+            // 在真实场景中，这里可以执行清理资源的操作
+        });
+        
+        // 3. beforeunload 事件
+        window.addEventListener('beforeunload', (event) => {
+            updateStatus('beforeunload-status', '已触发', true);
+            addLog('beforeunload 事件触发：页面即将卸载', 'beforeunload');
+            
+            // 如果表单有未保存的更改，显示确认对话框
+            if (hasUnsavedFormChanges) {
+                event.preventDefault();
+                event.returnValue = '您有未保存的更改，确定要离开吗？';
+                return event.returnValue;
+            }
+        });
+        
+        // 4. pageshow 事件
+        window.addEventListener('pageshow', (event) => {
+            updateStatus('pageshow-status', '已触发', true);
+            updateStatus('persisted-status', event.persisted, event.persisted);
+            addLog(`pageshow 事件触发，persisted: ${event.persisted}`, 'pageshow');
+        });
+        
+        // 5. 页面可见性 API
+        function updateVisibilityStatus() {
+            updateStatus('hidden-status', document.hidden);
+            updateStatus('visibility-state', document.visibilityState);
+        }
+        
+        // 初始化可见性状态
+        updateVisibilityStatus();
+        
+        // 监听可见性变化
+        document.addEventListener('visibilitychange', () => {
+            updateVisibilityStatus();
+            addLog(`visibilitychange 事件触发，状态: ${document.visibilityState}`, 'visibilitychange');
+        });
+        
+        // 实际应用示例 1：视频播放控制
+        const video = document.getElementById('demo-video');
+        const videoStatus = document.getElementById('video-status');
+        
+        // 页面可见性变化时控制视频播放
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // 页面不可见，暂停视频
+                video.pause();
+                videoStatus.textContent = '已暂停 (页面不可见)';
+            } else {
+                // 页面可见，恢复播放
+                video.play().then(() => {
+                    videoStatus.textContent = '播放中 (页面可见)';
+                }).catch(err => {
+                    videoStatus.textContent = '播放失败：' + err.message;
+                });
+            }
+        });
+        
+        // 视频事件监听
+        video.addEventListener('play', () => {
+            videoStatus.textContent = '播放中';
+        });
+        
+        video.addEventListener('pause', () => {
+            videoStatus.textContent = '已暂停';
+        });
+        
+        video.addEventListener('error', () => {
+            videoStatus.textContent = '视频加载错误';
+        });
+        
+        // 实际应用示例 2：表单未保存提示
+        let hasUnsavedFormChanges = false;
+        const form = document.getElementById('test-form');
+        const formStatus = document.getElementById('form-status');
+        
+        // 监听表单变化
+        form.addEventListener('input', () => {
+            hasUnsavedFormChanges = true;
+            updateStatus('form-status', '未保存', true);
+        });
+        
+        // 保存表单
+        function saveForm() {
+            hasUnsavedFormChanges = false;
+            updateStatus('form-status', '已保存');
+            alert('表单已保存！');
+        }
+        
+        // 重置表单
+        function resetForm() {
+            form.reset();
+            hasUnsavedFormChanges = false;
+            updateStatus('form-status', '未修改');
+        }
+    </script>
+</body>
+</html>

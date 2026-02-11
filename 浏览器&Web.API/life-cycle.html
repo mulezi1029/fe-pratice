@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    window.addEventListener('load',()=>{
+      console.log('page loaded')
+    })
+
+    document.addEventListener('visibilitychange',()=>{
+      console.log(111)
+      console.log(document.visibilityState)
+    })
+
+    window.addEventListener('pageshow',(e)=>{
+      console.log('pageshow',e.persisted)
+    })
+
+    window.addEventListener('pagehide',(e)=>{
+      console.log('pagehide',e.persisted)
+    })
+  </script>
+</body>
+</html>

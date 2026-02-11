@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pageshow 事件 vs 页面可见性 API 对比演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        
+        .demo-area {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            min-height: 150px;
+        }
+        
+        .status-box {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: white;
+            border-left: 4px solid #3498db;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .event-log {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+        
+        .event-entry {
+            margin: 5px 0;
+            padding: 3px 0;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .event-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .button-group {
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .comparison-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .video-demo {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        video {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>pageshow 事件 Vs Page Visibility API 对比演示</h1>
+        
+        <div class="section">
+            <h2>1. 核心概念</h2>
+            <p><strong>pageshow 事件</strong>：当浏览器加载并显示页面时触发，包括从浏览器缓存中恢复页面的情况。</p>
+            <p><strong>页面可见性 API</strong>：用于检测页面当前可见性状态以及监听可见性变化，主要通过 `document.hidden` 和 `document.visibilityState` 属性，以及 `visibilitychange` 事件实现。</p>
+        </div>
+        
+        <div class="section">
+            <h2>2. 对比演示</h2>
+            
+            <h3>2.1 pageshow 事件演示</h3>
+            <div class="demo-area">
+                <div class="status-box">
+                    <strong>pageshow 事件状态：</strong>
+                    <span id="pageshow-status">未触发</span>
+                </div>
+                <div class="status-box">
+                    <strong>是否从缓存加载：</strong>
+                    <span id="persisted-status">-</span>
+                </div>
+                <div class="event-log" id="pageshow-log"></div>
+            </div>
+            
+            <h3>2.2 页面可见性 API 演示</h3>
+            <div class="demo-area">
+                <div class="status-box">
+                    <strong>页面是否隐藏：</strong>
+                    <span id="hidden-status">-</span>
+                </div>
+                <div class="status-box">
+                    <strong>可见性状态：</strong>
+                    <span id="visibility-state">-</span>
+                </div>
+                <div class="event-log" id="visibility-log"></div>
+            </div>
+            
+            <div class="info-box">
+                <h3>测试方法：</h3>
+                <ol>
+                    <li><strong>测试 pageshow 事件</strong>：刷新页面、点击浏览器前进/后退按钮</li>
+                    <li><strong>测试页面可见性 API</strong>：切换浏览器标签页、最小化浏览器窗口</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>3. 详细对比</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>pageshow 事件</th>
+                        <th>页面可见性 API</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>触发时机</td>
+                        <td>页面首次加载完成后<br>页面从浏览器缓存中恢复时<br>用户点击前进/后退按钮时</td>
+                        <td>页面从可见变为不可见时<br>页面从不可见变为可见时<br>浏览器标签页切换时<br>浏览器窗口最小化/恢复时</td>
+                    </tr>
+                    <tr>
+                        <td>核心用途</td>
+                        <td>检测页面是否被加载或从缓存中恢复</td>
+                        <td>检测和监听页面可见性状态的变化</td>
+                    </tr>
+                    <tr>
+                        <td>提供信息</td>
+                        <td>event.persisted：判断是否从缓存加载</td>
+                        <td>document.hidden：是否不可见<br>document.visibilityState：具体状态</td>
+                    </tr>
+                    <tr>
+                        <td>事件对象</td>
+                        <td>包含 persisted 属性</td>
+                        <td>无特殊属性，通过 document 获取状态</td>
+                    </tr>
+                    <tr>
+                        <td>适用场景</td>
+                        <td>页面状态恢复<br>缓存检测与处理<br>性能优化</td>
+                        <td>媒体控制<br>动画效果控制<br>网络请求优化<br>用户行为统计</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>4. 结合使用示例</h2>
+            <p>以下是一个结合使用 pageshow 和页面可见性 API 控制视频播放的示例：</p>
+            <div class="video-demo">
+                <video id="demo-video" width="640" height="360" controls loop>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    您的浏览器不支持 video 标签。
+                </video>
+                <div class="status-box" style="margin-top: 10px;">
+                    <strong>视频状态：</strong>
+                    <span id="video-status">就绪</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 辅助函数：添加日志
+        function addLog(containerId, message) {
+            const container = document.getElementById(containerId);
+            const entry = document.createElement('div');
+            entry.className = 'event-entry';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        // 1. pageshow 事件演示
+        window.addEventListener('pageshow', (event) => {
+            document.getElementById('pageshow-status').textContent = '已触发';
+            document.getElementById('pageshow-status').className = 'highlight';
+            
+            document.getElementById('persisted-status').textContent = event.persisted;
+            document.getElementById('persisted-status').className = event.persisted ? 'highlight' : '';
+            
+            addLog('pageshow-log', `pageshow 事件触发，persisted: ${event.persisted}`);
+        });
+        
+        // 2. 页面可见性 API 演示
+        function updateVisibilityStatus() {
+            document.getElementById('hidden-status').textContent = document.hidden;
+            document.getElementById('visibility-state').textContent = document.visibilityState;
+        }
+        
+        // 初始化可见性状态
+        updateVisibilityStatus();
+        
+        // 监听可见性变化
+        document.addEventListener('visibilitychange', () => {
+            updateVisibilityStatus();
+            addLog('visibility-log', `visibilitychange 事件触发，状态: ${document.visibilityState}`);
+        });
+        
+        // 3. 结合使用示例：视频控制
+        const video = document.getElementById('demo-video');
+        const videoStatus = document.getElementById('video-status');
+        
+        // pageshow 事件：页面加载或恢复时
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                // 从缓存恢复时，根据当前可见性状态决定是否播放
+                if (document.visibilityState === 'visible') {
+                    video.play().then(() => {
+                        videoStatus.textContent = '播放中 (从缓存恢复)';
+                    }).catch(err => {
+                        videoStatus.textContent = '播放失败';
+                    });
+                }
+            }
+        });
+        
+        // 页面可见性 API：控制视频播放
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                document.title = "页面变为不可见"
+                // 页面不可见，暂停视频
+                video.pause();
+                videoStatus.textContent = '已暂停 (页面不可见)';
+            } else {
+                document.title = "可见"
+                // 页面可见，恢复播放
+                video.play().then(() => {
+                    videoStatus.textContent = '播放中 (页面可见)';
+                }).catch(err => {
+                    videoStatus.textContent = '播放失败';
+                });
+            }
+        });
+        
+        // 视频事件监听
+        video.addEventListener('play', () => {
+            videoStatus.textContent = '播放中';
+        });
+        
+        video.addEventListener('pause', () => {
+            videoStatus.textContent = '已暂停';
+        });
+        
+        video.addEventListener('error', () => {
+            videoStatus.textContent = '视频加载错误';
+        });
+    </script>
+</body>
+</html>
